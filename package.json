@@ -1,0 +1,32 @@
+{
+  "name": "105_oop_gameproject",
+  "version": "0.0.0",
+  "description": "a game use html",
+  "main": "main.js",
+  "dependencies": {
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.3.13",
+    "babel-register": "^6.3.13",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2"
+  },
+  "devDependencies": {
+    "electron": "^1.4.3"
+  },
+  "scripts": {
+    "start": "electron -r babel-register ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/a9650615/105_OOP_GameProject.git"
+  },
+  "keywords": [
+    "game"
+  ],
+  "author": "Ming You Xia",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/a9650615/105_OOP_GameProject/issues"
+  },
+  "homepage": "https://github.com/a9650615/105_OOP_GameProject#readme"
+}
