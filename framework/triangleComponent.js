@@ -1,5 +1,5 @@
 
-var Framework = (function (Framework) {
+export default function (Framework) {
 	'use strict'
 
 Framework.triangleComponent = function(sprite, bodyType, box2D)
@@ -88,4 +88,4 @@ Framework.triangleComponent = function(sprite, bodyType, box2D)
 }
 
 	return Framework;
-})(Framework || {});
+};

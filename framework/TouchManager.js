@@ -1,4 +1,4 @@
-var Framework = (function (Framework) {
+export default function (Framework) {
 	'use strict'
 	Framework.TouchManager = (function(){
 		var TouchManagerClass = {},
@@ -115,4 +115,4 @@ var Framework = (function (Framework) {
 		return TouchManagerInstance;
 	})();
 	return Framework;
-})(Framework || {});
+};

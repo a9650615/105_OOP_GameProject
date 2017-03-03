@@ -1,7 +1,10 @@
 // By Raccoon
 // include namespace
+//TODO: 暫時的
+let _isRecordMode = false;
+let _isTestMode = false;
 
-var Framework = (function (Framework) {
+export default function (Framework) {
 	'use strict'
 	/**
     * 整個遊戲(多個{{#crossLink "Level"}}{{/crossLink}})的主體
@@ -956,9 +959,9 @@ var Framework = (function (Framework) {
 	})();
 
 	return Framework;
-})(Framework || {});
-
-listMember = function(main, space, divId) {
+};
+//TODO: 未改寫完成
+let listMember = function(main, space, divId) {
 	if(document.getElementById(divId+"_check")){
 		if(document.getElementById(divId+"_check").src.match("../../src/image/arrow_over.png")){
 			document.getElementById(divId+"_check").src = "../../src/image/arrow.png";
@@ -1020,7 +1023,7 @@ listMember = function(main, space, divId) {
 	}
 };
 
-addAssertion = function(assertTarget, assertValue){
+let addAssertion = function(assertTarget, assertValue){
 	// var s = assertTarget.indexOf("Framework.Game._currentLevel.")
 	assertTarget = assertTarget.substring(29, assertTarget.length);
 	var recordDiv = document.getElementById("record_div");

@@ -1,4 +1,4 @@
-var Framework = (function (Framework) {
+export default function (Framework) {
 	'use strict'
 	Framework.Audio = (function(){
 		var $ = Framework,
@@ -343,4 +343,4 @@ var Framework = (function (Framework) {
 		return _audioClass;
 	})();
 	return Framework;
-})(Framework || {});
+};

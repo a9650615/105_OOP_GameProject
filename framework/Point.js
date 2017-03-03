@@ -1,5 +1,4 @@
-var Framework;
-Framework = (function (Framework) {
+export default function (Framework) {
     'use strict'
 
     Framework.Point = function(x, y) {
@@ -26,4 +25,4 @@ Framework = (function (Framework) {
     });
 
     return Framework;
-})(Framework || {});
+};

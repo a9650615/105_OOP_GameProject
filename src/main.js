@@ -1,1 +1,3 @@
-console.log('toooooooo')
+import Game from './framework_es6';
+
+new Game();

@@ -1,6 +1,5 @@
 // By Raccoon
-var Framework;
-Framework = (function (Framework) {
+export default function (Framework) {
     'use strict'
 
     Framework.GameObject = Framework.exClass({        
@@ -373,4 +372,4 @@ Framework = (function (Framework) {
        }
     });
     return Framework;
-})(Framework || {});
+}

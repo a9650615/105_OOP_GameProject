@@ -1,4 +1,4 @@
-var Framework = (function (Framework) {
+export default function (Framework) {
     'use strict'
 
 
@@ -112,7 +112,7 @@ var Framework = (function (Framework) {
             //     if (TestCount <= 10) {
             //         setTimeout(function() { CallFunction(InForm, Agrs); }, 1000);
             //     } else {
-            //         alert("©ñ±ó");
+            //         alert("ï¿½ï¿½ï¿½ï¿½");
             //     }
             // }
             InForm.SetRecordData(Agrs);
@@ -147,4 +147,4 @@ var Framework = (function (Framework) {
     };
 
     return Framework;
-})(Framework || {});
+}

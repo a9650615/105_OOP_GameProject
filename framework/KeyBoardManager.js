@@ -1,4 +1,4 @@
-var Framework = (function (Framework) {
+export default function (Framework) {
 	'use strict'
 	Framework.KeyBoardManager = (function(){
 		var _timeountID = 0,
@@ -106,4 +106,4 @@ var Framework = (function (Framework) {
 		return KeyBoardManagerInstance;
 	})();
 	return Framework;
-})(Framework || {});
+};

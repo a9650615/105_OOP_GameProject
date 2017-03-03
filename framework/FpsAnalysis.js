@@ -1,6 +1,6 @@
 // By Raccoon
 // include namespace
-var Framework = (function (Framework) {	
+export default function (Framework) {	
 	'use strict'
 	Framework.FpsAnalysis = function () {
 		//在strict mode底下, 不能使用caller, callee, arguments; 
@@ -33,4 +33,4 @@ var Framework = (function (Framework) {
 		};
 	};
 	return Framework;
-})(Framework || {});
+};

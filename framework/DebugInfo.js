@@ -1,4 +1,4 @@
-var Framework = (function (Framework) {
+export default function (Framework) {
 	'use strict'
 	Framework.DebugInfo = (function () {
 		var _showDebugInfo = false,
@@ -77,4 +77,4 @@ var Framework = (function (Framework) {
 	})();
 
 	return Framework;
-})(Framework || {});
+};

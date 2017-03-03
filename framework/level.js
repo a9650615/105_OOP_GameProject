@@ -1,7 +1,7 @@
 // By Raccoon
 // include namespace
 
-var Framework = (function (Framework) {
+export default function (Framework) {
     'use strict'
     Framework.Level = Framework.exClass({
         /**
@@ -418,4 +418,4 @@ var Framework = (function (Framework) {
     });
 
     return Framework;
-})(Framework || {});
+};

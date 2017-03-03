@@ -1,4 +1,4 @@
-var Framework = (function (Framework) {
+export default function (Framework) {
 	'use strict'	
 	Framework.ResourceManager = (function(){
 		var _requestCount = 0,
@@ -201,4 +201,4 @@ var Framework = (function (Framework) {
 		return ResourceManagerIntance;	
 	})();
 	return Framework;
-})(Framework || {});
+};

@@ -1,4 +1,4 @@
-var Framework = (function (Framework) {
+export default function (Framework) {
 	'use strict'
 	Framework.MouseManager = (function(){
 		var MouseManagerClass = {},
@@ -117,4 +117,4 @@ var Framework = (function (Framework) {
 		return MouseManagerInstance;
 	})();
 	return Framework;
-})(Framework || {});
+};

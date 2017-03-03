@@ -123,3 +123,6 @@ var Framework = (function (Framework) {
 
     return Framework;
  })(Framework || {});
+
+ export default Framework;
+ 

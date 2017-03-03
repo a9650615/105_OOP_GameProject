@@ -1,5 +1,4 @@
-var Framework;
-Framework = (function (Framework) {
+export default function (Framework) {
 	'use strict'
 	Framework.Box2D = function () {
 		var b2Vec2 = Box2D.Common.Math.b2Vec2,
@@ -144,4 +143,4 @@ Framework = (function (Framework) {
 
 	};
 	return Framework;
-})(Framework || {});
+};

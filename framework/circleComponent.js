@@ -1,4 +1,4 @@
-var Framework = (function (Framework) {
+export default function (Framework) {
 	'use strict'
 
 	Framework.circleComponent = function (sprite, bodyType, box2D) {
@@ -128,4 +128,4 @@ var Framework = (function (Framework) {
 	}
 
 	return Framework;
-})(Framework || {});
+};
