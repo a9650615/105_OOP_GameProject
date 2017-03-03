@@ -1,4 +1,5 @@
 import Framework from './framework_es6';
+import Level1 from './level1';
 
 let path = 'game_sample/image/';
 var isTry=false;    //決定是否為練習模式
@@ -114,5 +115,5 @@ var MyMenu = Framework.exClass(Framework.GameMainMenu , {
     }
 });
 
-Framework.Game.addNewLevel({menu: new MyMenu()});
+Framework.Game.addNewLevel({menu: new Level1()});
 Framework.Game.start();
