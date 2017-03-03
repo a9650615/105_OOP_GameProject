@@ -29,10 +29,11 @@ import TriangleComponent from '../../framework/triangleComponent.js';
 
 class Game {
 	constructor() {
-		let FrameWork = Core;
+		let FrameWork = {};
+		Core(FrameWork);
 		FrameWork = Config(FrameWork);
 		FrameWork = Record(FrameWork);
-		FrameWork = Record(FrameWork);
+		FrameWork = Replay(FrameWork);
 		FrameWork = EqualCondition(FrameWork);
 		FrameWork = Util(FrameWork);
 		FrameWork = DebugInfo(FrameWork);
@@ -54,8 +55,9 @@ class Game {
 		FrameWork = PolygonComponent(FrameWork);
 		FrameWork = SquareComponent(FrameWork);
 		FrameWork = TriangleComponent(FrameWork);
-		console.log(FrameWork)
+
+		return FrameWork;
 	}
 }
 
-export default Game;
+export default new Game;

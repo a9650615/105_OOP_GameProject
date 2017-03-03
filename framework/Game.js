@@ -601,8 +601,8 @@ export default function (Framework) {
 
             if (!that._isInit) {
             	that.resizeEvent();
-				document.body.appendChild(that._mainContainer);
-                window.addEventListener("resize", that.resizeEvent, false);
+							document.body.appendChild(that._mainContainer);
+              window.addEventListener("resize", that.resizeEvent, false);
             }
 
 			that._tempDraw = self._currentLevel._draw;

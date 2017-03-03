@@ -15,6 +15,7 @@ export default function (Framework) {
         * 
         */
         __construct: function(options){
+            console.log(options);
             this._tmpCanvas = document.createElement('canvas');
             this._tmpContext = this._tmpCanvas.getContext('2d');
             this.id = undefined;
@@ -33,6 +34,7 @@ export default function (Framework) {
             }else if(!Framework.Util.isUndefined(options)){
                 Framework.DebugInfo.Log.error('Sprite 不支援的參數' + options);
             }
+            return Framework;
         },
         initTexture: function()
         {
@@ -180,5 +182,6 @@ export default function (Framework) {
             }
         }
     });
+
     return Framework;
 }

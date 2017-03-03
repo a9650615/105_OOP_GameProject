@@ -1,5 +1,5 @@
 // By Raccoon , undyingmoon
-var Framework = (function (Framework) {
+var Framework = function (Framework) {
     'use strict'
     Framework.exClass = function(){
         // 如果用了new keyword 就拋例外
@@ -57,6 +57,7 @@ var Framework = (function (Framework) {
                 childClass.prototype[i] = props[i];
             }
         }
+        console.log(props)
         return childClass;
     };
 
@@ -122,7 +123,7 @@ var Framework = (function (Framework) {
     };
 
     return Framework;
- })(Framework || {});
+ };
 
  export default Framework;
  
