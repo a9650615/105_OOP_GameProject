@@ -15,7 +15,6 @@ export default function (Framework) {
         * 
         */
         __construct: function(options){
-            console.log(options);
             this._tmpCanvas = document.createElement('canvas');
             this._tmpContext = this._tmpCanvas.getContext('2d');
             this.id = undefined;
