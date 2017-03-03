@@ -171,6 +171,7 @@ export default Framework.Class(Framework.Level , {
 
     keydown:function(e, list){
         Framework.DebugInfo.Log.warning(e.key);
+        this.pratice.keydown(e, list);
         if(e.key === 'Numpad +' || e.key === '=') {
             this.secondHandRotationRate += 0.05;
         }

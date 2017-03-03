@@ -22,14 +22,23 @@ class Pratice {
   }
 
   update () {
-    this.position = {
+    /*this.position = {
       x: this.position.x + 0.5,
       y: this.position.y
     }
     this.rotation += 2;
     this.pic.position = this.position
-    this.pic.rotation = this.rotation
+    this.pic.rotation = this.rotation*/
   }
+
+  keydown (e) {
+      if(e.key === 'Right'){
+        this.pic.rotation += 10;  
+      }
+      if(e.key === 'Left'){
+        this.pic.rotation -= 10;
+      }
+  };
 
   draw(ctx) {
     this.pic.draw(ctx)
