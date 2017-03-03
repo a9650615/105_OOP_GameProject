@@ -30,6 +30,7 @@ export default Framework.Class(Framework.Level , {
         this.pic.position={
             x:100,y:100
         }
+        this.rotation=0;
        
         this.isStop = false;
         this.isPlayed = false;
@@ -124,7 +125,10 @@ export default Framework.Class(Framework.Level , {
     update: function() {
         var game = this;
         this.rootScene.update(); 
-		
+		this.position.x ++;
+        this.rotation ++;
+        this.pic.position=this.position;
+        this.pic.rotation=this.rotation;
         //以下為當被攻擊時會停下來, 並且當被攻擊的動畫播放完時便繼續跑的Scenario
         if(this.firen.collide(this.freeze) && !this.isStop && !this.isPlayed) {
             this.isStop = true;
