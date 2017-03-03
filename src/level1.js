@@ -1,27 +1,9 @@
 import Framework from './framework_es6';
 import Character from './character';
+import define from './define';
+import Pratice from './pratice';
 
 let imgPath = 'game_sample/image/';
-var define ={}, mainPath = 'game_sample/';
-Object.defineProperties(define, {
-    'mainPath': {
-        value: mainPath,
-        writable: false
-    },
-    'jsPath': {
-        value: mainPath + 'js/',
-        writable: false
-    },
-    'musicPath': {
-        value: mainPath + 'music/',
-        writable: false
-    },
-    'imagePath': {
-        value: mainPath + 'image/',
-        writable: false
-    }
-
-});
 
 export default Framework.Class(Framework.Level , {
 	load: function(){
@@ -115,6 +97,11 @@ export default Framework.Class(Framework.Level , {
 			y: 100
 		}
 		this.rotation = 0;
+
+        this.pratice = new Pratice();
+        this.pratice.load();
+        this.rootScene.attach(this.pratice.pic);
+
 	},
 
     initialize: function() {
@@ -124,6 +111,9 @@ export default Framework.Class(Framework.Level , {
 
     update: function() {
         var game = this;
+        // pratice 更新
+        //console.log(this.pratice)
+        this.pratice.update();                          
         this.rootScene.update(); 
 		this.position.x ++;
         this.rotation ++;
@@ -157,7 +147,7 @@ export default Framework.Class(Framework.Level , {
         //以上為當被攻擊時會停下來, 並且當被撞到的動畫播放完時便繼續跑的Scenario
 
 
-        this.isPlayHit = this.firen.collide(this.freeze)                               
+        this.isPlayHit = this.firen.collide(this.freeze)     
     },
 
     draw:function(parentCtx){
@@ -170,8 +160,7 @@ export default Framework.Class(Framework.Level , {
         parentCtx.textBaseline = 'top';
         parentCtx.textAlign = 'center';
         parentCtx.fillText('Click Me', this.rectPosition.x + 130, this.rectPosition.y, 260);
-        this.pic.draw(); 
-        
+        this.pic.draw();
     },
 
     keydown:function(e, list){
