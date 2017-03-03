@@ -1,5 +1,6 @@
 import Framework from './framework_es6';
 import Character from './character';
+import gameMap from './gameMap';
 
 let imgPath = 'game_sample/image/';
 var define ={}, mainPath = 'game_sample/';
@@ -26,6 +27,11 @@ Object.defineProperties(define, {
 export default Framework.Class(Framework.Level , {
 	load: function(){
 	    var characterPosition;
+        //加入地圖
+        this.gameMap = new gameMap();
+        this.gameMap.load();
+        this.rootScene.attach(this.gameMap)
+
         this.pic=new Framework.Sprite(imgPath+'169.bmp');    
         this.pic.position={
             x:100,y:100
