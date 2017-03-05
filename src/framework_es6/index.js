@@ -60,4 +60,29 @@ class Game {
 	}
 }
 
+export let ES6Trans =  class Es6Trans {
+	// 將 class 轉換成 Object
+	transClass() {
+		let props = {};
+		let obj;
+
+		Object.getOwnPropertyNames(Object.getPrototypeOf(this))
+			.forEach((val) => {
+				props[val] = this[val];
+			})
+			
+		return props;
+	}
+	// 繪製畫面
+	draw(parentCtx) { 
+      //this.rootScene.draw();一定要在第一行
+      this.rootScene.draw(parentCtx);
+  }
+
+	update() {
+		this.rootScene.update();
+	}
+}
+
+Game.ES6Trans = ES6Trans;
 export default new Game;

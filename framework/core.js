@@ -44,7 +44,7 @@ var Framework = function (Framework) {
             recursionRunConstruction(childClass.uber , this , arguments);
             // 
             try{
-                if(childClass.prototype.hasOwnProperty("__construct")){
+               if(childClass.prototype.hasOwnProperty("__construct")){
                     childClass.prototype.__construct.apply(this , arguments);
                 }
             }catch(e){}
@@ -57,7 +57,6 @@ var Framework = function (Framework) {
                 childClass.prototype[i] = props[i];
             }
         }
-        console.log(props)
         return childClass;
     };
 
