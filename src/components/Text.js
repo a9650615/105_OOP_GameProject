@@ -1,14 +1,12 @@
-import Element from './Element';
+import GameObject from './GameObject';
 
-export default class Text extends Element {
-  constructor(props) {
+export default class Text extends GameObject {
+  constructor(props = {}) {
     super(props);
-  }
-
-  initialize() {
     this.text = '';
     this.style = {};
     this.position = { x: 20, y: 20};
+    this.textWidth = undefined;
   }
   
   setStyle(option) {
@@ -21,17 +19,25 @@ export default class Text extends Element {
 
   setText(text) {
     this.text = text;
+    this.textWidth = this._tmpContent.measureText(text).width * 2.5;
+    this._tmpCanvas.resize(this.textWidth);
 
     return this;
   }
 
   draw(ctx) {
-    ctx.font = this.style.font || '25px Arial';
-    ctx.textAlign = this.style.textAlign || 'center';
-    ctx.fillStyle = this.style.color || 'black';
-    ctx.fillText(this.text, this.position.x, this.position.y);
+    let painter = ctx || Framework.Game._context;
+    let content = this._tmpContent;
+    content.textBaseline = 'top';
+    content.font = this.style.font || '25px Arial';
+    content.textAlign = this.style.textAlign || 'left';
+    content.fillStyle = this.style.color || 'black';
+    content.fillText(this.text, 0, 0);
+    painter.drawImage(this._tmpCanvas.element(), this.position.x, this.position.y);
   }
 
-  update() {
+  getWidth() {
+    return this.textWidth;
   }
+
 }

@@ -27,14 +27,15 @@ class menu extends ES6Trans {
 
   load(){   
     console.log('load')
-    this.text = new Text(this).setText('666');
     this.botton = new Botton(this).set(
       {
-        text: '5487',
+        text: '這個字體渲染真的沒問題asdasd嗎6666',
         x: 100,
         y: 100
       }
     );
+    this.text = new Text(this).setText('666');
+    console.log(this.botton)
   }
   
   initialize() {
@@ -44,13 +45,12 @@ class menu extends ES6Trans {
   update(){
     this.rootScene.update(); 
     this.text.update();
-    this.botton.update();
   }
 
   draw(parentCtx) { 
     //this.rootScene.draw();一定要在第一行
     this.rootScene.draw(parentCtx);
-
+    this.text.draw(parentCtx);
   }
 
   mouseup(e) {
@@ -62,7 +62,7 @@ class menu extends ES6Trans {
   }
 
   click(e){      
-    this.botton.click(e);
+    
   }
 
   mousemove(e) {        
