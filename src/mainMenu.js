@@ -1,11 +1,14 @@
 import Framework, {ES6Trans} from './framework_es6';
 import {Resource} from './constant';
+import DirLoader from './modules/DirLoader';
 import Text from './components/Text';
 import Botton from './components/Botton';
 
 class menu extends ES6Trans {
   constructor(props) {
     super(props);
+    this.songMenu = [];
+    this.menuLoaded = false;
   }
  //初始化loadingProgress需要用到的圖片
   initializeProgressResource() {
@@ -25,17 +28,30 @@ class menu extends ES6Trans {
     ctx.fillText(Math.round(requestInfo.percent) + '%' , ctx.canvas.width / 2 , ctx.canvas.height / 2 + 300);
   }
 
-  load(){   
-    console.log('load')
-    this.botton = new Botton(this).set(
-      {
-        text: '這個字體渲染真的沒問題asdasd嗎6666',
-        x: 100,
-        y: 100
-      }
-    );
+  load(){
+    new DirLoader().getBeatMapFile().then((beatsMap) => {
+      beatsMap.fileArray.forEach((val, i) => {
+        let yTop = i * 20;
+        
+        songMenu.push(new Botton(this).set(
+          {
+            text: val,
+            x: 100,
+            y: i
+          }
+        ))
+
+      })
+    });
+    
+    new Botton(this).set(
+        {
+          text: 'val',
+          x: 500,
+          y: 100
+        }
+      );
     this.text = new Text(this).setText('666');
-    console.log(this.botton)
   }
   
   initialize() {

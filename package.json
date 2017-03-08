@@ -17,7 +17,7 @@
     "eslint-plugin-import": "^2.2.0"
   },
   "scripts": {
-    "start": "electron -r babel-register . --disable-gpu"
+    "start": "electron -r babel-register ."
   },
   "repository": {
     "type": "git",
