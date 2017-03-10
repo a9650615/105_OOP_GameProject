@@ -60,8 +60,7 @@ class menu extends ES6Trans {
   
 
   update(){
-    this.rootScene.update(); 
-    this.text.update();
+    this.rootScene.update();
   }
 
   render(parentCtx) {
