@@ -4,28 +4,30 @@ import Text from './Text';
 export default class Botton extends GameObject {
   constructor(prop) {
 		super(prop);
-		this.botton = {
+		this.state = {
 			textSize: 10,
 			width: 20,
 			height: 15,
 			x: 0,
 			y: 0,
 			text: '按鈕',
-			textSize: 15
+			textColor: null,
+			textSize: 25,
+			bottonHeight: 0,
+			bottonWidth: 0,
+			background: '#962565'
 		};
 		
 		this.text = new Text();
 	}
 	
 	set(option = {}) {
-		this.botton = Object.assign(this.botton, option);
-		this.text.setStyle({
-			x: this.botton.x,
-			y: this.botton.y,
-			color: 'white'
-		}).setText(this.botton.text)
-		this.bottonWidth = this.text.getWidth();
-		this.bottonHeight = this.botton.textSize + 10;
+		this.text.setStyle(Object.assign(this.state, option)).setText(option.text);
+
+		this.setState(Object.assign(option, {
+			bottonWidth: this.text.getWidth(),
+			bottonHeight: this.text.getHeight()
+		}));
 		this.load(this.super);
 
 		return this;
@@ -37,10 +39,10 @@ export default class Botton extends GameObject {
 
 	_checkMouseIsIn(e) {
 		this.previousTouch = { x: e.x, y: e.y };
-		if (this.previousTouch.x > this.botton.x && 
-				this.previousTouch.x < this.botton.x + this.bottonWidth && 
-				this.previousTouch.y > this.botton.y && 
-				this.previousTouch.y < this.botton.y + this.bottonHeight ) 
+		if (this.previousTouch.x > this.state.x && 
+				this.previousTouch.x < this.state.x + this.bottonWidth && 
+				this.previousTouch.y > this.state.y && 
+				this.previousTouch.y < this.state.y + this.bottonHeight ) 
 			return true;
 	}
 	
@@ -48,10 +50,10 @@ export default class Botton extends GameObject {
 		return this._checkMouseIsIn(e);
 	}
 
-	draw(ctx) {
-		ctx.fillStyle="#962565";
-		ctx.fillRect(this.botton.x, this.botton.y, this.bottonWidth, this.bottonHeight);
-		this.text.draw(ctx);
+	render(ctx) {
+		ctx.fillStyle = this.state.background;
+		ctx.fillRect(this.state.x, this.state.y, this.state.bottonWidth, this.state.bottonHeight);
+		this.text.render(ctx);
 	}
 
 	// mousemove(e) {

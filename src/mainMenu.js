@@ -7,7 +7,9 @@ import Botton from './components/Botton';
 class menu extends ES6Trans {
   initialize() {
     this.state = {
-      loaded: false
+      loaded: false,
+      positionY: 1,
+      positionX: 100
     };
 
     this.songMenu = [];
@@ -49,11 +51,12 @@ class menu extends ES6Trans {
       })
     });
     
-    new Botton(this).set(
+    this.val = new Botton(this).set(
         {
           text: 'val',
-          x: 500,
-          y: 100
+          x: 600,
+          y: 100,
+          textColor: 'white'
         }
       );
   }
@@ -61,9 +64,25 @@ class menu extends ES6Trans {
 
   update(){
     this.rootScene.update();
+    if (this.state.positionX < 1270)
+    if (this.state.positionY < 700)
+    this.setState({
+      positionY: this.state.positionY+15
+    });
+    else 
+    this.setState({
+      positionY: 1,
+      positionX: this.state.positionX + 50
+    });
   }
 
   render(parentCtx) {
+    this.val.set({
+      text: 'val',
+      y: this.state.positionY,
+      x: this.state.positionX,
+      background: `rgb(${this.state.positionX%255},${this.state.positionY%255},100)`
+    });
   }
 
   mouseup(e) {
