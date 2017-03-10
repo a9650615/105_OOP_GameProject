@@ -66,7 +66,7 @@ class ObjectCompare {
     param_objB = (typeof objB[param] === "undefined") ? false : objB[param];
 
     switch(typeof objA[param]){
-      case "object": return (compare_objects(param_objA, param_objB));
+      case "object": return (this.compare(param_objA, param_objB));
       case "function": return (param_objA.toString() === param_objB.toString());
       default: return (param_objA.toString() === param_objB.toString());
     }
@@ -115,7 +115,8 @@ export let ES6Trans =  class Es6Trans {
 	draw(parentCtx) { 
       //this.rootScene.draw();一定要在第一行
 			this.ctx = parentCtx;
-      this.rootScene.draw(parentCtx);
+      if (this.rootScene)
+			this.rootScene.draw(parentCtx);
 			this.render(parentCtx);
   }
 
@@ -124,16 +125,18 @@ export let ES6Trans =  class Es6Trans {
 	}
 
 	/**
-   * 更改狀態 並判斷更新畫面
+   * 更改狀態 並判斷更新畫面 (判斷未完成)
    * @param {Object} state 
 	 * @return {Boolen} true
    */
   setState(state = {}) {
+		let temp = Object.assign(this.state, state);
+
 		let res = new ObjectCompare().compare(
       this.state,
-			state
+			temp
     );
-
+		
 		if (res)
 			this.state = Object.assign(this.state, state);
 

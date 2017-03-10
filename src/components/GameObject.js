@@ -45,7 +45,7 @@ class GameObject extends ES6Trans{
     
   }
 
-  draw(ctx) { 
+  render(ctx) { 
     //this.rootScene.draw();一定要在第一行
     //this.rootScene.draw(parentCtx);
   }
