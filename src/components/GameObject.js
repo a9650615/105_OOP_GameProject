@@ -7,6 +7,10 @@ class GameObject extends ES6Trans{
     this._tmpCanvas = new Canvas();
     this._tmpContent = this._tmpCanvas.ctx();
     
+    this.prop = prop;
+    this.type = 'GameObject';   
+    this.pushSelfToLevel();
+
     this._initMouseEvent();
     this._initTouchEvent();
     prop.rootScene.attach(this);
