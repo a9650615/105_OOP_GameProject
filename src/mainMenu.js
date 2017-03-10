@@ -5,17 +5,18 @@ import Text from './components/Text';
 import Botton from './components/Botton';
 
 class menu extends ES6Trans {
-  constructor(props) {
-    super(props);
+  initialize() {
+    this.state = {
+      loaded: false
+    };
+
     this.songMenu = [];
-    this.menuLoaded = false;
   }
+
  //初始化loadingProgress需要用到的圖片
   initializeProgressResource() {
-    console.log('init prog')
-      this.loading = new Framework.Sprite(Resource.image + 'loading.jpg');
-      this.loading.position = {x: Framework.Game.getCanvasWidth() / 2 , y: Framework.Game.getCanvasHeight() / 2};
-
+    this.loading = new Framework.Sprite(Resource.image + 'loading.jpg');
+    this.loading.position = {x: Framework.Game.getCanvasWidth() / 2 , y: Framework.Game.getCanvasHeight() / 2};
       //為了或得到this.loading這個Sprite的絕對位置, 故需要先計算一次(在Game Loop執行時, 則會自動計算, 但因為loadingProgress只支援draw故需要自行計算)                  
   }
 
@@ -29,18 +30,22 @@ class menu extends ES6Trans {
   }
 
   load(){
+    let t = this;
     new DirLoader().getBeatMapFile().then((beatsMap) => {
       beatsMap.fileArray.forEach((val, i) => {
-        let yTop = i * 20;
-        
-        songMenu.push(new Botton(this).set(
+        let yTop = i * 40;
+
+        t.songMenu.push(new Botton(this).set(
           {
             text: val,
             x: 100,
-            y: i
+            y: yTop
           }
         ))
-
+        
+        t.setState({
+          loaded: true
+        });
       })
     });
     
@@ -51,22 +56,14 @@ class menu extends ES6Trans {
           y: 100
         }
       );
-    this.text = new Text(this).setText('666');
   }
   
-  initialize() {
-    console.log('init')
-  }
 
   update(){
-    this.rootScene.update(); 
-    this.text.update();
+    this.rootScene.update();
   }
 
-  draw(parentCtx) { 
-    //this.rootScene.draw();一定要在第一行
-    this.rootScene.draw(parentCtx);
-    this.text.draw(parentCtx);
+  render(parentCtx) {
   }
 
   mouseup(e) {
@@ -103,5 +100,6 @@ class menu extends ES6Trans {
 
   }
 }
+
 
 export default Framework.exClass(Framework.GameMainMenu , new menu().transClass());

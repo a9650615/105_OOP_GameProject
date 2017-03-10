@@ -60,6 +60,39 @@ class Game {
 	}
 }
 
+class ObjectCompare {
+  _compareInside(objA, objB, param) {
+    var param_objA = objA[param],
+    param_objB = (typeof objB[param] === "undefined") ? false : objB[param];
+
+    switch(typeof objA[param]){
+      case "object": return (compare_objects(param_objA, param_objB));
+      case "function": return (param_objA.toString() === param_objB.toString());
+      default: return (param_objA.toString() === param_objB.toString());
+    }
+  }
+
+  compare(obj1, obj2) {
+    let parameter_name;
+  
+    if (!obj1 || !obj2) return true; /* obj1 and obj2 are not null */
+  
+    for(parameter_name in obj1){
+      if(typeof obj2[parameter_name] === "undefined" || !this._compareInside(obj1, obj2, parameter_name)){
+        return false;
+      }
+    }
+  
+    for(parameter_name in obj2){
+      if(typeof obj1[parameter_name] === "undefined" || !this._compareInside(obj1, obj2, parameter_name)){
+        return false;
+      }
+    }
+
+    return true;
+  }
+}
+
 export let ES6Trans =  class Es6Trans {
 	// 將 class 轉換成 Object
 	transClass() {
@@ -70,18 +103,44 @@ export let ES6Trans =  class Es6Trans {
 			.forEach((val) => {
 				props[val] = this[val];
 			})
-			
+
+		props['state'] = Object();
+		props['setState'] = this.setState;
+		props['draw'] = this.draw;
+		props['update'] = this.update;
+
 		return props;
 	}
 	// 繪製畫面
 	draw(parentCtx) { 
       //this.rootScene.draw();一定要在第一行
+			this.ctx = parentCtx;
       this.rootScene.draw(parentCtx);
+			this.render(parentCtx);
   }
 
 	update() {
 		this.rootScene.update();
 	}
+
+	/**
+   * 更改狀態 並判斷更新畫面
+   * @param {Object} state 
+	 * @return {Boolen} true
+   */
+  setState(state = {}) {
+		let res = new ObjectCompare().compare(
+      this.state,
+			state
+    );
+
+		if (res)
+			this.state = Object.assign(this.state, state);
+
+		if (this.ctx) 
+			this.draw(this.ctx);
+		return res;
+  }
 }
 
 Game.ES6Trans = ES6Trans;
