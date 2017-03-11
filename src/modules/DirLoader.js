@@ -26,7 +26,7 @@ export default class DirLoader {
       this.readFolder(Resource.songs)
         .then((folders) => {
           let filtered = folders.filter((folder) => {
-            let Path = `${Resource.songs}${folder}/`;
+            let Path = `${Resource.songs}${folder}`;
             return FileSystem.statSync(Path).isDirectory();
           });
           filtered.forEach((folder, i) => {

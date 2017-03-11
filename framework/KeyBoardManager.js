@@ -1,7 +1,6 @@
-export default function (Framework) {
+export function keyBoardManager(Framework) {
 	'use strict'
-	Framework.KeyBoardManager = (function(){
-		var _timeountID = 0,
+	var _timeountID = 0,
 			_clearHistoryTime = 1000,
 			_keydownList = {},
 			_keypressHistory = [],
@@ -14,12 +13,13 @@ export default function (Framework) {
 
 		var keydownEvent = function(e) {
 			e.preventDefault();
-			var keyCode = _keyCodeToChar[e.which || e.keyCode], i;
+			var keyId = e.which || e.keyCode;
+			var keyCode = _keyCodeToChar[keyId], i;
 			if(!Framework.Util.isUndefined(_keydownList[keyCode])) {
 				var ele = _keydownList[keyCode];
 				ele.lastTimeDiff = e.timeStamp - ele.firstTimeStamp;
 			} else {
-				_keydownList[keyCode] = { key:keyCode, firstTimeStamp: e.timeStamp, ctrlKey: e.ctrlKey,  shiftKey: e.shiftKey, altKey: e.altKey, lastTimeDiff: 0 };
+				_keydownList[keyCode] = {keyCode: keyId, key:keyCode, firstTimeStamp: e.timeStamp, ctrlKey: e.ctrlKey,  shiftKey: e.shiftKey, altKey: e.altKey, lastTimeDiff: 0 };
 				userKeydownEvent.call(_subject, _keydownList[keyCode], _keydownList, e);
 			}
 
@@ -104,6 +104,11 @@ export default function (Framework) {
 
 		KeyBoardManagerInstance = new KeyBoardManagerClass();
 		return KeyBoardManagerInstance;
-	})();
+};
+
+export default function (Framework) {
+	'use strict'
+	Framework.KeyBoardManager = (keyBoardManager)(Framework);
 	return Framework;
 };
+

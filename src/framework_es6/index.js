@@ -113,11 +113,13 @@ export let ES6Trans =  class Es6Trans {
 	}
 	// 繪製畫面
 	draw(parentCtx) { 
-      //this.rootScene.draw();一定要在第一行
-			this.ctx = parentCtx;
-      if (this.rootScene)
+		//this.rootScene.draw();一定要在第一行
+		this.ctx = parentCtx;
+		let canvas = parentCtx.canvas;
+		parentCtx.clearRect(0, 0, canvas.width, canvas.height);
+		if (this.rootScene)
 			this.rootScene.draw(parentCtx);
-			this.render(parentCtx);
+		this.render(parentCtx);
   }
 
 	update() {

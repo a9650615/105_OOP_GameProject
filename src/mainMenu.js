@@ -3,6 +3,7 @@ import {Resource} from './constant';
 import DirLoader from './modules/DirLoader';
 import Text from './components/Text';
 import Botton from './components/Botton';
+import Image from './components/Image';
 
 class menu extends ES6Trans {
   initialize() {
@@ -59,15 +60,17 @@ class menu extends ES6Trans {
           textColor: 'white'
         }
       );
+
+    this.background = new Image(this);
   }
   
 
   update(){
     this.rootScene.update();
-    if (this.state.positionX < 1270)
-    if (this.state.positionY < 700)
+    if (this.state.positionX < 700)
+    if (this.state.positionY < 500)
     this.setState({
-      positionY: this.state.positionY+15
+      positionY: this.state.positionY+20
     });
     else 
     this.setState({
@@ -105,10 +108,22 @@ class menu extends ES6Trans {
 
   }
 
+  keydown(e) {
+    console.log(e.key)
+    if (e.key == "Left")
+      this.setState({
+        positionX: this.state.positionX - 30
+      });
+    if (e.key == "Right")
+      this.setState({
+        positionX: this.state.positionX + 30
+      });
+  }
+
   touchstart(e) {
-      //為了要讓Mouse和Touch都有一樣的事件
-      //又要減少Duplicated code, 故在Touch事件被觸發時, 去Trigger Mouse事件
-      this.mousedown({ x: e.touches[0].clientX, y: e.touches[0].clientY });
+    //為了要讓Mouse和Touch都有一樣的事件
+    //又要減少Duplicated code, 故在Touch事件被觸發時, 去Trigger Mouse事件
+    this.mousedown({ x: e.touches[0].clientX, y: e.touches[0].clientY });
   }
 
   touchend(e) {

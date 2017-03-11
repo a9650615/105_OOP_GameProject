@@ -706,7 +706,7 @@ export default function (Framework) {
 			};
 
 			var drawFunc = function() {
-				if (now >= nextGameDrawTick) {					
+				if (now >= nextGameDrawTick) {	
 					that.draw(that._context);
 					that._drawfpsAnalysis.update();
 					if (that.fpsContext) {

@@ -37,6 +37,11 @@ class GameObject extends ES6Trans{
     event.setTouchstartEvent(this.touchstart);
   }
 
+  //一般不直接使用它, 背景自動繪製
+  draw(ctx) {
+    this.render(ctx);
+  }
+
   load() {
 
   }
