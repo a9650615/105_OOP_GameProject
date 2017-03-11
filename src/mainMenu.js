@@ -108,8 +108,7 @@ class menu extends ES6Trans {
 
   }
 
-  keydown(e) {
-    console.log(e.key)
+  onkeydown(e) {
     if (e.key == "Left")
       this.setState({
         positionX: this.state.positionX - 30
@@ -117,6 +116,14 @@ class menu extends ES6Trans {
     if (e.key == "Right")
       this.setState({
         positionX: this.state.positionX + 30
+      });
+    if (e.key == "Up")
+      this.setState({
+        positionY: this.state.positionY - 30
+      });
+    if (e.key == "Down")
+      this.setState({
+        positionY: this.state.positionY + 30
       });
   }
 

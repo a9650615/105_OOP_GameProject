@@ -103,14 +103,49 @@ export let ES6Trans =  class Es6Trans {
 			.forEach((val) => {
 				props[val] = this[val];
 			})
-
+			
 		props['state'] = Object();
 		props['setState'] = this.setState;
 		props['draw'] = this.draw;
 		props['update'] = this.update;
-
+		props.keydown = this.keydown;
+		props.keyup = this.keyup;
+		props._keypressLoop = this._keypressLoop;
+		props._keydownList = [];
+		props.isKeydown = false;
 		return props;
 	}
+
+	keydown(e) {
+		this._keydownList.push(e);
+		this.onkeydown(e, this._keydownList);
+		if (!this.isKeydown)
+			setTimeout((e) => this._keypressLoop(e), 1500);
+		this.isKeydown = true;
+	}
+
+	_keypressLoop(e) {
+		if (this.isKeydown) {
+			this.onkeydown(this._keydownList[this._keydownList.length - 1], this._keydownList);
+			setTimeout((e) => this._keypressLoop(e), 100);
+		}
+	}
+
+	keyup(e) {
+		this._keydownList = this._keydownList.filter((val) => {
+			if (e.keyCode === val.keyCode)
+				return false;
+			return true;
+		})
+
+		if (this._keydownList.length === 0)
+			this.isKeydown = false;
+	}
+	
+	onkeydown(e) {
+		//請勿複寫 keydown keyup 否則 onkeydown 會死去
+	}
+
 	// 繪製畫面
 	draw(parentCtx) { 
 		//this.rootScene.draw();一定要在第一行
