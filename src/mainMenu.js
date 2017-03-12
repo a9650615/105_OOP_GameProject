@@ -39,12 +39,15 @@ class menu extends ES6Trans {
         let yTop = i * 40;
 
         t.songMenu.push(new Botton(this).set(
-          {
-            text: val,
-            x: 100,
-            y: yTop
-          }
-        ))
+            {
+              text: val,
+              x: 100,
+              y: yTop
+            }
+          ).setEvent('click', (e) => {
+            console.log('按到 Button' + i)
+          })
+        )
         
         t.setState({
           loaded: true
@@ -88,26 +91,6 @@ class menu extends ES6Trans {
     });
   }
 
-  mouseup(e) {
-
-  }
-
-  mousedown(e) {
-      
-  }
-
-  click(e){      
-    
-  }
-
-  mousemove(e) {        
-
-  }
-
-  mouseup(e) {
-
-  }
-
   onkeydown(e) {
     if (e.key == "Left")
       this.setState({
@@ -125,20 +108,6 @@ class menu extends ES6Trans {
       this.setState({
         positionY: this.state.positionY + 30
       });
-  }
-
-  touchstart(e) {
-    //為了要讓Mouse和Touch都有一樣的事件
-    //又要減少Duplicated code, 故在Touch事件被觸發時, 去Trigger Mouse事件
-    this.mousedown({ x: e.touches[0].clientX, y: e.touches[0].clientY });
-  }
-
-  touchend(e) {
-
-  }
-  
-  touchmove(e) {
-
   }
 }
 

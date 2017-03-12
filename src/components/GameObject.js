@@ -17,15 +17,33 @@ class GameObject extends ES6Trans{
     this.load();
   }
 
+  /**
+   * 檢查狀態是成立, 成立及執行底下 function
+   * @param {boolen} bool 
+   * @param {function} func 
+   */
+  _callEventFunction(bool = false, func) {
+    if (bool)
+      func.call();
+  }
+
   _initMouseEvent() {
     let event = new mouseManager(Framework);
     // event.setSubject(this);
-    event.setClickEvent(this.click.bind(this));
+    event.setClickEvent((e) => {
+      this._callEventFunction(this.checkClick(e), this.click.bind(this, e));
+    });
     // event.setContextmenuEvent
     if (typeof this.mousemove === "function")
-      event.setMouseMoveEvent(this.mousemove.bind(this));
-    event.setMouseUpEvent(this.mouseup.bind(this));
-    event.setMousedownEvent(this.mousedown.bind(this));
+      event.setMouseMoveEvent((e) => {
+        this._callEventFunction(this.checkMouseMove(e), this.mousemove.bind(this, e));
+      });
+    event.setMouseUpEvent((e) => {
+        this._callEventFunction(this.checkMouseUp(e), this.mouseup.bind(this, e));
+      });
+    event.setMousedownEvent((e) => {
+      this._callEventFunction(this.checkMouseDown(e), this.mousedown.bind(this, e));
+    });
   }
 
   _initTouchEvent() {
@@ -35,6 +53,14 @@ class GameObject extends ES6Trans{
     event.setTouchendEvent(this.touchend);
     event.setTouchmoveEvent(this.touchmove);
     event.setTouchstartEvent(this.touchstart);
+  }
+  /**
+   * 提供外部調用 Event function
+   *  @param {string} Event type
+   *  @param {function} Custom function
+   */
+  setEvent(eventType, func) {
+    this[eventType] = func;
   }
 
   //一般不直接使用它, 背景自動繪製
@@ -55,23 +81,38 @@ class GameObject extends ES6Trans{
     //this.rootScene.draw(parentCtx);
   }
 
-  mouseup(e) {
+  checkMouseUp(e) {
+  }
 
+  checkMouseDown(e) {
+  }
+
+  checkClick(e) {
+  }
+
+  checkMouseMove(e) {
+  }
+
+  checkTouchStart(e) {
+  }
+
+  checkTouchEnd(e) {
+  }
+
+  mouseup(e) {
   }
 
   mousedown(e) {
-      
   }
 
   click(e){
   }
 
-  // mousemove(e) {        
+  mousemove(e) {        
 
-  // }
+  }
 
   mouseup(e) {
-
   }
 
   touchstart(e) {
@@ -81,11 +122,9 @@ class GameObject extends ES6Trans{
   }
 
   touchend(e) {
-
   }
   
   touchmove(e) {
-
   }
 }
 

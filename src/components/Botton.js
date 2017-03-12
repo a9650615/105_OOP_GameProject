@@ -40,13 +40,15 @@ export default class Botton extends GameObject {
 	_checkMouseIsIn(e) {
 		this.previousTouch = { x: e.x, y: e.y };
 		if (this.previousTouch.x > this.state.x && 
-				this.previousTouch.x < this.state.x + this.bottonWidth && 
+				this.previousTouch.x < this.state.x + this.state.bottonWidth && 
 				this.previousTouch.y > this.state.y && 
-				this.previousTouch.y < this.state.y + this.bottonHeight ) 
+				this.previousTouch.y < this.state.y + this.state.bottonHeight ) 
 			return true;
+			
+		return false;
 	}
 	
-	click(e) {
+	checkClick(e) {
 		return this._checkMouseIsIn(e);
 	}
 
