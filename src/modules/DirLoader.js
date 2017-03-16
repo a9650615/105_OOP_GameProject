@@ -36,8 +36,12 @@ export default class DirLoader {
               .then((files) => {
                 files.forEach((file) => {
                   if (file.match(fileReg)) {
+                    let files = {
+                      path: `${Path}${file}`,
+                      name: `${file}`
+                    };
                     beatsMap.push(file);
-                    fileArray.push(file);
+                    fileArray.push(files);
                   }
                 })
                 fileDirArray[folder] = beatsMap;

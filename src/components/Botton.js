@@ -13,9 +13,9 @@ export default class Botton extends GameObject {
 			text: '按鈕',
 			textColor: null,
 			textSize: 25,
-			bottonHeight: 0,
-			bottonWidth: 0,
-			background: '#962565'
+			buttonHeight: 0,
+			buttonWidth: 0,
+			background: null
 		};
 		
 		this.text = new Text();
@@ -25,8 +25,8 @@ export default class Botton extends GameObject {
 		this.text.setStyle(Object.assign(this.state, option)).setText(option.text);
 
 		this.setState(Object.assign(option, {
-			bottonWidth: this.text.getWidth(),
-			bottonHeight: this.text.getHeight()
+			buttonWidth: this.text.getWidth(),
+			buttonHeight: this.text.getHeight()
 		}));
 		this.load(this.super);
 
@@ -40,9 +40,9 @@ export default class Botton extends GameObject {
 	_checkMouseIsIn(e) {
 		this.previousTouch = { x: e.x, y: e.y };
 		if (this.previousTouch.x > this.state.x && 
-				this.previousTouch.x < this.state.x + this.state.bottonWidth && 
+				this.previousTouch.x < this.state.x + this.state.buttonWidth && 
 				this.previousTouch.y > this.state.y && 
-				this.previousTouch.y < this.state.y + this.state.bottonHeight ) 
+				this.previousTouch.y < this.state.y + this.state.buttonHeight ) 
 			return true;
 			
 		return false;
@@ -53,8 +53,12 @@ export default class Botton extends GameObject {
 	}
 
 	render(ctx) {
-		ctx.fillStyle = this.state.background;
-		ctx.fillRect(this.state.x, this.state.y, this.state.bottonWidth, this.state.bottonHeight);
+		if(this.state.background) {
+			ctx.save();
+			ctx.fillStyle = this.state.background;
+			ctx.fillRect(this.state.x, this.state.y, this.state.buttonWidth, this.state.buttonHeight);
+			ctx.restore();
+		}
 		this.text.render(ctx);
 	}
 

@@ -61,6 +61,7 @@ class GameObject extends ES6Trans{
    */
   setEvent(eventType, func) {
     this[eventType] = func;
+    return this;
   }
 
   //一般不直接使用它, 背景自動繪製

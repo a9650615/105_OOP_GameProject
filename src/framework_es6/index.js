@@ -96,7 +96,7 @@ class ObjectCompare {
 export let ES6Trans =  class Es6Trans {
 	// 將 class 轉換成 Object
 	transClass() {
-		let props = {};
+		let props = new Object();
 		let obj;
 
 		Object.getOwnPropertyNames(Object.getPrototypeOf(this))
@@ -105,6 +105,7 @@ export let ES6Trans =  class Es6Trans {
 			})
 			
 		props['state'] = Object();
+		props['component'] = Object();
 		props['setState'] = this.setState;
 		props['draw'] = this.draw;
 		props['update'] = this.update;
@@ -152,9 +153,9 @@ export let ES6Trans =  class Es6Trans {
 		this.ctx = parentCtx;
 		let canvas = parentCtx.canvas;
 		parentCtx.clearRect(0, 0, canvas.width, canvas.height);
+		this.render(parentCtx);
 		if (this.rootScene)
 			this.rootScene.draw(parentCtx);
-		this.render(parentCtx);
   }
 
 	update() {
@@ -176,7 +177,7 @@ export let ES6Trans =  class Es6Trans {
 		
 		if (res)
 			this.state = Object.assign(this.state, state);
-
+			
 		if (this.ctx) 
 			this.draw(this.ctx);
 		return res;
