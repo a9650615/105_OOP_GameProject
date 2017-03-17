@@ -631,6 +631,7 @@ export default function (Framework) {
 				self.run();
 				self._isRun = false;
 				self.load();
+				//console.log(Framework.ResourceManager.getRequestCount() +'==='+  Framework.ResourceManager.getResponseCount())
 				if (Framework.ResourceManager.getRequestCount() ===  Framework.ResourceManager.getResponseCount()) {
 					runFunction();
 				}

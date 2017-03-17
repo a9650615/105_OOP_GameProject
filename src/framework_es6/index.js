@@ -107,6 +107,7 @@ export let ES6Trans =  class Es6Trans {
 		props['state'] = Object();
 		props['component'] = Object();
 		props['setState'] = this.setState;
+		props['forceUpdate'] = this.forceUpdate;
 		props['draw'] = this.draw;
 		props['update'] = this.update;
 		props.keydown = this.keydown;
@@ -163,6 +164,16 @@ export let ES6Trans =  class Es6Trans {
 	}
 
 	/**
+   * 強制更新畫面狀態
+   * @param {null}
+	 * @return {null}
+   */
+	forceUpdate() {
+		if (this.ctx) 
+			this.draw(this.ctx);
+	}
+
+	/**
    * 更改狀態 並判斷更新畫面 (判斷未完成)
    * @param {Object} state 
 	 * @return {Boolen} true
@@ -175,11 +186,12 @@ export let ES6Trans =  class Es6Trans {
 			temp
     );
 		
-		if (res)
+		if (res) {
 			this.state = Object.assign(this.state, state);
 			
-		if (this.ctx) 
-			this.draw(this.ctx);
+			if (this.ctx) 
+				this.draw(this.ctx);
+		}
 		return res;
   }
 }
