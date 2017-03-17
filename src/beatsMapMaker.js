@@ -10,8 +10,6 @@ class beatsMapMaker extends ES6Trans {
     this.state = {
       firstTop: 20,
       time: 0,
-      timeleftbeat: 0,
-      timerightbeat: 0,
       play: false,
       testOffset: 10,
       testX: 200
@@ -67,7 +65,7 @@ class beatsMapMaker extends ES6Trans {
 
     new Botton(this).set(
         {
-          text: "往前 10 ms",
+          text: "往前 10 秒",
           x: 120,
           y: this.state.firstTop,
           textColor: 'black'
@@ -80,8 +78,8 @@ class beatsMapMaker extends ES6Trans {
 
    new Botton(this).set(
         {
-          text: "往後 10 ms",
-          x: 270,
+          text: "往後 10 秒",
+          x: 250,
           y: this.state.firstTop,
           textColor: 'black'
         }
@@ -94,7 +92,7 @@ class beatsMapMaker extends ES6Trans {
     new Botton(this).set(
         {
           text: "重置",
-          x: 420,
+          x: 400,
           y: this.state.firstTop,
           textColor: 'black'
         }
@@ -114,52 +112,6 @@ class beatsMapMaker extends ES6Trans {
       ).setEvent('click', (e) => {
         
       });
-     ///
-    new Botton(this).set(
-        {
-          text: "Left",
-          x: 50,
-          y: 60,
-          textColor: 'black'
-        }
-      ).setEvent('click', (e) => {
-        this.setState({
-          timeleftbeat: this.state.time 
-        });
-      });
-    this.component.timeleft = new Botton(this).set(
-        {
-          text: "0",
-          x: 100,
-          y: 60,
-          textColor: 'black'
-        }
-      ).setEvent('click', (e) => {
-        
-      });
-    new Botton(this).set(
-        {
-          text: "Right",
-          x: 50,
-          y: 100,
-          textColor: 'black'
-        }
-      ).setEvent('click', (e) => {
-        this.setState({
-          timerightbeat: this.state.time 
-        });
-      });
-    this.component.timeright = new Botton(this).set(
-        {
-          text: "0",
-          x: 120,
-          y: 100,
-          textColor: 'black'
-        }
-      ).setEvent('click', (e) => {
-        
-      });
-      ///
   }
   
 
@@ -182,26 +134,13 @@ class beatsMapMaker extends ES6Trans {
     this.component.timer.set({
       text: this.state.time
     });
-    this.component.timeleft.set({
-      text: this.state.timeleftbeat
-    });
-    this.component.timeright.set({
-      text: this.state.timerightbeat
-    });
     this.component.play.set({
       text: this.state.play?'暫停':'播放'
     });
   }
 
   onkeydown(e) {
-    if (e.key == "Left")
-      this.setState({
-       timeleftbeat: this.state.time 
-      });
-    if (e.key == "Right")
-      this.setState({
-       timerightbeat: this.state.time 
-      });
+   
   }
 }
 
