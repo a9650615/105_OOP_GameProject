@@ -1,6 +1,6 @@
 import fs from 'fs';
 import Framework, {ES6Trans} from './framework_es6';
-import {Resource} from './constant';
+import {Resource, Game} from './constant';
 import BeatsMapParser from './modules/BeatsMapParser';
 import Text from './components/Text';
 import Botton from './components/Botton';
@@ -11,7 +11,7 @@ class beatsMapMaker extends ES6Trans {
   initialize(prop) {
     this.state = {
       firstTop: 20,
-      showTime: 0,
+      showTime: '0 : 00',
       play: false,
       testOffset: 10,
       testX: 200,
@@ -32,29 +32,62 @@ class beatsMapMaker extends ES6Trans {
   loadingProgress(ctx, requestInfo) {
   }
 
-  sTimer() {
-    if (this.state.play)
+  sTimer(needUpdate) {
+    if (this.state.play||needUpdate)
       this.setState({
         showTime: this.song.getFormatTime()
       });
   }
 
   load(){
-    this.component.stage = new Rectangle(this).set({
+    new Rectangle(this).set({
       x: 0,
-      y: 200,
-      width: Framework.Game.getCanvasWidth(),
-      height: Framework.Game.getCanvasHeight()-200,
-      background: '#516060'
+      y: Game.window.height * 0.5,
+      width: Game.window.width,
+      height: Game.window.height * 0.5,
+      background: '#222222'
     });
 
-    this.component.center = new Rectangle(this).set({
-      x: this.state.testX,
-      y: 200,
-      width: 100,
-      height: Framework.Game.getCanvasHeight()-200,
-      background: '#845f4e'
+    new Rectangle(this).set({
+      x: 0,
+      y: Game.window.height * 0.2,
+      width: Game.window.width,
+      height: Game.window.height * 0.3,
+      background: '#d3d3d3'
     });
+
+    this.component.track1 = new Rectangle(this).set({
+      x: 10,
+      y: Game.window.height * 0.54,
+      width: Game.window.width-20,
+      height: Game.window.height * 0.2,
+      background: '#cdd4d8'
+    });
+
+    this.component.track2 = new Rectangle(this).set({
+      x: 10,
+      y: Game.window.height * 0.77,
+      width: Game.window.width-20,
+      height: Game.window.height * 0.2,
+      background: '#cdd4d8'
+    });
+
+    new Rectangle(this).set({
+      x: (Game.window.width - 4)/2,
+      y: Game.window.height*0.2,
+      width: 4,
+      height: Game.window.height,
+      background: '#000'
+    });
+
+    this.component.showTimeCenter = new Botton(this).set(
+        {
+          text: "00:00",
+          x: (Game.window.width - 50) / 2,
+          y: Game.window.height*0.2 - 50,
+          textColor: 'black'
+        }
+      );
 
     this.component.play = new Botton(this).set(
         {
@@ -83,9 +116,7 @@ class beatsMapMaker extends ES6Trans {
         }
       ).setEvent('click', (e) => {
         this.song.setCurrentTime(this.song.getCurrentTime()-10);
-        // this.setState({
-        //   time: this.state.time - 10
-        // });
+        this.sTimer(true);
       }).hide();
 
    this.component.fastForward = new Botton(this).set(
@@ -97,9 +128,7 @@ class beatsMapMaker extends ES6Trans {
         }
       ).setEvent('click', (e) => {
          this.song.setCurrentTime(this.song.getCurrentTime()+10);
-        // this.setState({
-        //   time: this.state.time + 10
-        // });
+         this.sTimer(true);
       }).hide();
 
     this.component.reset = new Botton(this).set(
@@ -111,6 +140,7 @@ class beatsMapMaker extends ES6Trans {
         }
       ).setEvent('click', (e) => {
         this.song.setCurrentTime(0);
+        this.sTimer(true);
         // this.setState({
         //   time: 0
         // });
@@ -119,7 +149,7 @@ class beatsMapMaker extends ES6Trans {
     this.component.timer = new Botton(this).set(
         {
           text: "00:00 / 00:00",
-          x: 500,
+          x: 550,
           y: this.state.firstTop,
           textColor: 'black'
         }
@@ -147,8 +177,9 @@ class beatsMapMaker extends ES6Trans {
           let fileReader = new FileReader();
           fileReader.onload = function() {
             fs.writeFileSync(dir+'song', Buffer.from(new Uint8Array(this.result)));
-            t.song = new SongParser(dir+'song', files.name);
-            t.sTimer();
+            t.song = new SongParser(dir+'song', files.name, () => {
+              t.sTimer(true);
+            });
             t.forceUpdate();
           };
           fileReader.readAsArrayBuffer(files);
@@ -189,15 +220,18 @@ class beatsMapMaker extends ES6Trans {
     this.component.songName.set({
       text: this.songFile?this.songFile.name:"尚未選擇歌曲"
     });
-    this.component.center.set({
-      x: this.state.testX
-    });
+    
     this.component.timer.set({
       text: this.state.showTime
     });
     this.component.play.set({
       text: this.state.play?'暫停':'播放'
     });
+    if (this.song.getCurrentTime)
+      this.component.showTimeCenter.set({
+        text: this.song.getFormatCurrentTime(),
+        width: (Game.window.width-this.component.showTimeCenter.getWidth())/2
+      });
   }
 
   onkeydown(e) {

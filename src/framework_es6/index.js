@@ -115,10 +115,15 @@ export let ES6Trans =  class Es6Trans {
 		props._keypressLoop = this._keypressLoop;
 		props._keydownList = [];
 		props.isKeydown = false;
+		props._keydownControl = this._keydownControl;
+		props._keyupControl = this._keyupControl;
+		props.onkeydown = this.onkeydown;
+		props.onkeyup = this.onkeyup;
+		props.onkeypress = this.onkeypress;
 		return props;
 	}
 
-	keydown(e) {
+	_keydownControl(e) {
 		this._keydownList.push(e);
 		this.onkeydown(e, this._keydownList);
 		if (!this.isKeydown)
@@ -126,14 +131,7 @@ export let ES6Trans =  class Es6Trans {
 		this.isKeydown = true;
 	}
 
-	_keypressLoop(e) {
-		if (this.isKeydown) {
-			this.onkeydown(this._keydownList[this._keydownList.length - 1], this._keydownList);
-			setTimeout((e) => this._keypressLoop(e), 100);
-		}
-	}
-
-	keyup(e) {
+	_keyupControl(e) {
 		this._keydownList = this._keydownList.filter((val) => {
 			if (e.keyCode === val.keyCode)
 				return false;
@@ -143,9 +141,46 @@ export let ES6Trans =  class Es6Trans {
 		if (this._keydownList.length === 0)
 			this.isKeydown = false;
 	}
+	//請勿覆蓋此 function
+	keydown(e) {
+		this._keydownControl(e);
+		this.onkeydown(e, this._keydownControl);
+	}
+
+	/**
+	 * @overwrite
+	 * 按壓當下事件
+	 * @param {event} e 
+	 * @param {array} list
+	 */
+	onkeydown(e, list) {}
+
+	_keypressLoop(e) {
+		if (this.isKeydown) {
+			this.onkeypress(this._keydownList[this._keydownList.length - 1], this._keydownList);
+			setTimeout((e) => this._keypressLoop(e), 100);
+		}
+	}
+	//請勿覆蓋此 function
+	keyup(e) {
+		this._keyupControl(e);
+		this.onkeyup(e, this._keydownControl);
+	}
 	
-	onkeydown(e) {
-		//請勿複寫 keydown keyup 否則 onkeydown 會死去
+	/**
+	 * @overwrite
+	 * 拿起按鈕事件
+	 * @param {event} e 
+	 */
+	onkeyup(e, list) {};
+
+	/**
+	 * @overwrite
+	 * 持續按住事件
+	 * @param {event} e 
+	 * @param {array} list
+	 */
+	onkeypress(e) {
 	}
 
 	// 繪製畫面

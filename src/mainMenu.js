@@ -107,7 +107,7 @@ class menu extends ES6Trans {
     });
   }
 
-  onkeydown(e) {
+  onkeypress(e) {
     if (e.key == "Left")
       this.setState({
         positionX: this.state.positionX - 30

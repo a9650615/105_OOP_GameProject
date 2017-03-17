@@ -33,6 +33,8 @@ export default class Botton extends GameObject {
 		return this;
 	}
 
+	getWidth() {return this.text.getWidth();}
+	getHeight() {return this.text.getHeight();}
 	
 	load() {
 	}

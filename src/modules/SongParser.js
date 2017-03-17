@@ -2,7 +2,7 @@ import fs from 'fs';
 import mm from 'musicmetadata';
 
 export default class SongParser {
-  constructor(file_path, filename) {
+  constructor(file_path, filename, func = () => {}) {
     let t = this;
     mm(fs.createReadStream(file_path), function (err, metadata) {
       if (err) throw err;
@@ -16,6 +16,7 @@ export default class SongParser {
       // var audioSrc = t.ctx.createMediaElementSource(t.audio);
       // var analyser = ctx.createAnalyser();
       // audioSrc.connect(analyser);
+      t.audio.addEventListener('canplaythrough', func.bind(t), false);
     });
 
     this.getPlayer.bind(this);
@@ -41,9 +42,18 @@ export default class SongParser {
     return number< 10 ? '0' + number : number;
   }
 
+  getFormatCurrentTime() {
+    if (this.audio)
+      return `${Math.round(this._format_number(this.audio.currentTime/60))}:${this._format_number(Math.round(this.audio.currentTime%60))}`;
+  }
+
+  getDuration() {
+    if (this.audio)
+    return `${Math.round(this._format_number(this.duration/60))}:${this._format_number(Math.round(this.duration%60))}`;
+  }
+
   getFormatTime() {
-    return `${Math.round(this._format_number(this.audio.currentTime/60))}:${this._format_number(Math.round(this.audio.currentTime%60))}/`+
-            `${Math.round(this._format_number(this.duration/60))}:${this._format_number(Math.round(this.duration%60))}`;
+    return this.getFormatCurrentTime() + '/' + this.getDuration();
   }
 
   getPlayer() {
