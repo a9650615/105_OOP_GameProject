@@ -7,6 +7,10 @@ class GameObject extends ES6Trans{
     this._tmpCanvas = new Canvas();
     this._tmpContent = this._tmpCanvas.ctx();
     
+    this._gameObject = {
+      hide: null
+    };
+    
     this.prop = prop;
     this.type = 'GameObject';   
     this.pushSelfToLevel();
@@ -31,18 +35,22 @@ class GameObject extends ES6Trans{
     let event = new mouseManager(Framework);
     // event.setSubject(this);
     event.setClickEvent((e) => {
-      this._callEventFunction(this.checkClick(e), this.click.bind(this, e));
+      if (!this._gameObject.hide)
+        this._callEventFunction(this.checkClick(e), this.click.bind(this, e));
     });
     // event.setContextmenuEvent
     if (typeof this.mousemove === "function")
       event.setMouseMoveEvent((e) => {
-        this._callEventFunction(this.checkMouseMove(e), this.mousemove.bind(this, e));
+        if (!this._gameObject.hide)
+          this._callEventFunction(this.checkMouseMove(e), this.mousemove.bind(this, e));
       });
     event.setMouseUpEvent((e) => {
-        this._callEventFunction(this.checkMouseUp(e), this.mouseup.bind(this, e));
+        if (!this._gameObject.hide)
+          this._callEventFunction(this.checkMouseUp(e), this.mouseup.bind(this, e));
       });
     event.setMousedownEvent((e) => {
-      this._callEventFunction(this.checkMouseDown(e), this.mousedown.bind(this, e));
+      if (!this._gameObject.hide)
+        this._callEventFunction(this.checkMouseDown(e), this.mousedown.bind(this, e));
     });
   }
 
@@ -64,9 +72,22 @@ class GameObject extends ES6Trans{
     return this;
   }
 
+  hide() {
+    this._gameObject.hide = true;
+    this.forceUpdate();
+    return this;
+  }
+
+  show() {
+    this._gameObject.hide = false;
+    this.forceUpdate();
+    return this;
+  }
+
   //一般不直接使用它, 背景自動繪製
   draw(ctx) {
-    this.render(ctx);
+    if (!this._gameObject.hide)
+      this.render(ctx);
   }
 
   load() {
