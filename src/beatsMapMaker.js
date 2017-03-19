@@ -21,10 +21,11 @@ class beatsMapMaker extends ES6Trans {
     
     this.timer = setInterval(this.sTimer.bind(this), 100);
     this.songFile = null;
-    this.song = {};
+    this.song = null;
+    this.beatsMap = {};
   }
 
- //初始化loadingProgress需要用到的圖片
+  //初始化loadingProgress需要用到的圖片
   initializeProgressResource() {             
   }
 
@@ -37,6 +38,51 @@ class beatsMapMaker extends ES6Trans {
       this.setState({
         showTime: this.song.getFormatTime()
       });
+  }
+
+  togglePlay() {
+    if (!this.state.play) {
+      this.song.getPlayer().play();
+    } else {
+      this.song.getPlayer().pause();
+    };
+    this.setState({
+      play: !this.state.play
+    });
+  }
+
+  onkeydown(e) {
+    let song = this.song;
+    let currentTime = song.getCurrentTime();
+    console.log(e);
+    if(song)
+    switch(e.keyCode) {
+      case 38: //up
+          song.setCurrentTime(currentTime + 10);
+        break;
+      case 40: //down
+          song.setCurrentTime(currentTime - 10);
+        break;
+      case 37: //left
+          song.setCurrentTime(currentTime - 0.2);
+        break;
+      case 39: //right
+          song.setCurrentTime(currentTime + 0.2);
+        break;
+      case 32: //space
+         this.togglePlay();
+        break;
+      case 81: //Q 左區塊單點
+        break;
+      case 69: //E 右區塊單點
+        break;
+      case 65: //A 左區塊長擊
+        break;
+      case 68: //D 右區塊長擊
+        break;
+      case 83: //S 左右連擊
+        break;
+    }
   }
 
   load(){
@@ -97,14 +143,7 @@ class beatsMapMaker extends ES6Trans {
           textColor: 'black'
         }
       ).setEvent('click', (e) => {
-        if (!this.state.play) {
-          this.song.getPlayer().play();
-        } else {
-          this.song.getPlayer().pause();
-        };
-        this.setState({
-          play: !this.state.play
-        });
+       this.togglePlay();
       }).hide();
 
     this.component.turnBack = new Botton(this).set(
@@ -154,7 +193,7 @@ class beatsMapMaker extends ES6Trans {
           textColor: 'black'
         }
       ).hide();
-    
+
     this.component.uploader = new Botton(this).set(
         {
           text: "選擇歌曲",
@@ -227,15 +266,11 @@ class beatsMapMaker extends ES6Trans {
     this.component.play.set({
       text: this.state.play?'暫停':'播放'
     });
-    if (this.song.getCurrentTime)
+    if (this.song)
       this.component.showTimeCenter.set({
-        text: this.song.getFormatCurrentTime(),
+        text: this.song.getFormatCurrentTime(2),
         width: (Game.window.width-this.component.showTimeCenter.getWidth())/2
       });
-  }
-
-  onkeydown(e) {
-   
   }
 }
 

@@ -125,7 +125,6 @@ export let ES6Trans =  class Es6Trans {
 
 	_keydownControl(e) {
 		this._keydownList.push(e);
-		this.onkeydown(e, this._keydownList);
 		if (!this.isKeydown)
 			setTimeout((e) => this._keypressLoop(e), 1500);
 		this.isKeydown = true;

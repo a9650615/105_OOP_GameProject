@@ -42,14 +42,14 @@ export default class SongParser {
     return number< 10 ? '0' + number : number;
   }
 
-  getFormatCurrentTime() {
+  getFormatCurrentTime(fix = 0) {
     if (this.audio)
-      return `${Math.round(this._format_number(this.audio.currentTime/60))}:${this._format_number(Math.round(this.audio.currentTime%60))}`;
+      return `${Math.floor(this._format_number(this.getCurrentTime()/60))}:${this._format_number((this.getCurrentTime()%60).toFixed(fix))}`;
   }
 
   getDuration() {
     if (this.audio)
-    return `${Math.round(this._format_number(this.duration/60))}:${this._format_number(Math.round(this.duration%60))}`;
+    return `${Math.floor(this._format_number(this.duration/60))}:${this._format_number(Math.floor(this.duration%60))}`;
   }
 
   getFormatTime() {
