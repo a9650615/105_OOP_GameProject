@@ -13,15 +13,20 @@ class beatsMapMaker extends ES6Trans {
       firstTop: 20,
       showTime: '0 : 00',
       play: false,
+      tmpSongName: '',
       testOffset: 10,
       testX: 200,
-      time: 0,
-      songBpm: null
+      time: 0
     };
     
-    this.timer = setInterval(this.sTimer.bind(this), 100);
+    this.sTimer();
+    this.timeStamp = null;
     this.songFile = null;
-    this.song = null;
+    this.song = new SongParser();
+    this.mapSetting = {
+      difference: 0.39, //誤差值 一般好像是 60/BPM
+      bpm: 153  // 範例歌曲 カラフル。
+    };
     this.beatsMap = {};
   }
 
@@ -33,11 +38,19 @@ class beatsMapMaker extends ES6Trans {
   loadingProgress(ctx, requestInfo) {
   }
 
+  // update show timer
   sTimer(needUpdate) {
     if (this.state.play||needUpdate)
       this.setState({
-        showTime: this.song.getFormatTime()
+        showTime: this.song.getFormatTime(),
+        time: this.song.getCurrentTime()
       });
+    this.timeStamp = (new Date()).getTime();
+    setTimeout(this.sTimer.bind(this), 100);
+  }
+
+  setBeatMapBlock(type, time = {}) {
+
   }
 
   togglePlay() {
@@ -54,7 +67,7 @@ class beatsMapMaker extends ES6Trans {
   onkeydown(e) {
     let song = this.song;
     let currentTime = song.getCurrentTime();
-    console.log(e);
+    
     if(song)
     switch(e.keyCode) {
       case 38: //up
@@ -73,6 +86,7 @@ class beatsMapMaker extends ES6Trans {
          this.togglePlay();
         break;
       case 81: //Q 左區塊單點
+          
         break;
       case 69: //E 右區塊單點
         break;
@@ -207,21 +221,30 @@ class beatsMapMaker extends ES6Trans {
         file.addEventListener("change", () => {
           let dir = `${Resource.songs}tmp/`;
           let files = file.files[0];
-          this.songFile = files;
+          if (file.files.length) {
+            this.songFile = files;
 
-          if (!fs.existsSync(dir)){
+            if (!fs.existsSync(dir)){
               fs.mkdirSync(dir);
-          }
-          var t = this;
-          let fileReader = new FileReader();
-          fileReader.onload = function() {
-            fs.writeFileSync(dir+'song', Buffer.from(new Uint8Array(this.result)));
-            t.song = new SongParser(dir+'song', files.name, () => {
-              t.sTimer(true);
-            });
-            t.forceUpdate();
+            } else {
+              fs.readdir(dir, function(err, files) {
+                files.forEach((file) => {
+                  fs.unlinkSync(dir+file);
+                })
+              });
+            }
+            var t = this;
+            let fileReader = new FileReader();
+            fileReader.onload = function() {
+              t.state.tmpSongName = 'song'+ Math.random();
+              fs.writeFileSync(dir+t.state.tmpSongName, Buffer.from(new Uint8Array(this.result)));
+              t.song.setUrl(dir+t.state.tmpSongName, files.name, () => {
+                t.sTimer(true);
+              });
+              t.forceUpdate();
+            };
+            fileReader.readAsArrayBuffer(files);
           };
-          fileReader.readAsArrayBuffer(files);
         }, false);
         file.click();
       });

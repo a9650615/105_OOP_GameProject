@@ -2,14 +2,19 @@ import fs from 'fs';
 import mm from 'musicmetadata';
 
 export default class SongParser {
-  constructor(file_path, filename, func = () => {}) {
+  constructor() {
+    this.audio = document.createElement('audio');
+    this.audio.volume = 0.5;
+
+    this.getPlayer.bind(this);
+  }
+
+  setUrl(file_path, filename, func = () => {}) {
     let t = this;
     mm(fs.createReadStream(file_path), function (err, metadata) {
       if (err) throw err;
       t.info = metadata;
       t.info.name = filename;
-      t.audio = document.createElement('audio');
-      t.audio.volume = 0.5;
       t.audio.src = file_path;
       t.audio.onloadedmetadata = t.onGetDuration.bind(t);
       // t.ctx = new AudioContext();
@@ -18,8 +23,6 @@ export default class SongParser {
       // audioSrc.connect(analyser);
       t.audio.addEventListener('canplaythrough', func.bind(t), false);
     });
-
-    this.getPlayer.bind(this);
   }
   
   onGetDuration() {
