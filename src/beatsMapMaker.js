@@ -9,17 +9,21 @@ import SongParser from './modules/SongParser';
 
 class beatsMapMaker extends ES6Trans {
   initialize(prop) {
-    this.state = {
+    // framework 太廢 不穩定 改到 initializeProgressResource 去
+  }
+
+  //初始化loadingProgress需要用到的圖片
+  initializeProgressResource() {
+     this.state = {
       firstTop: 20,
       showTime: '0 : 00',
       play: false,
       tmpSongName: '',
-      testOffset: 10,
       testX: 200,
-      time: 0
+      time: 0,
+      timeLine: 3 //以秒為單位  整個畫面要包含幾秒 有bug 不是３的時候會算不準
     };
     
-    this.sTimer();
     this.timeStamp = null;
     this.songFile = null;
     this.song = new SongParser();
@@ -27,11 +31,7 @@ class beatsMapMaker extends ES6Trans {
       difference: 0.39, //誤差值 一般好像是 60/BPM
       bpm: 153  // 範例歌曲 カラフル。
     };
-    this.beatsMap = {};
-  }
-
-  //初始化loadingProgress需要用到的圖片
-  initializeProgressResource() {             
+    this.beatsMap = {};          
   }
 
   //在initialize時會觸發的事件
@@ -40,13 +40,13 @@ class beatsMapMaker extends ES6Trans {
 
   // update show timer
   sTimer(needUpdate) {
-    if (this.state.play||needUpdate)
+    if (this.state.play||needUpdate) {
       this.setState({
         showTime: this.song.getFormatTime(),
         time: this.song.getCurrentTime()
       });
-    this.timeStamp = (new Date()).getTime();
-    setTimeout(this.sTimer.bind(this), 100);
+      this.timeStamp = (new Date()).getTime();
+    }
   }
 
   setBeatMapBlock(type, time = {}) {
@@ -140,6 +140,20 @@ class beatsMapMaker extends ES6Trans {
       background: '#000'
     });
 
+    this.component.timeLine = [];
+
+    for(let i = 0; i <= this.state.timeLine; i++) {
+      this.component.timeLine.push(
+        new Rectangle(this).set({
+          x: ((Game.window.width - 24)/this.state.timeLine)*(i)+10,
+          y: Game.window.height*0.5,
+          width: 2,
+          height: Game.window.height*0.5,
+          background: '#c5eae8'
+        })
+      );
+    }
+    
     this.component.showTimeCenter = new Botton(this).set(
         {
           text: "00:00",
@@ -207,7 +221,7 @@ class beatsMapMaker extends ES6Trans {
           textColor: 'black'
         }
       ).hide();
-
+      
     this.component.uploader = new Botton(this).set(
         {
           text: "選擇歌曲",
@@ -261,14 +275,7 @@ class beatsMapMaker extends ES6Trans {
   
   update(){
     this.rootScene.update();
-    if (this.state.testX > Framework.Game.getCanvasWidth() - 100||this.state.testX <= 0) 
-      this.setState({
-        testOffset: this.state.testOffset * -1
-      });
-    if (this.state.play)
-      this.setState({
-        testX: this.state.testX + this.state.testOffset
-      });
+    this.sTimer();
   }
 
   render(parentCtx) {
@@ -289,6 +296,13 @@ class beatsMapMaker extends ES6Trans {
     this.component.play.set({
       text: this.state.play?'暫停':'播放'
     });
+    
+    for(let i = 0; i <= this.state.timeLine; i++) {
+      this.component.timeLine[i].set({
+        x: ((Game.window.width - 22)/this.state.timeLine)*(i+0.5-(this.song.getCurrentTime()%1))+10
+      });
+    }
+
     if (this.song)
       this.component.showTimeCenter.set({
         text: this.song.getFormatCurrentTime(2),
