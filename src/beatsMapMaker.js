@@ -16,12 +16,13 @@ class beatsMapMaker extends ES6Trans {
   initializeProgressResource() {
      this.state = {
       firstTop: 20,
-      showTime: '0 : 00',
+      showTime: '0 : 00',     
       play: false,
       tmpSongName: '',
       testX: 200,
       time: 0,
-      timeLine: 3 //以秒為單位  整個畫面要包含幾秒 有bug 不是３的時候會算不準
+      offset: 0.5,
+      timeLine: 5//以秒為單位  整個畫面要包含幾秒 有bug 不是３的時候會算不準
     };
     
     this.timeStamp = null;
@@ -29,7 +30,8 @@ class beatsMapMaker extends ES6Trans {
     this.song = new SongParser();
     this.mapSetting = {
       difference: 0.39, //誤差值 一般好像是 60/BPM
-      bpm: 153  // 範例歌曲 カラフル。
+      bpm: 170, // 範例歌曲 カラフル。
+      songOffset: 5
     };
     this.beatsMap = {};          
   }
@@ -77,10 +79,10 @@ class beatsMapMaker extends ES6Trans {
           song.setCurrentTime(currentTime - 10);
         break;
       case 37: //left
-          song.setCurrentTime(currentTime - 0.2);
+          song.setCurrentTime(currentTime - 60/this.mapSetting.bpm);
         break;
       case 39: //right
-          song.setCurrentTime(currentTime + 0.2);
+          song.setCurrentTime(currentTime + 60/this.mapSetting.bpm);
         break;
       case 32: //space
          this.togglePlay();
@@ -142,7 +144,7 @@ class beatsMapMaker extends ES6Trans {
 
     this.component.timeLine = [];
 
-    for(let i = 0; i <= this.state.timeLine; i++) {
+    for(let i = 0; i <= (this.state.timeLine+this.mapSetting.bpm/60+1); i++) {
       this.component.timeLine.push(
         new Rectangle(this).set({
           x: ((Game.window.width - 24)/this.state.timeLine)*(i)+10,
@@ -296,10 +298,10 @@ class beatsMapMaker extends ES6Trans {
     this.component.play.set({
       text: this.state.play?'暫停':'播放'
     });
-    
-    for(let i = 0; i <= this.state.timeLine; i++) {
+    let speed = this.state.offset-(this.song.getCurrentTime()%(1*60/this.mapSetting.bpm))*(this.mapSetting.bpm/60);
+    for(let i = 0; i <= (this.state.timeLine+this.mapSetting.bpm/60+1); i++) {
       this.component.timeLine[i].set({
-        x: ((Game.window.width - 22)/this.state.timeLine)*(i+0.5-(this.song.getCurrentTime()%1))+10
+        x: ((Game.window.width - 22)/this.state.timeLine)*(i+speed)+10
       });
     }
 
