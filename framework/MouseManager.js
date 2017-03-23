@@ -56,7 +56,7 @@ export function mouseManager(Framework = {}){
 	};
 
 	var mousedownEvent = function(e) {
-		e.preventDefault();
+		//e.preventDefault();
 		var e = countCanvasOffset(e);
 		userMousedownEvent.call(_subject, e);
 	};

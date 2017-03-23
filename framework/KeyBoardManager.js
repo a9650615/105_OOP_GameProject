@@ -12,7 +12,7 @@ export function keyBoardManager(Framework) {
 			_subject;
 
 		var keydownEvent = function(e) {
-			e.preventDefault();
+			//e.preventDefault();
 			var keyId = e.which || e.keyCode;
 			var keyCode = _keyCodeToChar[keyId], i;
 			if(!Framework.Util.isUndefined(_keydownList[keyCode])) {

@@ -125,6 +125,10 @@ class menu extends ES6Trans {
         positionY: this.state.positionY + 30
       });
   }
+
+  autodelete() {
+    // console.log('destructor');
+  }
 }
 
 

@@ -4,6 +4,7 @@ import {Resource, Game} from './constant';
 import BeatsMapParser from './modules/BeatsMapParser';
 import Text from './components/Text';
 import Botton from './components/Botton';
+import TextInput from './components/TextInput';
 import Rectangle from './components/Rectangle';
 import SongParser from './modules/SongParser';
 
@@ -22,7 +23,7 @@ class beatsMapMaker extends ES6Trans {
       testX: 200,
       time: 0,
       offset: 0.5,
-      timeLine: 5//以秒為單位  整個畫面要包含幾秒 有bug 不是３的時候會算不準
+      timeLine: 7//以秒為單位  整個畫面要包含幾秒 有bug 不是３的時候會算不準
     };
     
     this.timeStamp = null;
@@ -30,7 +31,7 @@ class beatsMapMaker extends ES6Trans {
     this.song = new SongParser();
     this.mapSetting = {
       difference: 0.39, //誤差值 一般好像是 60/BPM
-      bpm: 170, // 範例歌曲 カラフル。
+      bpm: 153, // 範例歌曲 カラフル。
       songOffset: 5
     };
     this.beatsMap = {};          
@@ -102,6 +103,7 @@ class beatsMapMaker extends ES6Trans {
   }
 
   load(){
+    let Scene = this;
     new Rectangle(this).set({
       x: 0,
       y: Game.window.height * 0.5,
@@ -164,6 +166,31 @@ class beatsMapMaker extends ES6Trans {
           textColor: 'black'
         }
       );
+    
+    this.component.bpmLabel = new Botton(this).set(
+        {
+          text: "bpm 速度:",
+          x:  30,
+          y: this.state.firstTop+50,
+          textColor: 'black'
+        }
+      ).hide();
+    
+    this.component.bpmSelector = new TextInput(this).setStyle({
+        x: 90,
+        y: this.state.firstTop+20,
+        borderBottom: '1px solid #ccc',
+        width: 40
+      }).set({
+        attr:{
+          type: 'number',
+          min: 1,
+          max: 400
+        }
+      }).setEvent('change', (e, t) => {
+        Scene.mapSetting.bpm = t.value();
+        Scene.forceUpdate();
+      }).value(this.mapSetting.bpm).hide();
 
     this.component.play = new Botton(this).set(
         {
@@ -173,7 +200,7 @@ class beatsMapMaker extends ES6Trans {
           textColor: 'black'
         }
       ).setEvent('click', (e) => {
-       this.togglePlay();
+        this.togglePlay();
       }).hide();
 
     this.component.turnBack = new Botton(this).set(
@@ -287,6 +314,8 @@ class beatsMapMaker extends ES6Trans {
       this.component.fastForward.show();
       this.component.reset.show();
       this.component.timer.show();
+      this.component.bpmSelector.show();
+      this.component.bpmLabel.show();
     }
     this.component.songName.set({
       text: this.songFile?this.songFile.name:"尚未選擇歌曲"
@@ -300,6 +329,7 @@ class beatsMapMaker extends ES6Trans {
     });
     let speed = this.state.offset-(this.song.getCurrentTime()%(1*60/this.mapSetting.bpm))*(this.mapSetting.bpm/60);
     for(let i = 0; i <= (this.state.timeLine+this.mapSetting.bpm/60+1); i++) {
+      if (this.component.timeLine[i])
       this.component.timeLine[i].set({
         x: ((Game.window.width - 22)/this.state.timeLine)*(i+speed)+10
       });
@@ -310,6 +340,11 @@ class beatsMapMaker extends ES6Trans {
         text: this.song.getFormatCurrentTime(2),
         width: (Game.window.width-this.component.showTimeCenter.getWidth())/2
       });
+  }
+
+  autodelete() {
+    //臨時移除方式
+    this.bpmSelecter.remove();
   }
 }
 
