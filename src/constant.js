@@ -3,7 +3,8 @@ let appDir = path.dirname(require.main.filename);
 
 export const Resource = {
   image: `${appDir}/game_sample/image/`,
-  songs: `${appDir}/Songs/`
+  songs: `${appDir}/Songs/`,
+  sounds: `${appDir}/res/Sounds/`
 };
 
 export const Game = {

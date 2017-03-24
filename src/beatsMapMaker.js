@@ -23,18 +23,35 @@ class beatsMapMaker extends ES6Trans {
       testX: 200,
       time: 0,
       offset: 0.5,
-      timeLine: 7//以秒為單位  整個畫面要包含幾秒 有bug 不是３的時候會算不準
+      timeLine: 5,//以秒為單位  整個畫面要包含幾秒 有bug 不是３的時候會算不準
+      currentStep: 0 // 目前播放節拍介於
     };
-    
+
+    this.audio = new Framework.Audio({
+      clap:{
+        wav: Resource.sounds+'clap.wav'
+      }
+    });
+
+   /* this.audio.setVolume('clap', 0.5);*/
+
+    this.component.timeLine = [];
     this.timeStamp = null;
     this.songFile = null;
     this.song = new SongParser();
     this.mapSetting = {
       difference: 0.39, //誤差值 一般好像是 60/BPM
-      bpm: 153, // 範例歌曲 カラフル。
-      songOffset: 5
+      bpm: 170, // 範例歌曲 カラフル。
+      songOffset: 0
     };
-    this.beatsMap = {};          
+    this.beatsMap = [
+      // {
+      //   align: 0,
+      //   time: 12.00,
+      //   type: 0,// or1
+      //   endTime:14.00
+      // }
+    ];     
   }
 
   //在initialize時會觸發的事件
@@ -45,15 +62,31 @@ class beatsMapMaker extends ES6Trans {
   sTimer(needUpdate) {
     if (this.state.play||needUpdate) {
       this.setState({
-        showTime: this.song.getFormatTime(),
-        time: this.song.getCurrentTime()
+        showTime: this.song.getFormatTime()
       });
       this.timeStamp = (new Date()).getTime();
     }
+    this.state.time = this.song.getCurrentTime();
   }
 
-  setBeatMapBlock(type, time = {}) {
-
+  setBeatMapBlock(align, type, time = {}) {
+    let i, error = 0, beatsMap = this.beatsMap;
+    for (i = 0;i<beatsMap.length;i++) {
+      if (beatsMap[i].time > time.start) {
+        break;
+      } else if(beatsMap[i].time == time.start && beatsMap[i].align == align && beatsMap[i].type == type) {
+        console.log('好像有一樣的');
+        error = 1;
+      }
+    }
+    if(!error)
+      beatsMap.splice(i, 0, {
+        align: align,
+        type: type,
+        time: time.start,
+        endTime: time.end
+      });
+    console.log(beatsMap);
   }
 
   togglePlay() {
@@ -89,9 +122,10 @@ class beatsMapMaker extends ES6Trans {
          this.togglePlay();
         break;
       case 81: //Q 左區塊單點
-          
+         this.setBeatMapBlock(0, 0, {start: this.state.currentStep * (60/this.mapSetting.bpm)});
         break;
       case 69: //E 右區塊單點
+         this.setBeatMapBlock(1, 0, {start: this.state.currentStep * (60/this.mapSetting.bpm)});
         break;
       case 65: //A 左區塊長擊
         break;
@@ -143,20 +177,6 @@ class beatsMapMaker extends ES6Trans {
       height: Game.window.height,
       background: '#000'
     });
-
-    this.component.timeLine = [];
-
-    for(let i = 0; i <= (this.state.timeLine+this.mapSetting.bpm/60+1); i++) {
-      this.component.timeLine.push(
-        new Rectangle(this).set({
-          x: ((Game.window.width - 24)/this.state.timeLine)*(i)+10,
-          y: Game.window.height*0.5,
-          width: 2,
-          height: Game.window.height*0.5,
-          background: '#c5eae8'
-        })
-      );
-    }
     
     this.component.showTimeCenter = new Botton(this).set(
         {
@@ -191,6 +211,35 @@ class beatsMapMaker extends ES6Trans {
         Scene.mapSetting.bpm = t.value();
         Scene.forceUpdate();
       }).value(this.mapSetting.bpm).hide();
+
+      this.component.stepLabel = new Botton(this).set(
+        {
+          text: "畫面節拍數:",
+          x:  250,
+          y: this.state.firstTop+50,
+          textColor: 'black'
+        }
+      ).hide();
+
+      this.component.stepSelector = new TextInput(this).setStyle({
+        x: 230,
+        y: this.state.firstTop+20,
+        borderBottom: '1px solid #ccc',
+        width: 40
+      }).set({
+        attr:{
+          type: 'number',
+          min: 1,
+          max: 27,
+          step: 2
+        }
+      }).setEvent('change', (e, t) => {
+        /*Scene.state.timeLine = t.value();
+        Scene.forceUpdate();*/
+        this.loadStepLine(t.value());
+      }).value(this.state.timeLine).hide();
+    
+    this.loadStepLine(this.state.timeLine, true);
 
     this.component.play = new Botton(this).set(
         {
@@ -301,10 +350,40 @@ class beatsMapMaker extends ES6Trans {
         }
       )
   }
+
+  loadStepLine(number, force = false){
+    if(number>this.state.timeLine || force)
+    for(let i = (force)?0:this.state.timeLine; i <= (number+this.mapSetting.bpm/60+1); i++) {
+      this.component.timeLine.push(
+        new Rectangle(this).set({
+          x: ((Game.window.width - 24)/this.state.timeLine)*(i)+10,
+          y: Game.window.height*0.5,
+          width: 2,
+          height: Game.window.height*0.5,
+          background: '#c5eae8'
+        })
+      );
+    }
+    if(number<this.state.timeLine)
+    for(let i = this.state.timeLine   ; i <= number; i++) {
+      this.component.timeLine[i].hide();
+    }
+    this.setState({
+      timeLine: number
+    });
+  }
   
   update(){
     this.rootScene.update();
     this.sTimer();
+    let fixCurrentTime = this.song.getCurrentTime()-this.mapSetting.songOffset;
+    let revertBpm = 60/this.mapSetting.bpm;
+    let step = parseInt(fixCurrentTime / revertBpm);
+    //console.log((this.song.getCurrentTime()-this.mapSetting.songOffset)%(60/this.mapSetting.bpm));
+    if (this.state.play && fixCurrentTime% revertBpm <= revertBpm && step != this.state.currentStep){
+      this.audio.play({name: 'clap', loop: false});
+      this.state.currentStep = step;
+    }
   }
 
   render(parentCtx) {
@@ -316,6 +395,8 @@ class beatsMapMaker extends ES6Trans {
       this.component.timer.show();
       this.component.bpmSelector.show();
       this.component.bpmLabel.show();
+      this.component.stepLabel.show();
+      this.component.stepSelector.show();
     }
     this.component.songName.set({
       text: this.songFile?this.songFile.name:"尚未選擇歌曲"
