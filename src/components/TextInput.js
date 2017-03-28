@@ -9,13 +9,13 @@ export default class TextInput extends GameObject {
     this.state = {
       value: '',
       style: {
-        fontSize: 15,
+        fontSize: 20,
         color: null,
         border: 'none',
         position: 'absolute',
         padding: '0px 5px',
         outline: 'none',
-        width: '100px',
+        width: '120px',
         height: '30px',
         background: 'Transparent'
       },
@@ -36,7 +36,7 @@ export default class TextInput extends GameObject {
   }
 
   load() {
-    document.body.appendChild(this.textInput);
+    document.getElementById('ui-wrapper').appendChild(this.textInput);
     this.draw();
   }
 

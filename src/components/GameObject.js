@@ -2,13 +2,24 @@ import Framework, {ES6Trans} from '../framework_es6';
 import {mouseManager} from '../../framework/MouseManager';
 import Canvas from './Canvas';
 
+function guid() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+    s4() + '-' + s4() + s4() + s4();
+}
+
 class GameObject extends ES6Trans{
   __construct(prop) {
     this._tmpCanvas = new Canvas();
     this._tmpContent = this._tmpCanvas.ctx();
     
     this._gameObject = {
-      hide: null
+      hide: null,
+      uid: guid()
     };
     
     this.prop = prop;
@@ -101,6 +112,15 @@ class GameObject extends ES6Trans{
   render(ctx) { 
     //this.rootScene.draw();一定要在第一行
     //this.rootScene.draw(parentCtx);
+  }
+  /**
+   * 移除元件及相關綁定
+   */
+  remove() {
+    let allElement = Framework.Game._currentLevel._allGameElement;
+    let index = allElement.indexOf(this);
+    if (index != -1)
+      allElement.splice(index, 1);
   }
 
   checkMouseUp(e) {

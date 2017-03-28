@@ -23,7 +23,7 @@ class beatsMapMaker extends ES6Trans {
       testX: 200,
       time: 0,
       offset: 0.5,
-      timeLine: 5,//以秒為單位  整個畫面要包含幾秒 有bug 不是３的時候會算不準
+      timeLine: 5,//切成幾單位, 但會根據 bpm 加線
       currentStep: 0 // 目前播放節拍介於
     };
 
@@ -84,9 +84,16 @@ class beatsMapMaker extends ES6Trans {
         align: align,
         type: type,
         time: time.start,
-        endTime: time.end
+        endTime: time.end,
+        element:  
+          new Rectangle(this).set({
+            x: 0,
+            y: Game.window.height * 0.5,
+            width: Game.window.width,
+            height: Game.window.height * 0.5,
+            background: '#222222'
+          }).hide()
       });
-    console.log(beatsMap);
   }
 
   togglePlay() {
@@ -138,6 +145,7 @@ class beatsMapMaker extends ES6Trans {
 
   load(){
     let Scene = this;
+    //下半塊背景
     new Rectangle(this).set({
       x: 0,
       y: Game.window.height * 0.5,
@@ -197,8 +205,8 @@ class beatsMapMaker extends ES6Trans {
       ).hide();
     
     this.component.bpmSelector = new TextInput(this).setStyle({
-        x: 90,
-        y: this.state.firstTop+20,
+        x: 100,
+        y: this.state.firstTop+25,
         borderBottom: '1px solid #ccc',
         width: 40
       }).set({
@@ -222,8 +230,8 @@ class beatsMapMaker extends ES6Trans {
       ).hide();
 
       this.component.stepSelector = new TextInput(this).setStyle({
-        x: 230,
-        y: this.state.firstTop+20,
+        x: 260,
+        y: this.state.firstTop+25,
         borderBottom: '1px solid #ccc',
         width: 40
       }).set({
@@ -365,7 +373,7 @@ class beatsMapMaker extends ES6Trans {
       );
     }
     if(number<this.state.timeLine)
-    for(let i = this.state.timeLine   ; i <= number; i++) {
+    for(let i = this.state.timeLine; i <= (number+this.mapSetting.bpm/60+1); i++) {
       this.component.timeLine[i].hide();
     }
     this.setState({
