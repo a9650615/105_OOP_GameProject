@@ -36,7 +36,7 @@ class beatsMapMaker extends ES6Trans {
    /* this.audio.setVolume('clap', 0.5);*/
 
     this.component.timeLine = [];
-    this.timeStamp = null;
+    //this.timeStamp = null;
     this.songFile = null;
     this.song = new SongParser();
     this.mapSetting = {
@@ -64,13 +64,14 @@ class beatsMapMaker extends ES6Trans {
       this.setState({
         showTime: this.song.getFormatTime()
       });
-      this.timeStamp = (new Date()).getTime();
+      //this.timeStamp = (new Date()).getTime();
     }
     this.state.time = this.song.getCurrentTime();
   }
 
   setBeatMapBlock(align, type, time = {}) {
     let i, error = 0, beatsMap = this.beatsMap;
+    let elementHeight = Game.window.height * 0.2;
     for (i = 0;i<beatsMap.length;i++) {
       if (beatsMap[i].time > time.start) {
         break;
@@ -85,15 +86,18 @@ class beatsMapMaker extends ES6Trans {
         type: type,
         time: time.start,
         endTime: time.end,
+        startStep: this.state.currentStep,
+        endStep: 0,
         element:  
           new Rectangle(this).set({
             x: 0,
-            y: Game.window.height * 0.5,
-            width: Game.window.width,
-            height: Game.window.height * 0.5,
-            background: '#222222'
+            y: Game.window.height * ((align==0)? 0.54: 0.77),
+            width: Game.window.width/(this.state.timeLine * 2),
+            height: elementHeight,
+            background: '#'+Math.floor(Math.random()*16777215).toString(16)//'#708ebf'
           }).hide()
       });
+    this.forceUpdate();
   }
 
   togglePlay() {
@@ -111,7 +115,7 @@ class beatsMapMaker extends ES6Trans {
     let song = this.song;
     let currentTime = song.getCurrentTime();
     
-    if(song)
+    if(song.hasSong())
     switch(e.keyCode) {
       case 38: //up
           song.setCurrentTime(currentTime + 10);
@@ -121,9 +125,13 @@ class beatsMapMaker extends ES6Trans {
         break;
       case 37: //left
           song.setCurrentTime(currentTime - 60/this.mapSetting.bpm);
+          this.update();
+          this.forceUpdate();
         break;
       case 39: //right
           song.setCurrentTime(currentTime + 60/this.mapSetting.bpm);
+          this.update();
+          this.forceUpdate();
         break;
       case 32: //space
          this.togglePlay();
@@ -294,6 +302,7 @@ class beatsMapMaker extends ES6Trans {
       ).setEvent('click', (e) => {
         this.song.setCurrentTime(0);
         this.sTimer(true);
+        this.update();
         // this.setState({
         //   time: 0
         // });
@@ -382,16 +391,17 @@ class beatsMapMaker extends ES6Trans {
   }
   
   update(){
-    this.rootScene.update();
-    this.sTimer();
     let fixCurrentTime = this.song.getCurrentTime()-this.mapSetting.songOffset;
     let revertBpm = 60/this.mapSetting.bpm;
     let step = parseInt(fixCurrentTime / revertBpm);
+    this.rootScene.update();
     //console.log((this.song.getCurrentTime()-this.mapSetting.songOffset)%(60/this.mapSetting.bpm));
-    if (this.state.play && fixCurrentTime% revertBpm <= revertBpm && step != this.state.currentStep){
+    // update current step
+    this.sTimer();
+    if (this.state.play && fixCurrentTime % revertBpm <= revertBpm && step != this.state.currentStep){
       this.audio.play({name: 'clap', loop: false});
-      this.state.currentStep = step;
     }
+    this.state.currentStep = step;
   }
 
   render(parentCtx) {
@@ -416,6 +426,8 @@ class beatsMapMaker extends ES6Trans {
     this.component.play.set({
       text: this.state.play?'暫停':'播放'
     });
+
+    let parts = (this.state.timeLine+this.mapSetting.bpm/60+1);
     let speed = this.state.offset-(this.song.getCurrentTime()%(1*60/this.mapSetting.bpm))*(this.mapSetting.bpm/60);
     for(let i = 0; i <= (this.state.timeLine+this.mapSetting.bpm/60+1); i++) {
       if (this.component.timeLine[i])
@@ -423,6 +435,18 @@ class beatsMapMaker extends ES6Trans {
         x: ((Game.window.width - 22)/this.state.timeLine)*(i+speed)+10
       });
     }
+
+    this.beatsMap.forEach((val, i) => {
+      if (val.startStep > (this.state.currentStep-parts/2) && val.startStep < (this.state.currentStep+parts/2)) {
+        let nowInScreenStep = val.startStep - this.state.currentStep + parseInt(this.state.timeLine/2);
+        val.element.set({
+          x: ((Game.window.width - 22)/this.state.timeLine)*(nowInScreenStep+speed)+10,
+          width: Game.window.width/(this.state.timeLine * 2)
+        }).show();
+      } else {
+        val.element.hide();
+      }
+    });
 
     if (this.song)
       this.component.showTimeCenter.set({

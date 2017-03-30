@@ -24,6 +24,12 @@ export default class SongParser {
       t.audio.addEventListener('canplaythrough', func.bind(t), false);
     });
   }
+  /**
+   * 檢查是否已載入歌曲
+   */
+  hasSong() {
+    return this.audio.src? true: false;
+  }
   
   onGetDuration() {
     this.duration = this.audio.duration;
