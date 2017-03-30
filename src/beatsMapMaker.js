@@ -42,7 +42,8 @@ class beatsMapMaker extends ES6Trans {
     this.mapSetting = {
       difference: 0.39, //誤差值 一般好像是 60/BPM
       bpm: 170, // 範例歌曲 カラフル。
-      songOffset: 0
+      songOffset: 0,
+      isClapOn: false
     };
     this.beatsMap = [
       // {
@@ -94,7 +95,8 @@ class beatsMapMaker extends ES6Trans {
             y: Game.window.height * ((align==0)? 0.54: 0.77),
             width: Game.window.width/(this.state.timeLine * 2),
             height: elementHeight,
-            background: '#'+Math.floor(Math.random()*16777215).toString(16)//'#708ebf'
+            /*background: '#'+Math.floor(Math.random()*16777215).toString(16)//'#708ebf'*/
+           background: '#'+Math.floor(16207872).toString(16) 
           }).hide()
       });
     this.forceUpdate();
@@ -295,7 +297,7 @@ class beatsMapMaker extends ES6Trans {
     this.component.reset = new Botton(this).set(
         {
           text: "重置",
-          x: 400,
+          x: 380,
           y: this.state.firstTop,
           textColor: 'black'
         }
@@ -307,6 +309,18 @@ class beatsMapMaker extends ES6Trans {
         //   time: 0
         // });
       }).hide();
+//
+      this.component.clapswitch = new Botton(this).set(
+        {
+          text: "節拍音",
+          x: 445,
+          y: this.state.firstTop,
+          textColor: 'black'
+        }
+      ).setEvent('click', (e) => {
+       this.mapSetting.isClapOn= !this.mapSetting.isClapOn
+      }).hide();
+//
 
     this.component.timer = new Botton(this).set(
         {
@@ -398,7 +412,7 @@ class beatsMapMaker extends ES6Trans {
     //console.log((this.song.getCurrentTime()-this.mapSetting.songOffset)%(60/this.mapSetting.bpm));
     // update current step
     this.sTimer();
-    if (this.state.play && fixCurrentTime % revertBpm <= revertBpm && step != this.state.currentStep){
+    if (this.state.play && fixCurrentTime % revertBpm <= revertBpm && step != this.state.currentStep && this.mapSetting.isClapOn){
       this.audio.play({name: 'clap', loop: false});
     }
     this.state.currentStep = step;
@@ -410,6 +424,7 @@ class beatsMapMaker extends ES6Trans {
       this.component.turnBack.show();
       this.component.fastForward.show();
       this.component.reset.show();
+      this.component.clapswitch.show();
       this.component.timer.show();
       this.component.bpmSelector.show();
       this.component.bpmLabel.show();
