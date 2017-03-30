@@ -318,7 +318,8 @@ class beatsMapMaker extends ES6Trans {
           textColor: 'black'
         }
       ).setEvent('click', (e) => {
-       this.mapSetting.isClapOn= !this.mapSetting.isClapOn
+        this.mapSetting.isClapOn= !this.mapSetting.isClapOn;
+        this.forceUpdate();
       }).hide();
 //
 
@@ -441,9 +442,12 @@ class beatsMapMaker extends ES6Trans {
     this.component.play.set({
       text: this.state.play?'暫停':'播放'
     });
+    this.component.clapswitch.set({
+      textColor: this.mapSetting.isClapOn?'#c43427': '#000'
+    });
 
     let parts = (this.state.timeLine+this.mapSetting.bpm/60+1);
-    let speed = this.state.offset-(this.song.getCurrentTime()%(1*60/this.mapSetting.bpm))*(this.mapSetting.bpm/60);
+    let speed = this.state.offset-(this.song.getCurrentTime()%(60/this.mapSetting.bpm))*(this.mapSetting.bpm/60);
     for(let i = 0; i <= (this.state.timeLine+this.mapSetting.bpm/60+1); i++) {
       if (this.component.timeLine[i])
       this.component.timeLine[i].set({
@@ -454,6 +458,7 @@ class beatsMapMaker extends ES6Trans {
     this.beatsMap.forEach((val, i) => {
       if (val.startStep > (this.state.currentStep-parts/2) && val.startStep < (this.state.currentStep+parts/2)) {
         let nowInScreenStep = val.startStep - this.state.currentStep + parseInt(this.state.timeLine/2);
+        
         val.element.set({
           x: ((Game.window.width - 22)/this.state.timeLine)*(nowInScreenStep+speed)+10,
           width: Game.window.width/(this.state.timeLine * 2)

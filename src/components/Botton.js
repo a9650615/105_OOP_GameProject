@@ -22,7 +22,7 @@ export default class Botton extends GameObject {
 	}
 	
 	set(option = {}) {
-		this.text.setStyle(Object.assign(this.state, option)).setText(option.text);
+		this.text.setStyle(Object.assign(this.state, option)).setText(option.text||this.state.text);
 
 		this.setState(Object.assign(option, {
 			buttonWidth: this.text.getWidth(),
