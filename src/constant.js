@@ -10,8 +10,8 @@ export const Resource = {
 export const Game = {
   debug: true,
   window: {
-    width: 1350,
-    height: 700
+    width: 1280,
+    height: 720
   }
 };
 

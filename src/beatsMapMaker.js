@@ -19,7 +19,6 @@ class beatsMapMaker extends ES6Trans {
       firstTop: 20,
       showTime: '0 : 00',     
       play: false,
-      tmpSongName: '',
       testX: 200,
       time: 0,
       offset: 0.5,
@@ -43,7 +42,8 @@ class beatsMapMaker extends ES6Trans {
       difference: 0.39, //誤差值 一般好像是 60/BPM
       bpm: 170, // 範例歌曲 カラフル。
       songOffset: 0,
-      isClapOn: false
+      isClapOn: false,
+      tmpSongName: null
     };
     this.beatsMap = [
       // {
@@ -360,9 +360,9 @@ class beatsMapMaker extends ES6Trans {
             var t = this;
             let fileReader = new FileReader();
             fileReader.onload = function() {
-              t.state.tmpSongName = 'song'+ Math.random();
-              fs.writeFileSync(dir+t.state.tmpSongName, Buffer.from(new Uint8Array(this.result)));
-              t.song.setUrl(dir+t.state.tmpSongName, files.name, () => {
+              t.mapSetting.tmpSongName = 'song'+ Math.random();
+              fs.writeFileSync(dir+t.mapSetting.tmpSongName, Buffer.from(new Uint8Array(this.result)));
+              t.song.setUrl(dir+t.mapSetting.tmpSongName, files.name, () => {
                 t.sTimer(true);
               });
               t.forceUpdate();
@@ -381,6 +381,31 @@ class beatsMapMaker extends ES6Trans {
           textColor: 'black'
         }
       )
+
+      this.component.save = new Botton(this).set(
+        {
+          text: "儲存",
+          x: 1000,
+          y: this.state.firstTop + 50,
+          textColor: 'black'
+        }
+      ).setEvent('click', () => {
+        let tmpData = Object.assign({}, this.mapSetting);
+        let currentTime = this.song.getCurrentTime();
+        tmpData.beatsMap = {};
+        this.beatsMap.forEach((val, i) => {
+          tmpData['beatsMap'][i] = Object.assign({}, val);
+          delete tmpData['beatsMap'][i]['element'];
+        });
+        new BeatsMapParser(tmpData).save(this.songFile.name, this.songFile.name).then((object) => {
+          console.log(object.path);
+          this.song.setUrl(object.path, object.songFile, () => {
+            // t.sTimer(true);
+            this.song.setCurrentTime(currentTime);
+            (this.state.play) ? this.song.getPlayer().play(): this.song.getPlayer().pause();
+          });
+        });
+      }).hide();
   }
 
   loadStepLine(number, force = false){
@@ -398,6 +423,7 @@ class beatsMapMaker extends ES6Trans {
     }
     if(number<this.state.timeLine)
     for(let i = this.state.timeLine; i <= (number+this.mapSetting.bpm/60+1); i++) {
+      if (this.component.timeLine[i])
       this.component.timeLine[i].hide();
     }
     this.setState({
@@ -431,6 +457,7 @@ class beatsMapMaker extends ES6Trans {
       this.component.bpmLabel.show();
       this.component.stepLabel.show();
       this.component.stepSelector.show();
+      this.component.save.show();
     }
     this.component.songName.set({
       text: this.songFile?this.songFile.name:"尚未選擇歌曲"

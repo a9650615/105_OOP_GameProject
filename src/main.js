@@ -20,11 +20,12 @@ function uiResize() {
 }
 window.addEventListener("resize", uiResize);
 
+// 場景管理部分
 Framework.Game.addNewLevel({
   menu: new mainMenu(), 
   beatsMapMaker: new beatsMapMaker()
 });
 //Framework.Game.addNewLevel({beatsMapMaker: new beatsMapMaker()});
 Framework.Game.start();
-Framework.Game.goToLevel("beatsMapMaker")
+Framework.Game.goToLevel("beatsMapMaker");
 uiResize();

@@ -21,7 +21,8 @@ export default class SongParser {
       // var audioSrc = t.ctx.createMediaElementSource(t.audio);
       // var analyser = ctx.createAnalyser();
       // audioSrc.connect(analyser);
-      t.audio.addEventListener('canplaythrough', func.bind(t), false);
+      //t.audio.addEventListener('canplaythrough', func.bind(t), false);
+      t.audio.addEventListener('loadedmetadata', func.bind(t), false);
     });
   }
   /**

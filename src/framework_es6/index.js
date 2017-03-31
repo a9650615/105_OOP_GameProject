@@ -55,7 +55,7 @@ class Game {
 		FrameWork = PolygonComponent(FrameWork);
 		FrameWork = SquareComponent(FrameWork);
 		FrameWork = TriangleComponent(FrameWork);
-
+		
 		return FrameWork;
 	}
 }
