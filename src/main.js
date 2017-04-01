@@ -2,6 +2,7 @@ import Framework, {ES6Trans} from './framework_es6';
 import DebugTest from './DebugTest';
 import mainMenu from './mainMenu';
 import beatsMapMaker from './beatsMapMaker';
+import GamePlayScene from './GamePlayScene';
 
 function uiResize() {
   let canvas = document.getElementById('__game_canvas__');/*Framework.Game._currentLevel.config;*/
@@ -23,9 +24,11 @@ window.addEventListener("resize", uiResize);
 // 場景管理部分
 Framework.Game.addNewLevel({
   menu: new mainMenu(), 
-  beatsMapMaker: new beatsMapMaker()
+  beatsMapMaker: new beatsMapMaker(),
+  GamePlayScene: new GamePlayScene()
 });
 //Framework.Game.addNewLevel({beatsMapMaker: new beatsMapMaker()});
 Framework.Game.start();
-Framework.Game.goToLevel("beatsMapMaker");
+Framework.Game.goToLevel("GamePlayScene");
+global.Framework = Framework;
 uiResize();

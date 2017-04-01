@@ -17,10 +17,12 @@ export default class Rectangle extends GameObject {
   }
 
   set(style) {
-    this.setState(Object.assign(
+    let newObj = Object.assign(
       this.state,
       style
-    ));
+    );
+    this._tmpCanvas.resize(this.state.width, this.state.height);
+    this.setState(newObj);
     
     return this;
   }
@@ -28,7 +30,7 @@ export default class Rectangle extends GameObject {
   render(ctx) {
     ctx.save();
     ctx.fillStyle = this.state.background;
-		ctx.fillRect(this.state.x, this.state.y, this.state.width, this.state.height);
+		ctx.fillRect(0, 0, this.state.width, this.state.height);
     ctx.restore();
   }
 }

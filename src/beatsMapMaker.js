@@ -19,7 +19,6 @@ class beatsMapMaker extends ES6Trans {
       firstTop: 20,
       showTime: '0 : 00',     
       play: false,
-      testX: 200,
       time: 0,
       offset: 0.5,
       timeLine: 5,//切成幾單位, 但會根據 bpm 加線
@@ -398,7 +397,6 @@ class beatsMapMaker extends ES6Trans {
           delete tmpData['beatsMap'][i]['element'];
         });
         new BeatsMapParser(tmpData).save(this.songFile.name, this.songFile.name).then((object) => {
-          console.log(object.path);
           this.song.setUrl(object.path, object.songFile, () => {
             // t.sTimer(true);
             this.song.setCurrentTime(currentTime);

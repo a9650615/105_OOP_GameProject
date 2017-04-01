@@ -24,6 +24,7 @@ export default class Botton extends GameObject {
 	set(option = {}) {
 		this.text.setStyle(Object.assign(this.state, option)).setText(option.text||this.state.text);
 
+		this._tmpCanvas.resize(this.text.getWidth(), this.text.getHeight());
 		this.setState(Object.assign(option, {
 			buttonWidth: this.text.getWidth(),
 			buttonHeight: this.text.getHeight()
@@ -58,7 +59,7 @@ export default class Botton extends GameObject {
 		if(this.state.background) {
 			ctx.save();
 			ctx.fillStyle = this.state.background;
-			ctx.fillRect(this.state.x, this.state.y, this.state.buttonWidth, this.state.buttonHeight);
+			ctx.fillRect(0, 0, this.state.buttonWidth, this.state.buttonHeight);
 			ctx.restore();
 		}
 		this.text.render(ctx);

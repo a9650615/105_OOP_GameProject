@@ -37,6 +37,7 @@ export default class BeatsMapParser {
   parse(func) {
     return this._json;
   }
+  
   _replace_path(path){
     return path.replace('/','').replace('.','').replace('\\','').replace(':','').replace('*','')
     .replace('?','').replace('"','').replace('<','').replace('>','').replace('|','').replace('。', '');
@@ -53,7 +54,7 @@ export default class BeatsMapParser {
           this._json.songFile = `${songName}`;
           delete this._json.tmpSongName;
           //console.log(this._json);
-          fs.writeFileSync(`${path}${songName}[${difficult}].json`, JSON.stringify(this._json), 'utf-8'); // write song file
+          fs.writeFileSync(`${path}${this._replace_path(songName.split('.')[0])}[${difficult}].json`, JSON.stringify(this._json), 'utf-8'); // write song file
           this._json.path = `${path}${songName}`;
           resolve(this._json);
         }); // move song file

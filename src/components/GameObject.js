@@ -21,6 +21,11 @@ class GameObject extends ES6Trans{
       hide: null,
       uid: guid()
     };
+
+    this.state = {
+      x: 0,
+      y: 0
+    };
     
     this.prop = prop;
     this.type = 'GameObject';   
@@ -97,9 +102,33 @@ class GameObject extends ES6Trans{
 
   //一般不直接使用它, 背景自動繪製
   draw(ctx) {
-    if (!this._gameObject.hide)
-      this.render(ctx);
+    if(!this._gameObject.hide||this._firstRender) {
+      if (this._stateUpdate) {
+        this.render(this._tmpCanvas.ctx());
+      }
+      ctx.drawImage(this._tmpCanvas.element(), this.state.x, this.state.y);
+    };
+    if (this._stateUpdate)
+      this._stateUpdate = false;
+    if (this._firstRender)
+      this._firstRender = false;
   }
+  
+  /**
+   * 移除元件及相關綁定
+   */
+  remove() {
+    let allElement = Framework.Game._currentLevel._allGameElement;
+    let index = allElement.indexOf(this);
+    if (index != -1)
+      allElement.splice(index, 1);
+  }
+
+  /**
+   * 共用畫布繪製功能
+   */
+
+  //一般可調用 func
 
   load() {
 
@@ -112,15 +141,6 @@ class GameObject extends ES6Trans{
   render(ctx) { 
     //this.rootScene.draw();一定要在第一行
     //this.rootScene.draw(parentCtx);
-  }
-  /**
-   * 移除元件及相關綁定
-   */
-  remove() {
-    let allElement = Framework.Game._currentLevel._allGameElement;
-    let index = allElement.indexOf(this);
-    if (index != -1)
-      allElement.splice(index, 1);
   }
 
   checkMouseUp(e) {

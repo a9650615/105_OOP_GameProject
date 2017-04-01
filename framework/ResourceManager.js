@@ -39,10 +39,13 @@ export default function (Framework) {
                 _intervalID = setInterval(detectAjax, 50);
                 finishLoading();
             }
-			imageObj.onload = function() {
-		      _responseCount++;
-		      _responsedResource[requestOption.id] = { url: requestOption.url, response: imageObj };
-		    };
+			return new Promise((resolve, reject) => {
+				imageObj.onload = function() {
+					_responseCount++;
+					_responsedResource[requestOption.id] = { url: requestOption.url, response: imageObj };
+					resolve();
+				};
+			});
 		};
 
 		var minAjaxJSON = function(requestOption) {

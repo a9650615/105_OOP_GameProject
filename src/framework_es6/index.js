@@ -120,6 +120,8 @@ export let ES6Trans =  class Es6Trans {
 		props.onkeydown = this.onkeydown;
 		props.onkeyup = this.onkeyup;
 		props.onkeypress = this.onkeypress;
+		props._firstRender = true;//第一次繪圖優化測試
+		props._stateUpdate = false;//繪圖優化測試
 		return props;
 	}
 
@@ -191,6 +193,10 @@ export let ES6Trans =  class Es6Trans {
 		this.render(parentCtx);
 		if (this.rootScene)
 			this.rootScene.draw(parentCtx);
+		if (this._stateUpdate)
+      this._stateUpdate = false;
+    if (this._firstRender)
+      this._firstRender = false;
   }
 
 	update() {
@@ -221,8 +227,8 @@ export let ES6Trans =  class Es6Trans {
     );
 		
 		if (res) {
+			this._stateUpdate = true;
 			this.state = Object.assign(this.state, state);
-			
 			if (this.ctx) 
 				this.draw(this.ctx);
 		}

@@ -4,7 +4,7 @@ import DirLoader from './modules/DirLoader';
 import BeatsMapParser from './modules/BeatsMapParser';
 import Text from './components/Text';
 import Botton from './components/Botton';
-import Image from './components/Image';
+import Img from './components/Img';
 
 class menu extends ES6Trans {
   initialize() {

@@ -63,14 +63,14 @@ export default class Text extends GameObject {
 
   render(ctx) {
     let painter = ctx || Framework.Game._context;
-    let content = this._tmpContent;
+    let content = ctx||this._tmpContent;//因該只會跑到 ctx
     let style = this.state.style;
     content.textBaseline = 'top';
     content.font = `${style.textSize||25}px ${style.font||'Arial'}`;
     content.textAlign = style.textAlign || 'left';
     content.fillStyle = style.textColor || 'black';
     content.fillText(this.state.text, 0, 0);
-    painter.drawImage(this._tmpCanvas.element(), style.x, style.y);
+    //painter.drawImage(this._tmpCanvas.element(), style.x, style.y);
   }
 
   getWidth() {
