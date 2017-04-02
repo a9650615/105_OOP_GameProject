@@ -31,10 +31,7 @@ class Img extends GameObject {
         obj['width'] = img.naturalWidth;
         obj['height'] = img.naturalHeight;
         this._tmpCanvas.resize(obj['width'], obj['height']);
-        this.setState(Object.assign(
-          this.state,
-          setting
-        ));
+        this.setState(Object.assign(setting, obj));
       });
     return this;
   }

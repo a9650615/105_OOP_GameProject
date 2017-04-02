@@ -104,6 +104,7 @@ class GameObject extends ES6Trans{
   draw(ctx) {
     if(!this._gameObject.hide||this._firstRender) {
       if (this._stateUpdate) {
+        this._tmpCanvas.ctx().clearRect(0, 0, this._tmpCanvas.element().width, this._tmpCanvas.element().height);
         this.render(this._tmpCanvas.ctx());
       }
       ctx.drawImage(this._tmpCanvas.element(), this.state.x, this.state.y);
