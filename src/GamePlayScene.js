@@ -11,34 +11,34 @@ class GamePlayScene extends ES6Trans {
   }
 
   load() {
-    this.component.character = new Sprite(this).set({
+    new Sprite(this).set({
       url: Resource.image+'freeze.png',
-      wPiece: 10,
-      hPiece: 7,
+      y: 0
+    });
+    this.component.character = new Sprite(this).set({
+      url: Resource.image+'bisca_battler_rpg_maker_mv_by_retrospriteresources-dagd3xg.png',
+      wPiece: 9,
+      hPiece: 6,
       sprWidth: 200,
       sprHeight: 200,
       x: 900,
       y: 100
     });
 
-    new Sprite(this).set({
-      url: Resource.image+'freeze.png',
-      y: 100
-    });
   }
 
   update() {
     this.setState({
       frame: this.state.frame+0.1
     });
-    if(this.state.frame>69) 
+    if(this.state.frame>54) 
       this.setState({
-        frame: 0
+        frame: 1
       });
+    this.component.character.showPiece(this.state.frame);
   }
 
   render() {
-    this.component.character.showPiece(this.state.frame);
   }
 }
 

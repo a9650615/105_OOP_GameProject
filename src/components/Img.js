@@ -18,6 +18,7 @@ class Img extends GameObject {
   set(setting) {
     //let img = new Framework.Sprite(`${Resource.image}${setting.image}`);
     let t = this;
+    
     Framework.ResourceManager.loadImage({id: this._gameObject.uid, url: setting.url})
       .then(() => {
         let img = Framework.ResourceManager.getResource(this._gameObject.uid);
@@ -27,7 +28,7 @@ class Img extends GameObject {
           setting
         );
         
-        this.component.preLoadImg = img;
+        this.preLoadImg = img;
         obj['width'] = img.naturalWidth;
         obj['height'] = img.naturalHeight;
         this._tmpCanvas.resize(obj['width'], obj['height']);
@@ -37,7 +38,7 @@ class Img extends GameObject {
   }
 
   render(ctx) {
-    ctx.drawImage(this.component.preLoadImg, 0, 0);
+    ctx.drawImage(this.preLoadImg, 0, 0);
   }
 
 }

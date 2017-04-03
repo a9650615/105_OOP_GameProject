@@ -30,7 +30,7 @@ export default class Sprite extends Img{
   render(ctx) {
     let state = this.state;
     let next = (state.showPiece%(state.wPiece));
-    let level = parseInt(state.showPiece/(state.hPiece));
+    let level = parseInt(state.showPiece/(state.wPiece));
     let pieceX = (state.wPiece>1)?(state.width/state.wPiece):state.width;
     let pieceY = (state.hPiece>1)?(state.height/state.hPiece):state.height;
     let sprWidth = this.state.sprWidth;
@@ -38,9 +38,10 @@ export default class Sprite extends Img{
     let offsetX = pieceX * next;
     let offsetY = pieceY * level;
     let ele = this._tmpCanvas.element();
+    
     if(ele.width != (sprWidth||pieceX) || ele.width != (sprHeight||pieceY))
       this._tmpCanvas.resize(sprWidth||pieceX, sprHeight||pieceY);
-    ctx.drawImage(this.component.preLoadImg, 
+    ctx.drawImage(this.preLoadImg, 
       offsetX, offsetY, parseInt(pieceX), parseInt(pieceY),
       0, 0, parseInt(sprWidth||pieceX), parseInt(sprHeight||pieceY)
     );
