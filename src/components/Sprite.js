@@ -29,10 +29,12 @@ export default class Sprite extends Img{
 
   render(ctx) {
     let state = this.state;
+    let width = state['width'] || state['naturalWidth'];
+    let height = state['height'] || state['naturalHeight'];
     let next = (state.showPiece%(state.wPiece));
     let level = parseInt(state.showPiece/(state.wPiece));
-    let pieceX = (state.wPiece>1)?(state.width/state.wPiece):state.width;
-    let pieceY = (state.hPiece>1)?(state.height/state.hPiece):state.height;
+    let pieceX = (state.wPiece>1)?(width/state.wPiece):width;
+    let pieceY = (state.hPiece>1)?(height/state.hPiece):height;
     let sprWidth = this.state.sprWidth;
     let sprHeight = this.state.sprHeight;
     let offsetX = pieceX * next;

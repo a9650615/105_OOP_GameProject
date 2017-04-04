@@ -18,7 +18,7 @@ class GameObject extends ES6Trans{
     this._tmpContent = this._tmpCanvas.ctx();
     
     this._gameObject = {
-      hide: null,
+      hide: false,
       uid: guid()
     };
 

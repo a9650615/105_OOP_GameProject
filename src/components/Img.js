@@ -10,9 +10,27 @@ class Img extends GameObject {
       y: 10,
       width: null,
       height: null,
+      naturalHeight: null,
+      naturalWidth: null,
       url: null
     };
     
+  }
+
+  _getAutoSize(w = null, h = null, naturalWidth = 0, naturalHeight = 0) {
+    let scale = 1;
+    if (w&&!h) {
+      scale = w/naturalWidth;
+    } else if(h&&!w) {
+      scale = h/naturalHeight;
+    } else if(!h&&!w) {
+      return {width: null, height: null};
+    };
+    
+    return {
+      width: naturalWidth * scale,
+      height: naturalHeight * scale
+    };
   }
 
   set(setting) {
@@ -27,18 +45,23 @@ class Img extends GameObject {
           this.state,
           setting
         );
-        
+        let scaleSize = this._getAutoSize(obj['width'], obj['height'], img.naturalWidth, img.naturalHeight);
+        obj['width'] = scaleSize['width'];
+        obj['height'] = scaleSize['height'];
         this.preLoadImg = img;
-        obj['width'] = img.naturalWidth;
-        obj['height'] = img.naturalHeight;
-        this._tmpCanvas.resize(obj['width'], obj['height']);
+        obj['naturalWidth'] = img.naturalWidth;
+        obj['naturalHeight'] = img.naturalHeight;
+        this._tmpCanvas.resize(obj['width']||obj['naturalWidth'], obj['height']||obj['naturalHeight']);
         this.setState(Object.assign(setting, obj));
       });
     return this;
   }
 
   render(ctx) {
-    ctx.drawImage(this.preLoadImg, 0, 0);
+    let obj = this.state;
+    ctx.drawImage(this.preLoadImg, 0, 0, 
+      obj['width']||obj['naturalWidth'], 
+      obj['height']||obj['naturalHeight']);
   }
 
 }
