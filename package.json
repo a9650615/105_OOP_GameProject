@@ -9,16 +9,21 @@
     "babel-register": "^6.3.13",
     "musicmetadata": "^2.0.5",
     "react": "^15.3.2",
-    "react-dom": "^15.3.2"
+    "react-dom": "^15.3.2",
+    "webpack": "^2.3.3"
   },
   "devDependencies": {
-    "babel-eslint": "^7.1.1",
-    "electron": "^1.6.1",
+    "babel-eslint": "^7.2.1",
+    "babel-loader": "^6.4.1",
+    "electron": "^1.6.2",
     "eslint": "^3.17.0",
-    "eslint-plugin-import": "^2.2.0"
+    "eslint-plugin-import": "^2.2.0",
+    "webpack-dev-server": "^2.4.2"
   },
   "scripts": {
-    "start": "electron -r babel-register ."
+    "start": "electron -r babel-register .",
+    "build": "WEBPACK_ENV=build webpack",
+    "dev": "webpack-dev-server --hot --inline --watch-poll --content-base ."
   },
   "repository": {
     "type": "git",

@@ -19,7 +19,8 @@ class GameObject extends ES6Trans{
     
     this._gameObject = {
       hide: false,
-      uid: guid()
+      uid: guid(),
+      align: 'left'
     };
 
     this.state = {
@@ -102,12 +103,18 @@ class GameObject extends ES6Trans{
 
   //一般不直接使用它, 背景自動繪製
   draw(ctx) {
+    let offsetX = this.state.x, offsetY = this.state.y;
     if(!this._gameObject.hide||this._firstRender) {
       if (this._stateUpdate) {
         this._tmpCanvas.ctx().clearRect(0, 0, this._tmpCanvas.element().width, this._tmpCanvas.element().height);
         this.render(this._tmpCanvas.ctx());
       }
-      ctx.drawImage(this._tmpCanvas.element(), this.state.x, this.state.y);
+
+      if(this._gameObject.align == 'center') {
+        offsetX = this.state.x - this.state.width / 2;
+        offsetY = this.state.y - this.state.height / 2;
+      }
+      ctx.drawImage(this._tmpCanvas.element(), offsetX, offsetY);
     };
     if (this._stateUpdate)
       this._stateUpdate = false;

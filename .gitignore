@@ -3,3 +3,5 @@ node_modules
 npm-debug.log
 Songs/*
 !Songs/thisIsSongFolder
+/lib/build.*
+.idea

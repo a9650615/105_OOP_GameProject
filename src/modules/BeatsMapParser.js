@@ -1,4 +1,5 @@
-import fs from 'fs';
+// import fs from 'fs';
+import Framework from '../framework_es6';
 import {Resource} from '../constant';
 
 export default class BeatsMapParser {
@@ -13,25 +14,31 @@ export default class BeatsMapParser {
       // path type
       t._json = Object();
       return new Promise((resolve, reject) => {
-        fs.readFile(path, {encoding: 'utf-8'}, function(err,data){
-          if (!err){
-          if (data!='' && /^[\],:{}\s]*$/.test(data.replace(/\\["\\\/bfnrtu]/g, '@').
-  replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').
-  replace(/(?:^|:|,)(?:\s*\[)+/g, '')))
-            {
-              t._json = JSON.parse(data);
-              resolve(t._json);
-            } /*else
-              reject('json input type error.')*/
-          }else{
-            reject('Error when readfile! '+err);
-            throw new Error('Error when readfile! '+err);
-          }
+        Framework.ResourceManager.loadJSON({id: 'BeatsMapParser', type: 'GET', url: pathOrObject}).then(() => {
+          let data = Framework.ResourceManager.getResource('BeatsMapParser');
+          this._json = data;
+          resolve(data);
         });
+  //       fs.readFile(pathOrObject, {encoding: 'utf-8'}, function(err,data){
+  //         if (!err){
+  //         if (data!='' && /^[\],:{}\s]*$/.test(data.replace(/\\["\\\/bfnrtu]/g, '@').
+  // replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').
+  // replace(/(?:^|:|,)(?:\s*\[)+/g, '')))
+  //           {
+  //             t._json = JSON.parse(data);
+  //             resolve(t._json);
+  //           } /*else
+  //             reject('json input type error.')*/
+  //         }else{
+  //           reject('Error when readfile! '+err);
+  //           throw new Error('Error when readfile! '+err);
+  //         }
+  //       });
       });
     } else if(typeof pathOrObject === 'object') {
       this._json = pathOrObject;
     }
+    return this;
   }
 
   parse(func) {

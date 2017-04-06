@@ -1,7 +1,7 @@
 import Framework, {ES6Trans} from './framework_es6';
 import {Resource} from './constant';
 import DirLoader from './modules/DirLoader';
-import BeatsMapParser from './modules/BeatsMapParser';
+// import BeatsMapParser from './modules/BeatsMapParser';
 import Text from './components/Text';
 import Botton from './components/Botton';
 import Img from './components/Img';

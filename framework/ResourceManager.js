@@ -49,13 +49,20 @@ export default function (Framework) {
 		};
 
 		var minAjaxJSON = function(requestOption) {
-			requestOption.systemSuccess = function(responseText, textStatus, xmlHttpRequest) { 
-				var responseJSON = eval('(' + responseText.trim() + ')');	//因有可能是不合法的JSON, 故只能用eval了
-				_responsedResource[requestOption.id] = { url: requestOption.url, response: responseJSON };	
-				_responseCount++;		
-			};
+			return new Promise((resolve, reject) => {
+				requestOption.systemSuccess = function(responseText, textStatus, xmlHttpRequest) { 
+					var responseJSON = eval('(' + responseText.trim() + ')');	//因有可能是不合法的JSON, 故只能用eval了
+					_responsedResource[requestOption.id] = { url: requestOption.url, response: responseJSON };	
+					_responseCount++;
+					resolve();		
+				};
 
-			minAjax(requestOption.type, requestOption);	
+				requestOption.systemError = function(responseText, textStatus, xmlHttpRequest) { 
+					reject();
+				};
+
+				minAjax(requestOption.type, requestOption);	
+			});
 		};
 
 		var minAjax = function(type, requestOption) {
@@ -69,7 +76,7 @@ export default function (Framework) {
 			if (!Framework.Util.isUndefined(requestOption.systemSuccess)) {
 				userSettings['success'] = requestOption.systemSuccess;
 			}	
-
+			userSettings['error'] = requestOption.systemError;
 			ajax(requestOption, userSettings);
 		};
 

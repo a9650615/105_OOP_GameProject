@@ -1,4 +1,5 @@
 import Framework, {ES6Trans} from './framework_es6';
+import {Game} from './constant';
 import DebugTest from './DebugTest';
 import mainMenu from './mainMenu';
 import beatsMapMaker from './beatsMapMaker';
@@ -24,7 +25,7 @@ window.addEventListener("resize", uiResize);
 // 場景管理部分
 Framework.Game.addNewLevel({
   menu: new mainMenu(), 
-  beatsMapMaker: new beatsMapMaker(),
+  beatsMapMaker: (Game.client=='web')?{}:new beatsMapMaker(),
   GamePlayScene: new GamePlayScene()
 });
 //Framework.Game.addNewLevel({beatsMapMaker: new beatsMapMaker()});

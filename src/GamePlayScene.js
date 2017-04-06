@@ -1,5 +1,6 @@
 import Framework, {ES6Trans} from './framework_es6';
 import {Resource, Game} from './constant';
+import BeatsMapParser from './modules/BeatsMapParser';
 import Img from './components/Img';
 import Sprite from './components/Sprite';
 import Stage from './components/Stage';
@@ -9,6 +10,9 @@ class GamePlayScene extends ES6Trans {
     this.state = {
       frame: 0
     };
+    new BeatsMapParser(Resource.songs+'asd/asd[default].json').then((data) => {
+      console.log(data);
+    });
   }
 
   characterUpdate() {
@@ -30,7 +34,7 @@ class GamePlayScene extends ES6Trans {
       x: 0,
       y: -200,
       width: 1920
-    })
+    });
     new Stage(this);
     this.component.character = new Sprite(this).set({
       url: Resource.image+'bisca_battler_rpg_maker_mv_by_retrospriteresources-dagd3xg.png',
