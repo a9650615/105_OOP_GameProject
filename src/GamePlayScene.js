@@ -8,9 +8,10 @@ import Stage from './components/Stage';
 class GamePlayScene extends ES6Trans {
   initializeProgressResource() {
     this.state = {
-      frame: 0
+      frame: 0,
+      hp: 100 //百分比
     };
-    new BeatsMapParser(Resource.songs+'asd/asd[default].json').then((data) => {
+    new BeatsMapParser(Resource.songs+'沢井美空 - カラフル/沢井美空 - カラフル[default].json').then((data) => {
       console.log(data);
     });
   }
@@ -35,7 +36,7 @@ class GamePlayScene extends ES6Trans {
       y: -200,
       width: 1920
     });
-    new Stage(this);
+    this.component.stage = new Stage(this);
     this.component.character = new Sprite(this).set({
       url: Resource.image+'bisca_battler_rpg_maker_mv_by_retrospriteresources-dagd3xg.png',
       wPiece: 9,
@@ -50,9 +51,18 @@ class GamePlayScene extends ES6Trans {
 
   update() {
     this.characterUpdate();
+    if(this.state.hp>0) {
+      // 扣血範例
+      this.setState({
+        hp: this.state.hp - 0.01
+      });
+    }
   }
 
   render() {
+    this.component.stage.set({
+      hp: this.state.hp
+    });
   }
 }
 

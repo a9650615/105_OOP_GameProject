@@ -122,7 +122,7 @@ export default function (Framework) {
 			}
 			
 			xhr.open(userSettings.type, requestOption.url, userSettings.async);	
-			xhr.overrideMimeType('text/plain; charset=x-user-defined'); 
+			// xhr.overrideMimeType('text/plain; charset=x-user-defined'); 
 			
 			if (userSettings.type === 'GET')	{
 				xhr.send();

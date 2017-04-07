@@ -1,4 +1,4 @@
-// import fs from 'fs';
+import fs from 'fs';
 import Framework from '../framework_es6';
 import {Resource} from '../constant';
 

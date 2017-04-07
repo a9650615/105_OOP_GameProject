@@ -11,10 +11,15 @@ export default class Stage extends GameObject{
       y: 0,
       width: null,
       height: null, // 以上為必須選項
-      Hp: 100, // 百分比
+      hp: 100, // 百分比
       offsetX: 0,
       offsetY: 0
     };
+  }
+
+  set(data) {
+    let newState = Object.assign({}, this.state, data);
+    this.setState(newState);
   }
 
   load() {
@@ -46,15 +51,19 @@ export default class Stage extends GameObject{
         }),
       stageCentLineBlood: new Rectangle(this._parent).set({
           x: (GameWidth - 10)/2,
-          y: GameHeight - (GameHeight/2)*0.8,
+          y: GameHeight - (GameHeight/2)*(this.state.hp/100),
           width: 10,
-          height: (GameHeight/2)*0.8,
+          height: (GameHeight/2)*(this.state.hp/100),
           background: 'green'
         }),
     };
   }
 
   render() {
-
+    let GameWidth = Game.window.width, GameHeight = Game.window.height;
+    this.component.stageCentLineBlood.set({
+       height: (GameHeight/2)*(this.state.hp/100),
+       y: GameHeight - (GameHeight/2)*(this.state.hp/100)
+    });
   }
 };
