@@ -1,5 +1,6 @@
 import fs from 'fs';
 import mm from 'musicmetadata';
+import {Game} from '../constant';
 
 export default class SongParser {
   constructor() {
@@ -8,22 +9,34 @@ export default class SongParser {
 
     this.getPlayer.bind(this);
   }
-
-  setUrl(file_path, filename, func = () => {}) {
+  /**
+   * 載入歌曲
+   * @param {string} file_path 
+   * @param {string} filename 
+   * @param {func} func 
+   */
+  setUrl(file_path, filename = '', func = () => {}) {
     let t = this;
-    mm(fs.createReadStream(file_path), function (err, metadata) {
-      if (err) throw err;
-      t.info = metadata;
-      t.info.name = filename;
+    if (Game.client != 'web')
+      mm(fs.createReadStream(file_path), function (err, metadata) {
+        if (err) throw err;
+        t.info = metadata;
+        t.info.name = filename;
+        t.audio.src = file_path;
+        t.audio.onloadedmetadata = t.onGetDuration.bind(t);
+        // t.ctx = new AudioContext();
+        // var audioSrc = t.ctx.createMediaElementSource(t.audio);
+        // var analyser = ctx.createAnalyser();
+        // audioSrc.connect(analyser);
+        //t.audio.addEventListener('canplaythrough', func.bind(t), false);
+        t.audio.addEventListener('loadedmetadata', func.bind(t), false);
+      });
+    else {
       t.audio.src = file_path;
       t.audio.onloadedmetadata = t.onGetDuration.bind(t);
-      // t.ctx = new AudioContext();
-      // var audioSrc = t.ctx.createMediaElementSource(t.audio);
-      // var analyser = ctx.createAnalyser();
-      // audioSrc.connect(analyser);
-      //t.audio.addEventListener('canplaythrough', func.bind(t), false);
       t.audio.addEventListener('loadedmetadata', func.bind(t), false);
-    });
+    }
+
   }
   /**
    * 檢查是否已載入歌曲

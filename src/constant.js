@@ -9,7 +9,7 @@ export const Resource = {
 
 export const Game = {
   debug: true,
-  client: 'desktop',
+  client: 'web',
   window: {
     width: 1280,
     height: 720
