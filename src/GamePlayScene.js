@@ -20,21 +20,6 @@ class GamePlayScene extends ES6Trans {
 
     this.beatsMap = {};
     this.song = new SongParser();
-    let songFolder = Resource.songs+'沢井美空 - カラフル/';
-    new BeatsMapParser(songFolder+'沢井美空 - カラフル[default].json').then((data) => {
-      this.beatsMap = data;
-      this.beatsMap.beatsMap = Object.keys(this.beatsMap.beatsMap).map((index) => {
-        return this.beatsMap.beatsMap[index];
-      });
-      this.song.setUrl(songFolder+this.beatsMap.songFile, this.beatsMap.songFile, () => {
-        this.setState({
-          loaded: true,
-          play: true
-        });
-        this.component.silderStage.loadbeatsMap(this.beatsMap);
-        this.playSong();
-      });
-    });
   }
 
   characterUpdate() {
@@ -87,7 +72,22 @@ class GamePlayScene extends ES6Trans {
         text: 'debbug text'
       })
     };
-
+    
+    let songFolder = Resource.songs+'沢井美空 - カラフル/';
+    new BeatsMapParser(songFolder+'沢井美空 - カラフル[default].json').then((data) => {
+      this.beatsMap = data;
+      this.beatsMap.beatsMap = Object.keys(this.beatsMap.beatsMap).map((index) => {
+        return this.beatsMap.beatsMap[index];
+      });
+      this.song.setUrl(songFolder+this.beatsMap.songFile, this.beatsMap.songFile, () => {
+        this.setState({
+          loaded: true,
+          play: true
+        });
+        this.component.silderStage.loadbeatsMap(this.beatsMap);
+        this.playSong();
+      });
+    });
   }
 
   update() {

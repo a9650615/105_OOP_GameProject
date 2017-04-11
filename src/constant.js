@@ -9,11 +9,12 @@ export const Resource = {
 
 export const Game = {
   debug: true,
-  client: 'web',
+  client: process.env.RUN_ENVIRON,
   window: {
     width: 1280,
     height: 720
   }
 };
+console.log(process.env.RUN_ENVIRON);
 
 export default {};

@@ -15,15 +15,16 @@
   "devDependencies": {
     "babel-eslint": "^7.2.1",
     "babel-loader": "^6.4.1",
+    "cross-env": "^4.0.0",
     "electron": "^1.6.2",
     "eslint": "^3.17.0",
     "eslint-plugin-import": "^2.2.0",
     "webpack-dev-server": "^2.4.2"
   },
   "scripts": {
-    "start": "electron -r babel-register .",
-    "build": "WEBPACK_ENV=build webpack",
-    "dev": "webpack-dev-server --hot --inline --watch-poll --content-base ."
+    "start": "cross-env RUN_ENVIRON=client electron -r babel-register .",
+    "build": "RUN_ENVIRON=web WEBPACK_ENV=build webpack",
+    "dev": "RUN_ENVIRON=web webpack-dev-server --hot --inline --watch-poll --content-base ."
   },
   "repository": {
     "type": "git",

@@ -3,6 +3,10 @@
 var webpack = require('webpack');
 var path = require('path');
 
+var envToBeInjected = {
+  RUN_ENVIRON: process.env.RUN_ENVIRON
+};
+
 var config = {
   entry: __dirname + '/src/main.js',
   devtool: 'source-map',
@@ -22,7 +26,12 @@ var config = {
         exclude: /(node_modules|bower_components)/
       }
     ]
-  }
+  },
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env': JSON.stringify(envToBeInjected)
+    })
+  ]
 };
 
 module.exports = config;

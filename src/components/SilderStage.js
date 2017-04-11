@@ -26,7 +26,7 @@ class SilderStage extends GameObject {
         y: this.state.y,
         width: this.state.width/(2*this.state.range), //*2 是因為畫面砍半
         height: this.state.height,
-        background: '#'+Math.floor(16207872).toString(16) 
+        background: '#d15169'
       }).hide();
     }) 
   }
@@ -49,23 +49,24 @@ class SilderStage extends GameObject {
   }
 
   load() {
-
   }
 
   render() {
     if (this.beatsMap) {
-      let width = this.state.width / 2;
+      let width = this.state.width;
       let beatsMap = this.beatsMap.beatsMap;
       let currentStep = this.state.currentStep;
       let currentTime = this.state.currentTime;
-      let rangeTime = this.beatsMap.difference * this.state.range;
+      let difference = this.beatsMap.difference;
+      let rangeTime = difference * this.state.range; //只有一半
       if (beatsMap)
       beatsMap.forEach((val, i) => {
         val.element.hide();
-        if (val.startStep > currentStep && val.startStep < (currentStep+this.state.range)) {
-          let x = (val.align==0)?(width*(currentTime%rangeTime)):(width*2 - width*(currentTime%rangeTime));
+        if (val.startStep > currentStep && val.startStep <= (currentStep+this.state.range)) {
+          let elementTime = 1-((val.startStep*difference)/2-currentTime)%rangeTime;
+          let x = (val.align==0)?(width*(elementTime/rangeTime)):(width - width*(elementTime/rangeTime));
           val.element.set({
-            x: x
+            x: x + 10
           }).show();
         };
       });
