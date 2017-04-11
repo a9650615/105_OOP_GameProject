@@ -8,7 +8,8 @@ class SilderStage extends GameObject {
     Object.assign(this.state, {
       currentStep: 0,
       range: 5, // 單邊五個 共 1o 個
-      currentTime: 0
+      currentTime: 0,
+      hpWidth: 10, // hp 條寬度
     });
 
     this.beatsMap = null;
@@ -62,11 +63,21 @@ class SilderStage extends GameObject {
       if (beatsMap)
       beatsMap.forEach((val, i) => {
         val.element.hide();
-        if (val.startStep > currentStep && val.startStep <= (currentStep+this.state.range)) {
+        let eleWidth = width/(2*this.state.range);
+        if (val.startStep >= currentStep && val.startStep <= (currentStep+this.state.range+1)) {
           let elementTime = 1-((val.startStep*difference)/2-currentTime)%rangeTime;
           let x = (val.align==0)?(width*(elementTime/rangeTime)):(width - width*(elementTime/rangeTime));
+          if (val.align == 0 && (x+eleWidth)>width/2) {  // 左半部區塊寬度調整
+            eleWidth = (((width-this.state.hpWidth)/2) - x);
+          }
+          if (val.align == 1 && x<width/2) {  // 右半部區塊寬度調整
+            eleWidth = eleWidth - (((width-this.state.hpWidth)/2) - x);
+            // console.log(eleWidth);
+            x = (width+this.state.hpWidth)/2;
+          }
           val.element.set({
-            x: x + 10
+            x: x + 10,
+            width: eleWidth
           }).show();
         };
       });

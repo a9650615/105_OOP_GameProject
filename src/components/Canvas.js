@@ -15,5 +15,6 @@ export default class Canvas{
   resize(w = this._Canvas.width, h = this._Canvas.height) {
     this._Canvas.width = w;
     this._Canvas.height = h;
+    return this;
   }
 }
