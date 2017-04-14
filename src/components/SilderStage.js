@@ -7,9 +7,10 @@ class SilderStage extends GameObject {
     this._parent = prop;
     Object.assign(this.state, {
       currentStep: 0,
-      range: 8, // 單邊五個 共 1o 個
+      range: 5, // 單邊五個 共 1o 個
       currentTime: 0,
       hpWidth: 10, // hp 條寬度
+      difference: [0.042, 0.092, 0.166]
     });
 
     this.beatsMap = null;
@@ -36,7 +37,9 @@ class SilderStage extends GameObject {
     if (this.beatsMap) {
       let fixCurrentTime = time - this.beatsMap.songOffset;
       let revertBpm = 60/this.beatsMap.bpm;
-      let step = parseInt(fixCurrentTime / revertBpm);
+      // console.log(this.beatsMap.bpm, revertBpm, this.beatsMap.difference);
+      // let step = parseInt(fixCurrentTime / revertBpm);
+      let step = parseInt(fixCurrentTime / this.beatsMap.difference);
       this.setState({
         currentTime: time,
         currentStep: step
@@ -58,17 +61,19 @@ class SilderStage extends GameObject {
    */
   keyHit(type) {
     let beatsMap = this.beatsMap.beatsMap;
+    let currentStep = this.state.currentStep;
     beatsMap.forEach((val, i) => {
-      this._checkSilderInSpace(val.startStep, () => {
-
-      })
+      if (val.startStep == currentStep) {
+        console.log(val.startStep * this.beatsMap.difference - this.state.currentTime)
+        val.element.hide();
+      }
     });
   }
 
   _checkSilderInSpace(step, func = () => {}) {
     let currentStep = this.state.currentStep;
     let range = this.state.range;
-    if (step > (currentStep-this.state.range) && step <= (currentStep+this.state.range)) {
+    if (step > (currentStep-1) && step <= (currentStep+this.state.range)) {
       func.call();
     }
   }
@@ -86,7 +91,7 @@ class SilderStage extends GameObject {
         val.element.hide();
         let eleWidth = width/(2*this.state.range) - 20;
         this._checkSilderInSpace(val.startStep, () => {
-          let elementTime = 1-((val.startStep*difference)/2-currentTime)%rangeTime;
+          let elementTime = 1-((val.startStep*difference)-currentTime)%rangeTime;
           let x = (val.align==0)?(width*(elementTime/rangeTime)):(width - width*(elementTime/rangeTime));
           if (val.align == 0 && (x+eleWidth)>width/2) {  // 左半部區塊寬度調整
             eleWidth = (((width-this.state.hpWidth)/2) - x);

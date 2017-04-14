@@ -226,6 +226,7 @@ class beatsMapMaker extends ES6Trans {
         }
       }).setEvent('change', (e, t) => {
         Scene.mapSetting.bpm = t.value();
+        Scene.mapSetting.difference = 60/t.value();
         Scene.forceUpdate();
       }).value(this.mapSetting.bpm).hide();
 

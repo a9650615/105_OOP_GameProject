@@ -43,10 +43,10 @@ class GamePlayScene extends ES6Trans {
     let keyCode = Game.keyCode;
     switch(e.keyCode) {
       case keyCode.leftHit:
-        console.log('left')
+        this.component.silderStage.keyHit(0);
         break;
       case keyCode.rightHit:
-        console.log('right')
+        this.component.silderStage.keyHit(1);
         break;
     }
   }
@@ -104,11 +104,12 @@ class GamePlayScene extends ES6Trans {
 
   update() {
     this.characterUpdate();
-    if(this.state.hp>0) {
+    if(this.state.hp>0 && this.state.play) {
       // 扣血範例
       this.setState({
         hp: this.state.hp - 0.01
       });
+      this.component.silderStage.setCurrentTime(this.song.getCurrentTime());
     }
   }
 
@@ -124,7 +125,6 @@ class GamePlayScene extends ES6Trans {
       this.component.debugText.set({
         text: 'step:'+step
       });
-      this.component.silderStage.setCurrentTime(this.song.getCurrentTime());
     }
   }
 }
