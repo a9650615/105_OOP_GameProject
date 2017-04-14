@@ -23,8 +23,8 @@
   },
   "scripts": {
     "start": "cross-env RUN_ENVIRON=client electron -r babel-register .",
-    "build": "RUN_ENVIRON=web WEBPACK_ENV=build webpack",
-    "dev": "RUN_ENVIRON=web webpack-dev-server --hot --inline --watch-poll --content-base ."
+    "build": "cross-env RUN_ENVIRON=web WEBPACK_ENV=build webpack",
+    "dev": "cross-env RUN_ENVIRON=web webpack-dev-server --hot --inline --watch-poll --content-base ."
   },
   "repository": {
     "type": "git",
