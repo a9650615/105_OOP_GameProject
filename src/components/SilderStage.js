@@ -7,7 +7,7 @@ class SilderStage extends GameObject {
     this._parent = prop;
     Object.assign(this.state, {
       currentStep: 0,
-      range: 5, // 單邊五個 共 1o 個
+      range: 8, // 單邊五個 共 1o 個
       currentTime: 0,
       hpWidth: 10, // hp 條寬度
     });
@@ -52,6 +52,21 @@ class SilderStage extends GameObject {
   load() {
   }
 
+  /**
+   * 打擊判定
+   * @param {int} type 
+   */
+  keyHit(type) {
+    // let beatsMap = this.beatsMap.beatsMap;
+    // beatsMap.forEach((val, i) => {
+    //   val.element.hide();
+    //   let eleWidth = width/(2*this.state.range) - 20;
+    //   if (val.startStep >= currentStep-this.state.range && val.startStep <= (currentStep+this.state.range+1)) {
+       
+    //   };
+    // });
+  }
+
   render() {
     if (this.beatsMap) {
       let width = this.state.width;
@@ -63,15 +78,15 @@ class SilderStage extends GameObject {
       if (beatsMap)
       beatsMap.forEach((val, i) => {
         val.element.hide();
-        let eleWidth = width/(2*this.state.range);
-        if (val.startStep >= currentStep && val.startStep <= (currentStep+this.state.range+1)) {
+        let eleWidth = width/(2*this.state.range) - 20;
+        if (val.startStep >= currentStep-this.state.range && val.startStep <= (currentStep+this.state.range+1)) {
           let elementTime = 1-((val.startStep*difference)/2-currentTime)%rangeTime;
           let x = (val.align==0)?(width*(elementTime/rangeTime)):(width - width*(elementTime/rangeTime));
           if (val.align == 0 && (x+eleWidth)>width/2) {  // 左半部區塊寬度調整
             eleWidth = (((width-this.state.hpWidth)/2) - x);
           }
           if (val.align == 1 && x<width/2) {  // 右半部區塊寬度調整
-            eleWidth = eleWidth - (((width-this.state.hpWidth)/2) - x);
+            eleWidth = eleWidth - (((width-this.state.hpWidth)/2) - x) -20;
             // console.log(eleWidth);
             x = (width+this.state.hpWidth)/2;
           }
