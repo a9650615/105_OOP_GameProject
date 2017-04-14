@@ -57,14 +57,20 @@ class SilderStage extends GameObject {
    * @param {int} type 
    */
   keyHit(type) {
-    // let beatsMap = this.beatsMap.beatsMap;
-    // beatsMap.forEach((val, i) => {
-    //   val.element.hide();
-    //   let eleWidth = width/(2*this.state.range) - 20;
-    //   if (val.startStep >= currentStep-this.state.range && val.startStep <= (currentStep+this.state.range+1)) {
-       
-    //   };
-    // });
+    let beatsMap = this.beatsMap.beatsMap;
+    beatsMap.forEach((val, i) => {
+      this._checkSilderInSpace(val.startStep, () => {
+
+      })
+    });
+  }
+
+  _checkSilderInSpace(step, func = () => {}) {
+    let currentStep = this.state.currentStep;
+    let range = this.state.range;
+    if (step > (currentStep-this.state.range) && step <= (currentStep+this.state.range)) {
+      func.call();
+    }
   }
 
   render() {
@@ -79,7 +85,7 @@ class SilderStage extends GameObject {
       beatsMap.forEach((val, i) => {
         val.element.hide();
         let eleWidth = width/(2*this.state.range) - 20;
-        if (val.startStep >= currentStep-this.state.range && val.startStep <= (currentStep+this.state.range+1)) {
+        this._checkSilderInSpace(val.startStep, () => {
           let elementTime = 1-((val.startStep*difference)/2-currentTime)%rangeTime;
           let x = (val.align==0)?(width*(elementTime/rangeTime)):(width - width*(elementTime/rangeTime));
           if (val.align == 0 && (x+eleWidth)>width/2) {  // 左半部區塊寬度調整
@@ -87,14 +93,13 @@ class SilderStage extends GameObject {
           }
           if (val.align == 1 && x<width/2) {  // 右半部區塊寬度調整
             eleWidth = eleWidth - (((width-this.state.hpWidth)/2) - x) -20;
-            // console.log(eleWidth);
             x = (width+this.state.hpWidth)/2;
           }
           val.element.set({
             x: x + 10,
             width: eleWidth
           }).show();
-        };
+        });
       });
     };
   }

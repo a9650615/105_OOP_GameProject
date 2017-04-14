@@ -13,6 +13,10 @@ export const Game = {
   window: {
     width: 1280,
     height: 720
+  },
+  keyCode: {
+    leftHit: 81,
+    rightHit: 69
   }
 };
 console.log(process.env.RUN_ENVIRON);

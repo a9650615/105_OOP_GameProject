@@ -39,6 +39,18 @@ class GamePlayScene extends ES6Trans {
       this.song.getPlayer().play(); // 播放歌曲
   }
 
+  onkeydown(e) {
+    let keyCode = Game.keyCode;
+    switch(e.keyCode) {
+      case keyCode.leftHit:
+        console.log('left')
+        break;
+      case keyCode.rightHit:
+        console.log('right')
+        break;
+    }
+  }
+
   load() {
     let GameWidth = Game.window.width, GameHeight = Game.window.height;
     new Img(this).set({
