@@ -15,7 +15,8 @@ class GamePlayScene extends ES6Trans {
       hp: 100, //百分比
       loaded: false,
       play: false,
-      currentStep: 0
+      currentStep: 0,
+      hpWidth: 15
     };
 
     this.beatsMap = {};
@@ -61,12 +62,15 @@ class GamePlayScene extends ES6Trans {
     });
    
     this.component = {
-      stage: new Stage(this),
+      stage: new Stage(this).set({
+        hpWidth: this.state.hpWidth
+      }),
       silderStage: new SilderStage(this).set({
         x: 10,
         y: Game.window.height * 0.525,
         width: Game.window.width - 20,
         height: (Game.window.height*0.45),
+        hpWidth: this.state.hpWidth
       }),
       character: new Sprite(this).set({
         url: Resource.image+'bisca_battler_rpg_maker_mv_by_retrospriteresources-dagd3xg.png',

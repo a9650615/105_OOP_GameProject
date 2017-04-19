@@ -13,18 +13,21 @@ export default class Stage extends GameObject{
       height: null, // 以上為必須選項
       hp: 100, // 百分比
       offsetX: 0,
-      offsetY: 0
+      offsetY: 0,
+      hpWidth: 10
     };
   }
 
   set(data) {
     let newState = Object.assign({}, this.state, data);
     this.setState(newState);
+    return this;
   }
 
   load() {
     let GameWidth = Game.window.width, GameHeight = Game.window.height;
     let offsetX = this.state.offsetX;
+    let hpWidth = this.state.hpWidth;
     this._tmpCanvas.resize(GameWidth, GameHeight);
     // 元件集合包, 但是由於不了解 framework GameObject 運作, 只能添加到主場景, 管理難度可能增加
     this.component = {
@@ -43,16 +46,16 @@ export default class Stage extends GameObject{
           background: '#cfcfcf'
         }),
       stageCentLine: new Rectangle(this._parent).set({
-          x: (GameWidth - 10)/2,
+          x: (GameWidth - hpWidth)/2,
           y: GameHeight*0.5,
-          width: 10,
+          width: hpWidth,
           height: GameHeight * 0.5,
           background: '#fff'
         }),
       stageCentLineBlood: new Rectangle(this._parent).set({
-          x: (GameWidth - 10)/2,
+          x: (GameWidth - hpWidth)/2,
           y: GameHeight - (GameHeight/2)*(this.state.hp/100),
-          width: 10,
+          width: hpWidth,
           height: (GameHeight/2)*(this.state.hp/100),
           background: 'green'
         }),

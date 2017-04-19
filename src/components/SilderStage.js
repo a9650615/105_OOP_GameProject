@@ -55,6 +55,12 @@ class SilderStage extends GameObject {
   load() {
   }
 
+  _checkRangeType(difference = 0) {
+    difference = Math.abs(difference)
+    let data = this.state.difference.findIndex((val) => { return difference < val })
+    return (data!=-1)?data:false
+  }
+
   /**
    * 打擊判定
    * @param {int} type 
@@ -63,8 +69,9 @@ class SilderStage extends GameObject {
     let beatsMap = this.beatsMap.beatsMap;
     let currentStep = this.state.currentStep;
     beatsMap.forEach((val, i) => {
-      if (val.startStep == currentStep) {
-        console.log(val.startStep * this.beatsMap.difference - this.state.currentTime)
+      if (val.startStep == currentStep) { //節拍數相同時
+        let difference = this.state.currentTime - val.startStep * this.beatsMap.difference;
+        console.log(difference, this._checkRangeType(difference));
         val.element.hide();
       }
     });
@@ -73,7 +80,7 @@ class SilderStage extends GameObject {
   _checkSilderInSpace(step, func = () => {}) {
     let currentStep = this.state.currentStep;
     let range = this.state.range;
-    if (step > (currentStep-1) && step <= (currentStep+this.state.range)) {
+    if (step > (currentStep-range) && step <= (currentStep+range)) {
       func.call();
     }
   }
@@ -86,18 +93,21 @@ class SilderStage extends GameObject {
       let currentTime = this.state.currentTime;
       let difference = this.beatsMap.difference;
       let rangeTime = difference * this.state.range; //只有一半
+      let maxDifference = this.state.difference[this.state.difference.length-1];
       if (beatsMap)
       beatsMap.forEach((val, i) => {
         val.element.hide();
-        let eleWidth = width/(2*this.state.range) - 20;
+        // let eleWidth = width/(2*this.state.range) - 20;
+        let eleWidth = (width/2) * (maxDifference/(60/this.beatsMap.bpm)) / this.state.range;
+        //console.log(eleWidth)
         this._checkSilderInSpace(val.startStep, () => {
           let elementTime = 1-((val.startStep*difference)-currentTime)%rangeTime;
           let x = (val.align==0)?(width*(elementTime/rangeTime)):(width - width*(elementTime/rangeTime));
-          if (val.align == 0 && (x+eleWidth)>width/2) {  // 左半部區塊寬度調整
-            eleWidth = (((width-this.state.hpWidth)/2) - x);
+          if (val.align == 0 && (x+eleWidth)>(width-this.state.hpWidth)/2) {  // 左半部區塊寬度調整
+            eleWidth = (((width)/2) - x) - this.state.hpWidth/2;
           }
-          if (val.align == 1 && x<width/2) {  // 右半部區塊寬度調整
-            eleWidth = eleWidth - (((width-this.state.hpWidth)/2) - x) -20;
+          if (val.align == 1 && x<(width+this.state.hpWidth)/2) {  // 右半部區塊寬度調整
+            eleWidth = eleWidth - (((width)/2) - x) - this.state.hpWidth/2;
             x = (width+this.state.hpWidth)/2;
           }
           val.element.set({
