@@ -97,8 +97,8 @@ class GamePlayScene extends ES6Trans {
       })
     };
     
-    let songFolder = Resource.songs+'BBKKBKK/';
-    new BeatsMapParser(songFolder+'BBKKBKK[default].json').then((data) => {
+    let songFolder = Resource.songs+'沢井美空 - カラフル/';
+    new BeatsMapParser(songFolder+'沢井美空 - カラフル[default].json').then((data) => {
       this.beatsMap = data;
       this.beatsMap.beatsMap = Object.keys(this.beatsMap.beatsMap).map((index) => {
         return this.beatsMap.beatsMap[index];

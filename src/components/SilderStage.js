@@ -24,6 +24,7 @@ class SilderStage extends GameObject {
     this.beatsMap.difference = 60 / this.beatsMap.bpm;
     let beatsMap = beatsObject.beatsMap;
     beatsMap.forEach((val, i) => {
+      val.status = 0; // 目前狀態 失敗 -1 , 成功 > 0
       val.element = new Rect(this._parent).set({
         x: 0,
         y: this.state.y,
@@ -59,7 +60,7 @@ class SilderStage extends GameObject {
   _checkRangeType(difference = 0) {
     difference = Math.abs(difference)
     let data = this.state.difference.findIndex((val) => { return difference < val })
-    return (data!=-1)?data:false
+    return (data!=-1)?data+1:false
   }
 
   /**
@@ -84,7 +85,13 @@ class SilderStage extends GameObject {
     beatsMap.forEach((val, i) => {
       if (this._checkIsInBlock(currentStep, val.startStep) && type === val.align) { //節拍數進入範圍時
         let difference = this.state.currentTime - val.startStep * this.beatsMap.difference;
+        let type = this._checkRangeType(difference);
         console.log(difference, this._checkRangeType(difference));
+        if (type) { //在判斷範圍內
+          val.status = type;
+        } else {  //範圍外
+          val.status = -1;
+        }
         val.element.hide();
       }
     });
@@ -122,6 +129,10 @@ class SilderStage extends GameObject {
           if (val.align == 1 && x<(width+this.state.hpWidth)/2) {  // 右半部區塊寬度調整
             eleWidth = eleWidth - (((width)/2) - x) - this.state.hpWidth/2;
             x = (width+this.state.hpWidth)/2;
+          }
+          if (rangeTime - elementTime <= 0 && val.status === 0) { //滑塊 miss
+            val.status = -1;
+            console.log('miss:'+i);
           }
           val.element.set({
             x: x + 10,
