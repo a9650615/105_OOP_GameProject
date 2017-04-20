@@ -99,8 +99,8 @@ class GamePlayScene extends ES6Trans {
       })
     };
     
-    let songFolder = Resource.songs+'沢井美空 - カラフル/';
-    new BeatsMapParser(songFolder+'沢井美空 - カラフル[default].json').then((data) => {
+    let songFolder = Resource.songs+'BBKKBKK/';
+    new BeatsMapParser(songFolder+'BBKKBKK[default].json').then((data) => {
       this.beatsMap = data;
       this.beatsMap.beatsMap = Object.keys(this.beatsMap.beatsMap).map((index) => {
         return this.beatsMap.beatsMap[index];
@@ -124,7 +124,6 @@ class GamePlayScene extends ES6Trans {
       this.setState({
         hp: this.state.hp - 0.01
       });
-      this.component.silderStage.setCurrentTime(this.song.getCurrentTime());
     }
   }
 
@@ -137,6 +136,7 @@ class GamePlayScene extends ES6Trans {
       let revertBpm = 60/this.beatsMap.bpm;
       let step = (fixCurrentTime / revertBpm).toFixed(2);
       this.state.currentStep = step;
+      this.component.silderStage.setCurrentTime(fixCurrentTime, step);
       this.component.debugText.set({
         text: 'step:'+step
       });
