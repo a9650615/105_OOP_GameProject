@@ -13,6 +13,7 @@ class GamePlayScene extends ES6Trans {
     this.state = {
       frame: 0,
       hp: 100, //百分比
+      combo: 0, // 連擊
       loaded: false,
       play: false,
       currentStep: 0,
@@ -51,11 +52,12 @@ class GamePlayScene extends ES6Trans {
         break;
       case 32:
         let player = this.song.getPlayer();
-        if (Game.debug)
-        if (player.paused) 
-          player.play()
-        else 
-          player.pause()
+        if (Game.debug) {
+          if (player.paused) 
+            player.play()
+          else 
+            player.pause()
+        }
         break;
     }
   }

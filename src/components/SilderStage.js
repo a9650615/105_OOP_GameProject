@@ -134,10 +134,11 @@ class SilderStage extends GameObject {
             val.status = -1;
             console.log('miss:'+i);
           }
-          val.element.set({
-            x: x + 10,
-            width: eleWidth
-          }).show();
+          if (val.status === 0)
+            val.element.set({
+              x: x + 10,
+              width: eleWidth
+            }).show();
         });
       });
     };
