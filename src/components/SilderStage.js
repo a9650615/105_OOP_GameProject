@@ -62,6 +62,18 @@ class SilderStage extends GameObject {
   }
 
   /**
+   * 檢查是否 Block 是否已經在計算區域內
+   * @param {float} currentStep nowPlayStep
+   * @param {int} nowBlockStep beatsmap block step
+   * @return {bool} isInBlock
+   */
+  _checkIsInBlock(currentStep, nowBlockStep) {
+    if (nowBlockStep == Math.round(currentStep)) 
+      return true;
+    return false;
+  }
+
+  /**
    * 打擊判定
    * @param {int} type 
    */
@@ -69,7 +81,7 @@ class SilderStage extends GameObject {
     let beatsMap = this.beatsMap.beatsMap;
     let currentStep = this.state.currentStep;
     beatsMap.forEach((val, i) => {
-      if (val.startStep == currentStep) { //節拍數相同時
+      if (this._checkIsInBlock(currentStep, val.startStep) && type === val.align) { //節拍數進入範圍時
         let difference = this.state.currentTime - val.startStep * this.beatsMap.difference;
         console.log(difference, this._checkRangeType(difference));
         val.element.hide();

@@ -49,6 +49,14 @@ class GamePlayScene extends ES6Trans {
       case keyCode.rightHit:
         this.component.silderStage.keyHit(1);
         break;
+      case 32:
+        let player = this.song.getPlayer();
+        if (Game.debug)
+        if (player.paused) 
+          player.play()
+        else 
+          player.pause()
+        break;
     }
   }
 
@@ -101,7 +109,8 @@ class GamePlayScene extends ES6Trans {
           play: true
         });
         this.component.silderStage.loadbeatsMap(this.beatsMap);
-        this.playSong();
+        if (!Game.debug)
+          this.playSong();
       });
     });
   }
@@ -124,7 +133,7 @@ class GamePlayScene extends ES6Trans {
     if (this.state.play) {
       let fixCurrentTime = this.song.getCurrentTime()-this.beatsMap.songOffset;
       let revertBpm = 60/this.beatsMap.bpm;
-      let step = parseInt(fixCurrentTime / revertBpm);
+      let step = (fixCurrentTime / revertBpm).toFixed(2);
       this.state.currentStep = step;
       this.component.debugText.set({
         text: 'step:'+step
