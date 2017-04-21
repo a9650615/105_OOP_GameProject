@@ -31,6 +31,6 @@ Framework.Game.addNewLevel({
 //Framework.Game.addNewLevel({beatsMapMaker: new beatsMapMaker()});
 Framework.Game.start();
 Framework.Game.goToLevel("GamePlayScene");
-// Framework.Game.goToLevel("beatsMapMaker");
+//Framework.Game.goToLevel("beatsMapMaker");
 global.Framework = Framework;
 uiResize();

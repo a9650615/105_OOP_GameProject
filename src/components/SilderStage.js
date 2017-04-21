@@ -21,6 +21,7 @@ class SilderStage extends GameObject {
    */
   loadbeatsMap(beatsObject = {}) {
     this.beatsMap = beatsObject;
+    this.beatsMap.difference = 60 / this.beatsMap.bpm;
     let beatsMap = beatsObject.beatsMap;
     beatsMap.forEach((val, i) => {
       val.element = new Rect(this._parent).set({
@@ -36,7 +37,7 @@ class SilderStage extends GameObject {
   setCurrentTime(time = 0) {
     if (this.beatsMap) {
       let fixCurrentTime = time - this.beatsMap.songOffset;
-      let revertBpm = 60/this.beatsMap.bpm;
+      // let revertBpm = 60/this.beatsMap.bpm;
       // console.log(this.beatsMap.bpm, revertBpm, this.beatsMap.difference);
       // let step = parseInt(fixCurrentTime / revertBpm);
       let step = parseInt(fixCurrentTime / this.beatsMap.difference);
@@ -110,11 +111,11 @@ class SilderStage extends GameObject {
       beatsMap.forEach((val, i) => {
         val.element.hide();
         // let eleWidth = width/(2*this.state.range) - 20;
-        let eleWidth = (width/2) * (maxDifference/(60/this.beatsMap.bpm)) / this.state.range;
+        let eleWidth = (width/2) * (maxDifference/this.beatsMap.difference) / this.state.range;
         //console.log(eleWidth)
         this._checkSilderInSpace(val.startStep, () => {
           let elementTime = 1-((val.startStep*difference)-currentTime)%rangeTime;
-          let x = (val.align==0)?(width*(elementTime/rangeTime)):(width - width*(elementTime/rangeTime));
+          let x = (val.align==0)?(width*(elementTime/rangeTime) - eleWidth):(width - width*(elementTime/rangeTime));
           if (val.align == 0 && (x+eleWidth)>(width-this.state.hpWidth)/2) {  // 左半部區塊寬度調整
             eleWidth = (((width)/2) - x) - this.state.hpWidth/2;
           }
