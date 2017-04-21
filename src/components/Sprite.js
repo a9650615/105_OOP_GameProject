@@ -14,7 +14,8 @@ export default class Sprite extends Img{
       hPiece: 1,
       sprWidth: null,
       sprHeight: null,
-      showPiece: 0
+      showPiece: 0,
+      flip: false // 翻轉
     };
     
   }
@@ -43,9 +44,15 @@ export default class Sprite extends Img{
     
     if(ele.width != (sprWidth||pieceX) || ele.width != (sprHeight||pieceY))
       this._tmpCanvas.resize(sprWidth||pieceX, sprHeight||pieceY);
+    ctx.save();
+    if (this.state.flip) {
+      ctx.translate(sprWidth||pieceX, 0);
+      ctx.scale(-1, 1);
+    }
     ctx.drawImage(this.preLoadImg, 
       offsetX, offsetY, parseInt(pieceX), parseInt(pieceY),
       0, 0, parseInt(sprWidth||pieceX), parseInt(sprHeight||pieceY)
     );
+    ctx.restore();
   }
 }
