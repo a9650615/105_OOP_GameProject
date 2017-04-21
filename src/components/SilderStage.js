@@ -10,10 +10,11 @@ class SilderStage extends GameObject {
       range: 5, // 單邊五個 共 1o 個
       currentTime: 0,
       hpWidth: 10, // hp 條寬度
-      // difference: [0.042, 0.092, 0.166]
-      difference: [0.1, 0.2, 0.3]
+      difference: [0.033, 0.066, 0.1],
+      percent: [10, 7, 4, 1, 0]
     });
 
+    this.hit = [0, 0, 0, 0, 0];
     this.beatsMap = null;
   }
   /**
@@ -21,9 +22,11 @@ class SilderStage extends GameObject {
    * @param {object} beatsObject
    */
   loadbeatsMap(beatsObject = {}) {
+    let beatsMap = beatsObject.beatsMap;
     this.beatsMap = beatsObject;
     this.beatsMap.difference = 60 / this.beatsMap.bpm;
-    let beatsMap = beatsObject.beatsMap;
+    this.beatsMap.totalStep = beatsObject.beatsMap.length
+    this.beatsMap.currentScore = 0;
     beatsMap.forEach((val, i) => {
       val.status = 0; // 目前狀態 失敗 -1 , 成功 > 0
       val.element = new Rect(this._parent).set({
@@ -34,6 +37,14 @@ class SilderStage extends GameObject {
         background: '#d15169'
       }).hide();
     }) 
+  }
+
+  countPercent () {
+    let score = 0;
+    this.hit.forEach((val, i) => {
+      score += this.state.percent[i] * val ;
+    })
+    return score;
   }
 
   setCurrentTime(time = 0, step = 0) {
@@ -87,12 +98,16 @@ class SilderStage extends GameObject {
       if (this._checkIsInBlock(currentStep, val.startStep) && type === val.align) { //節拍數進入範圍時
         let difference = this.state.currentTime - val.startStep * this.beatsMap.difference;
         let type = this._checkRangeType(difference);
-        console.log(this.state.currentTime, difference, this._checkRangeType(difference));
+        console.log(difference, this._checkRangeType(difference));
         if (type) { //在判斷範圍內
           val.status = type;
+          this.hit[type-1] += 1;
         } else {  //範圍外
           val.status = -1;
-        }
+          this.hit[3] += 1;
+        }        
+        console.log(this.countPercent(), "/", this.beatsMap.totalStep * 10);
+        console.log("perfect:",this.hit[0],"great:",this.hit[1],"good:",this.hit[2],"bad:",this.hit[3],"miss:",this.hit[4]);
         val.element.hide();
       }
     });
@@ -133,7 +148,9 @@ class SilderStage extends GameObject {
           }
           if (rangeTime - elementTime <= 0 && val.status === 0) { //滑塊 miss
             val.status = -1;
-            console.log('miss:'+i);
+            this.hit[4] += 1;
+            console.log(this.countPercent(), "/", this.beatsMap.totalStep * 10);
+            console.log("perfect:",this.hit[0],"great:",this.hit[1],"good:",this.hit[2],"bad:",this.hit[3],"miss:",this.hit[4]);
           }
           if (val.status === 0)
             val.element.set({
