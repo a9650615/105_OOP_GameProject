@@ -10,7 +10,8 @@ class SilderStage extends GameObject {
       range: 5, // 單邊五個 共 1o 個
       currentTime: 0,
       hpWidth: 10, // hp 條寬度
-      difference: [0.042, 0.092, 0.166]
+      // difference: [0.042, 0.092, 0.166]
+      difference: [0.1, 0.2, 0.3]
     });
 
     this.beatsMap = null;
@@ -35,16 +36,16 @@ class SilderStage extends GameObject {
     }) 
   }
 
-  setCurrentTime(time = 0) {
+  setCurrentTime(time = 0, step = 0) {
     if (this.beatsMap) {
-      let fixCurrentTime = time - this.beatsMap.songOffset;
+      // let fixCurrentTime = time + this.beatsMap.songOffset;
       // let revertBpm = 60/this.beatsMap.bpm;
       // console.log(this.beatsMap.bpm, revertBpm, this.beatsMap.difference);
       // let step = parseInt(fixCurrentTime / revertBpm);
-      let step = parseInt(fixCurrentTime / this.beatsMap.difference);
+      // let step = (time != Math.abs(this.beatsMap.songOffset))? 0: parseInt(fixCurrentTime / this.beatsMap.difference);
       this.setState({
         currentTime: time,
-        currentStep: step
+        currentStep: Number(step)
       });
     };
   }
@@ -86,7 +87,7 @@ class SilderStage extends GameObject {
       if (this._checkIsInBlock(currentStep, val.startStep) && type === val.align) { //節拍數進入範圍時
         let difference = this.state.currentTime - val.startStep * this.beatsMap.difference;
         let type = this._checkRangeType(difference);
-        console.log(difference, this._checkRangeType(difference));
+        console.log(this.state.currentTime, difference, this._checkRangeType(difference));
         if (type) { //在判斷範圍內
           val.status = type;
         } else {  //範圍外
