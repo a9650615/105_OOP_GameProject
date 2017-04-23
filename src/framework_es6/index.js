@@ -40,8 +40,8 @@ class Game {
 		FrameWork = FpsAnalysis(FrameWork);
 		FrameWork = Point(FrameWork);
 		FrameWork = GameObject(FrameWork);
-		FrameWork = Sprite(FrameWork);
-		FrameWork = AnimationSprite(FrameWork);
+		// FrameWork = Sprite(FrameWork);
+		// FrameWork = AnimationSprite(FrameWork);
 		FrameWork = Scene(FrameWork);
 		FrameWork = ResourceManager(FrameWork);
 		FrameWork = Level(FrameWork);
@@ -51,10 +51,10 @@ class Game {
 		FrameWork = TouchManager(FrameWork);
 		FrameWork = GameMainMenu(FrameWork);
 		FrameWork = Audio(FrameWork);
-		FrameWork = CircleComponent(FrameWork);
-		FrameWork = PolygonComponent(FrameWork);
-		FrameWork = SquareComponent(FrameWork);
-		FrameWork = TriangleComponent(FrameWork);
+		// FrameWork = CircleComponent(FrameWork);
+		// FrameWork = PolygonComponent(FrameWork);
+		// FrameWork = SquareComponent(FrameWork);
+		// FrameWork = TriangleComponent(FrameWork);
 		
 		return FrameWork;
 	}
@@ -198,9 +198,23 @@ export let ES6Trans =  class Es6Trans {
     if (this._firstRender)
       this._firstRender = false;
   }
-
+	/**
+	 * 請勿取代 要使用請使用 fresh
+	 * 定期更新
+	 * call fresh and update view when data change
+	 */
 	update() {
 		this.rootScene.update();
+		if (this.rootScene)
+			this.draw(this.ctx);
+		this.fresh();
+	}
+
+	/**
+	 * 定期更新 繼承用
+	 */
+	fresh() {
+
 	}
 
 	/**
@@ -229,8 +243,8 @@ export let ES6Trans =  class Es6Trans {
 		if (res) {
 			this._stateUpdate = true;
 			this.state = Object.assign(this.state, state);
-			if (this.ctx) 
-				this.draw(this.ctx);
+			// if (this.ctx) 
+			// 	this.draw(this.ctx);
 		}
 		return res;
   }

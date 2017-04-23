@@ -5,7 +5,7 @@ import {Game} from '../constant';
 export default class SongParser {
   constructor() {
     this.audio = document.createElement('audio');
-    this.audio.volume = 0.5;
+    this.audio.volume = 0.3;
 
     this.getPlayer.bind(this);
   }

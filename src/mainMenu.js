@@ -19,15 +19,15 @@ class menu extends ES6Trans {
 
  //初始化loadingProgress需要用到的圖片
   initializeProgressResource() {
-    this.loading = new Framework.Sprite(Resource.image + 'loading.jpg');
-    this.loading.position = {x: Framework.Game.getCanvasWidth() / 2 , y: Framework.Game.getCanvasHeight() / 2};
-    console.log(this.loading)
+    // this.loading = new Framework.Sprite(Resource.image + 'loading.jpg');
+    // this.loading.position = {x: Framework.Game.getCanvasWidth() / 2 , y: Framework.Game.getCanvasHeight() / 2};
+    // console.log(this.loading)
       //為了或得到this.loading這個Sprite的絕對位置, 故需要先計算一次(在Game Loop執行時, 則會自動計算, 但因為loadingProgress只支援draw故需要自行計算)                  
   }
 
   //在initialize時會觸發的事件
   loadingProgress(ctx, requestInfo) {
-    this.loading.draw(ctx);
+    // this.loading.draw(ctx);
     ctx.font ='90px Arial';
     ctx.textAlign = 'center';
     ctx.fillStyle = 'white';
@@ -84,8 +84,7 @@ class menu extends ES6Trans {
   }
   
 
-  update(){
-    this.rootScene.update();
+  fresh(){
     if (this.state.positionX < 700)
     if (this.state.positionY < 500)
     this.setState({

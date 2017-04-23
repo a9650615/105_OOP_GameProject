@@ -7,6 +7,7 @@ import Sprite from './components/Sprite';
 import Stage from './components/Stage';
 import SilderStage from './components/SilderStage';
 import Botton from './components/Botton';
+import devTools from './helper/devTool';
 
 class GamePlayScene extends ES6Trans {
   initializeProgressResource() {
@@ -106,8 +107,8 @@ class GamePlayScene extends ES6Trans {
       })
     };
     
-    let songFolder = Resource.songs+'BBKKBKK/';
-    new BeatsMapParser(songFolder+'BBKKBKK[default].json').then((data) => {
+    let songFolder = Resource.songs+'沢井美空 - カラフル/';
+    new BeatsMapParser(songFolder+'沢井美空 - カラフル[default].json').then((data) => {
       this.beatsMap = data;
       this.beatsMap.beatsMap = Object.keys(this.beatsMap.beatsMap).map((index) => {
         return this.beatsMap.beatsMap[index];
@@ -122,10 +123,15 @@ class GamePlayScene extends ES6Trans {
           this.playSong();
       });
     });
+    // if (Game.debug)
+    //   this.devTools = new devTools(this);
   }
 
-  update() {
+  fresh() {
     this.characterUpdate();
+    // if (this.devTools) {
+    //   this.devTools.update();
+    // }
     if (this.state.play) {
       if(this.state.hp>0) {
         // 扣血範例

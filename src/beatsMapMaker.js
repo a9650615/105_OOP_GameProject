@@ -431,11 +431,10 @@ class beatsMapMaker extends ES6Trans {
     });
   }
   
-  update(){
+  fresh(){
     let fixCurrentTime = this.song.getCurrentTime()-this.mapSetting.songOffset;
     let revertBpm = 60/this.mapSetting.bpm;
     let step = parseInt(fixCurrentTime / revertBpm);
-    this.rootScene.update();
     //console.log((this.song.getCurrentTime()-this.mapSetting.songOffset)%(60/this.mapSetting.bpm));
     // update current step
     this.sTimer();
