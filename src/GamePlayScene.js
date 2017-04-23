@@ -17,7 +17,8 @@ class GamePlayScene extends ES6Trans {
       loaded: false,
       play: false,
       currentStep: 0,
-      hpWidth: 15
+      hpWidth: 5,
+      totalScore: 0
     };
 
     this.beatsMap = {};
@@ -94,7 +95,13 @@ class GamePlayScene extends ES6Trans {
       debugText: new Botton(this).set({
         x: 100,
         y: 30,
-        textColor: 'red',
+        textColor: 'white',
+        text: 'debbug text'
+      }),
+      scoreText: new Botton(this).set({
+        x: 100,
+        y: 50,
+        textColor: 'white',
         text: 'debbug text'
       })
     };
@@ -119,11 +126,15 @@ class GamePlayScene extends ES6Trans {
 
   update() {
     this.characterUpdate();
-    if(this.state.hp>0 && this.state.play) {
-      // 扣血範例
-      this.setState({
-        hp: this.state.hp - 0.01
-      });
+    if (this.state.play) {
+      if(this.state.hp>0) {
+        // 扣血範例
+        this.setState({
+          hp: this.state.hp - 0.01
+        });
+      }
+      let silder = this.component.silderStage;
+      this.state.totalScore = Math.round(1000000 * (silder.getScore()));
     }
   }
 
@@ -139,6 +150,9 @@ class GamePlayScene extends ES6Trans {
       this.component.silderStage.setCurrentTime(fixCurrentTime, step);
       this.component.debugText.set({
         text: 'step:'+step
+      });
+      this.component.scoreText.set({
+        text: 'score:'+this.state.totalScore
       });
     }
   }

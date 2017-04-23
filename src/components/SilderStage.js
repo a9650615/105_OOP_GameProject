@@ -9,13 +9,14 @@ class SilderStage extends GameObject {
       currentStep: 0,
       range: 5, // 單邊五個 共 1o 個
       currentTime: 0,
-      hpWidth: 10, // hp 條寬度
-      difference: [0.033, 0.066, 0.1],
-      percent: [10, 7, 4, 1, 0]
+      hpWidth: 12, // hp 條寬度
+      difference: [0.050, 0.060, 0.070],
+      percent: [101, 100, 50, 25, 0]
     });
 
     this.hit = [0, 0, 0, 0, 0];
     this.beatsMap = null;
+    this.onHitType = () => {};
   }
   /**
    * 載入地圖檔
@@ -29,14 +30,23 @@ class SilderStage extends GameObject {
     this.beatsMap.currentScore = 0;
     beatsMap.forEach((val, i) => {
       val.status = 0; // 目前狀態 失敗 -1 , 成功 > 0
+      // if (beatsMap[i-1].align)
+
       val.element = new Rect(this._parent).set({
         x: 0,
         y: this.state.y,
         width: this.state.width/(2*this.state.range), //*2 是因為畫面砍半
         height: this.state.height,
-        background: '#d15169'
+        background: (val.align)?'':'#d15169'
       }).hide();
     }) 
+  }
+
+  /**
+   * 設定 hit call function
+   */
+  setHitEvent(func = () => {}) {
+    this.onHitType = func;
   }
 
   countPercent () {
@@ -99,15 +109,18 @@ class SilderStage extends GameObject {
         let difference = this.state.currentTime - val.startStep * this.beatsMap.difference;
         let type = this._checkRangeType(difference);
         console.log(difference, this._checkRangeType(difference));
-        if (type) { //在判斷範圍內
-          val.status = type;
-          this.hit[type-1] += 1;
-        } else {  //範圍外
-          val.status = -1;
-          this.hit[3] += 1;
-        }        
-        console.log(this.countPercent(), "/", this.beatsMap.totalStep * 10);
-        console.log("perfect:",this.hit[0],"great:",this.hit[1],"good:",this.hit[2],"bad:",this.hit[3],"miss:",this.hit[4]);
+        if(val.status == 0)   {
+           if (type) { //在判斷範圍內
+            val.status = type;
+            this.hit[type-1] += 1;
+          } else {  //範圍外
+            val.status = -1;
+            this.hit[3] += 1;
+          }  
+        }      
+        console.log(this.countPercent(), "/", this.beatsMap.totalStep * 100);
+        console.log(Math.round((this.countPercent() * 1000000) / (this.beatsMap.totalStep * 100)));
+        console.log("Critical Perfect:",this.hit[0],"Perfect:",this.hit[1],"Good:",this.hit[2],"Bad:",this.hit[3],"Miss:",this.hit[4]);
         val.element.hide();
       }
     });
@@ -119,6 +132,10 @@ class SilderStage extends GameObject {
     if (step > (currentStep-range) && step <= (currentStep+range)) {
       func.call();
     }
+  }
+
+  getScore() {
+    return this.countPercent() / (this.beatsMap.totalStep * 100);
   }
 
   render() {
@@ -150,7 +167,7 @@ class SilderStage extends GameObject {
             val.status = -1;
             this.hit[4] += 1;
             console.log(this.countPercent(), "/", this.beatsMap.totalStep * 10);
-            console.log("perfect:",this.hit[0],"great:",this.hit[1],"good:",this.hit[2],"bad:",this.hit[3],"miss:",this.hit[4]);
+            console.log("Critical Perfect:",this.hit[0],"Perfect:",this.hit[1],"Good:",this.hit[2],"Bad:",this.hit[3],"Miss:",this.hit[4]);
           }
           if (val.status === 0)
             val.element.set({

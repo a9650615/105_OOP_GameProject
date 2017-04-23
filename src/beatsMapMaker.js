@@ -139,6 +139,7 @@ class beatsMapMaker extends ES6Trans {
         break;
       case 81: //Q 左區塊單點
          this.setBeatMapBlock(0, 0, {start: this.state.currentStep * (60/this.mapSetting.bpm)});
+         console.log(this.song.getCurrentTime())
         break;
       case 69: //E 右區塊單點
          this.setBeatMapBlock(1, 0, {start: this.state.currentStep * (60/this.mapSetting.bpm)});
