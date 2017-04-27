@@ -19,7 +19,8 @@ class GamePlayScene extends ES6Trans {
       play: false,
       currentStep: 0,
       hpWidth: 5,
-      totalScore: 0
+      totalScore: 0,
+      characterFaceTo: 0
     };
 
     this.beatsMap = {};
@@ -33,8 +34,10 @@ class GamePlayScene extends ES6Trans {
     });
     if(this.state.frame>list.length) 
       this.setState({
-        frame: 1
+        frame: 1,
+        characterFaceTo: (this.state.characterFaceTo)? 0: 1
       });
+    this.component.character.flip(this.state.characterFaceTo);
     this.component.character.showPiece(list[parseInt(this.state.frame)]);
   }
 

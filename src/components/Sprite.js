@@ -28,6 +28,12 @@ export default class Sprite extends Img{
     // this._tmpCanvas.resize(state.width/state.wPiece, state.height/state.hPiece);
   }
 
+  flip(isFlip = 0) {
+    this.setState({
+      flip: isFlip
+    })
+  }
+
   render(ctx) {
     let state = this.state;
     let width = state['width'] || state['naturalWidth'];
