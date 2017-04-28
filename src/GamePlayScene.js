@@ -46,27 +46,6 @@ class GamePlayScene extends ES6Trans {
       this.song.getPlayer().play(); // 播放歌曲
   }
 
-  onkeydown(e) {
-    let keyCode = Game.keyCode;
-    switch(e.keyCode) {
-      case keyCode.leftHit:
-        this.component.silderStage.keyHit(0);
-        break;
-      case keyCode.rightHit:
-        this.component.silderStage.keyHit(1);
-        break;
-      case 32:
-        let player = this.song.getPlayer();
-        if (Game.debug) {
-          if (player.paused) 
-            player.play()
-          else 
-            player.pause()
-        }
-        break;
-    }
-  }
-
   load() {
     let GameWidth = Game.window.width, GameHeight = Game.window.height;
     new Img(this).set({
@@ -128,6 +107,44 @@ class GamePlayScene extends ES6Trans {
     });
     // if (Game.debug)
     //   this.devTools = new devTools(this);
+  }
+
+  onkeydown(e) {
+    let keyCode = Game.keyCode;
+    switch(e.keyCode) {
+      case keyCode.leftHit:
+        this.component.silderStage.keyHit(0);
+        this.component.stage.clickEffect(0)
+        this.component.stage.component.stageLeftClick.show()
+        break;
+      case keyCode.rightHit:
+        this.component.silderStage.keyHit(1);
+        this.component.stage.clickEffect(1)
+        this.component.stage.component.stageRightClick.show()
+        break;
+      case 32:
+        let player = this.song.getPlayer();
+        if (Game.debug) {
+          if (player.paused) 
+            player.play()
+          else 
+            player.pause()
+        }
+        break;
+    }
+  }
+
+  onkeyup(e) {
+    let keyCode = Game.keyCode;
+    switch(e.keyCode) {
+      case keyCode.leftHit:
+        this.component.stage.clickEffect(0)
+        this.component.stage.component.stageLeftClick.hide()
+        break;
+      case keyCode.rightHit:
+        this.component.stage.clickEffect(1)
+        this.component.stage.component.stageRightClick.hide()
+    }
   }
 
   fresh() {

@@ -25,7 +25,8 @@ class GameObject extends ES6Trans{
 
     this.state = {
       x: 0,
-      y: 0
+      y: 0,
+      opacity: 1
     };
     
     this.prop = prop;
@@ -114,6 +115,7 @@ class GameObject extends ES6Trans{
         offsetX = this.state.x - this.state.width / 2;
         offsetY = this.state.y - this.state.height / 2;
       }
+      ctx.globalAlpha = this.state.opacity;
       ctx.drawImage(this._tmpCanvas.element(), offsetX, offsetY);
     };
     if (this._stateUpdate)
