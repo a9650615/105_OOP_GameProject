@@ -28,13 +28,18 @@ class SilderStage extends GameObject {
     this.beatsMap.difference = 60 / this.beatsMap.bpm;
     this.beatsMap.totalStep = beatsObject.beatsMap.length
     this.beatsMap.currentScore = 0;
+    console.log(beatsMap.length-1,beatsMap[beatsMap.length-1]);
     beatsMap.forEach((val, i) => {
       val.status = 0; // 目前狀態 失敗 -1 , 成功 > 0
       let color = '#d15169';
-      if(i != 0)
-        if (beatsMap[i-1].startStep == beatsMap[i].startStep || beatsMap[i+1].startStep == beatsMap[i].startStep){
+      if(i != 0) 
+        if (beatsMap[i-1].startStep == beatsMap[i].startStep){
           color = '#EAC100';
-        }
+      }
+      if(i != beatsMap.length-1) 
+        if (beatsMap[i+1].startStep == beatsMap[i].startStep){
+          color = '#EAC100';
+      }
       val.element = new Rect(this._parent).set({
         x: 0,
         y: this.state.y,
