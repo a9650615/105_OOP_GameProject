@@ -110,6 +110,8 @@ export let ES6Trans =  class Es6Trans {
 		props['forceUpdate'] = this.forceUpdate;
 		props['draw'] = this.draw;
 		props['update'] = this.update;
+		props['load'] = this.load;
+		props['initializeProgressResource'] = () => {};
 		props.keydown = this.keydown;
 		props.keyup = this.keyup;
 		props._keypressLoop = this._keypressLoop;
@@ -122,6 +124,7 @@ export let ES6Trans =  class Es6Trans {
 		props.onkeypress = this.onkeypress;
 		props._firstRender = true;//第一次繪圖優化測試
 		props._stateUpdate = false;//繪圖優化測試
+		props._initializeProgressResource = () => {} //只有第一個載入的主場景會呼叫
 		return props;
 	}
 
@@ -148,6 +151,10 @@ export let ES6Trans =  class Es6Trans {
 		this.onkeydown(e, this._keydownControl);
 	}
 
+	/**
+	 * init 初始化之後載入事件
+	 */
+	load() {}
 	/**
 	 * @overwrite
 	 * 按壓當下事件

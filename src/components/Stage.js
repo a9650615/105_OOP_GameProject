@@ -92,15 +92,15 @@ export default class Stage extends GameObject{
   }
 
   fresh() {
-    let state = this.state
-    if (state.leftClick === 1)
-      state.leftClick++
-    else if(state.leftClick === 2)
-      state.leftClick = 0
-    if (state.rightClick === 1)
-      state.rightClick++
-    else if(state.rightClick === 2)
-      state.rightClick = 0
+    // let state = this.state
+    // if (state.leftClick === 1)
+    //   state.leftClick++
+    // else if(state.leftClick === 2)
+    //   state.leftClick = 0
+    // if (state.rightClick === 1)
+    //   state.rightClick++
+    // else if(state.rightClick === 2)
+    //   state.rightClick = 0
   }
 
   render() {

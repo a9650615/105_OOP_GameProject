@@ -5,6 +5,7 @@ import DirLoader from './modules/DirLoader';
 import Text from './components/Text';
 import Botton from './components/Botton';
 import Img from './components/Img';
+import StaticData from './helper/StaticData';
 
 class menu extends ES6Trans {
   initialize() {
@@ -68,7 +69,13 @@ class menu extends ES6Trans {
           textColor: 'black'
         }
       ).setEvent('click', (e) => {
-        Framework.Game.goToLevel("beatsMapMaker")
+        console.log(StaticData)
+        StaticData.set('playSceneData', {
+          song: '123',
+          dir: '321'
+        })
+        console.log(StaticData.load('playSceneData'))
+        Framework.Game.goToLevel("GamePlayScene")
       });
     
     this.val = new Botton(this).set(

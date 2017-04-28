@@ -8,23 +8,11 @@ import Stage from './components/Stage';
 import SilderStage from './components/SilderStage';
 import Botton from './components/Botton';
 import devTools from './helper/devTool';
+import StaticData from './helper/StaticData';
 
 class GamePlayScene extends ES6Trans {
-  initializeProgressResource() {
-    this.state = {
-      frame: 0,
-      hp: 100, //百分比
-      combo: 0, // 連擊
-      loaded: false,
-      play: false,
-      currentStep: 0,
-      hpWidth: 5,
-      totalScore: 0,
-      characterFaceTo: 0
-    };
-
-    this.beatsMap = {};
-    this.song = new SongParser();
+  initialize() {
+    // console.log(StaticData.load('playSceneData'))
   }
 
   characterUpdate() {
@@ -47,6 +35,21 @@ class GamePlayScene extends ES6Trans {
   }
 
   load() {
+    this.state = {
+      frame: 0,
+      hp: 100, //百分比
+      combo: 0, // 連擊
+      loaded: false,
+      play: false,
+      currentStep: 0,
+      hpWidth: 5,
+      totalScore: 0,
+      characterFaceTo: 0
+    };
+
+    this.beatsMap = {};
+    this.song = new SongParser();
+    
     let GameWidth = Game.window.width, GameHeight = Game.window.height;
     new Img(this).set({
       url: Resource.image+'/background.jpg',
@@ -95,6 +98,7 @@ class GamePlayScene extends ES6Trans {
       this.beatsMap.beatsMap = Object.keys(this.beatsMap.beatsMap).map((index) => {
         return this.beatsMap.beatsMap[index];
       });
+
       this.song.setUrl(songFolder+this.beatsMap.songFile, this.beatsMap.songFile, () => {
         this.setState({
           loaded: true,
