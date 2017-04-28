@@ -113,12 +113,16 @@ class GamePlayScene extends ES6Trans {
     let keyCode = Game.keyCode;
     switch(e.keyCode) {
       case keyCode.leftHit:
-        this.component.silderStage.keyHit(0);
+        this.component.silderStage.keyHit(0, (returnKey) => {
+        console.log(returnKey);
+        });
         this.component.stage.clickEffect(0)
         this.component.stage.component.stageLeftClick.show()
         break;
       case keyCode.rightHit:
-        this.component.silderStage.keyHit(1);
+        this.component.silderStage.keyHit(1, (returnKey) => {
+        console.log(returnKey);
+        });
         this.component.stage.clickEffect(1)
         this.component.stage.component.stageRightClick.show()
         break;
