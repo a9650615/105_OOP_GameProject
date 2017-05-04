@@ -1,11 +1,12 @@
 import Framework, {ES6Trans} from './framework_es6';
-import {Resource} from './constant';
+import { Resource , Game } from './constant';
 import DirLoader from './modules/DirLoader';
-// import BeatsMapParser from './modules/BeatsMapParser';
+import BeatsMapParser from './modules/BeatsMapParser';
 import Text from './components/Text';
 import Botton from './components/Botton';
 import Img from './components/Img';
 import StaticData from './helper/StaticData';
+import SelectCard from './components/SelectCard';
 
 class menu extends ES6Trans {
   initialize() {
@@ -37,6 +38,13 @@ class menu extends ES6Trans {
 
   load(){
     let t = this;
+    if (Game.client === 'web') {
+      new BeatsMapParser('./Songs/songList.json').then((data) => {
+        console.log(data)
+      })
+    } else {
+
+    }
     // new DirLoader().getBeatMapFile().then((beatsMap) => {
     //   beatsMap.fileArray.forEach((val, i) => {
     //     let yTop = i * 40;
@@ -60,57 +68,60 @@ class menu extends ES6Trans {
     //     });
     //   })
     // });
-
-    new Botton(this).set(
+    
+    this.component = {
+      playButton: new Botton(this).set(
         {
-          text: "BeatsMap 編輯器",
+          text: "進入遊戲",
           x: (Framework.Game.getCanvasWidth()/2)-100,
           y: Framework.Game.getCanvasHeight()/2,
           textColor: 'black'
         }
       ).setEvent('click', (e) => {
-        console.log(StaticData)
         StaticData.set('playSceneData', {
           song: '123',
           dir: '321'
         })
         console.log(StaticData.load('playSceneData'))
         Framework.Game.goToLevel("GamePlayScene")
-      });
-    
-    this.val = new Botton(this).set(
-        {
-          text: 'val',
-          x: 600,
-          y: 100,
-          textColor: 'white'
-        }
-      );
-
-    this.background = new Image(this);
+      }),
+      testCard: new SelectCard(this).set({
+        width: Game.window.width * 0.3,
+        height: 400,
+        x: 100
+      })
+    }
   }
   
 
   fresh(){
-    if (this.state.positionX < 700)
-    if (this.state.positionY < 500)
+    if(this.state.positionY < 500)
     this.setState({
-      positionY: this.state.positionY+20
-    });
-    else 
-    this.setState({
-      positionY: 1,
-      positionX: this.state.positionX + 50
-    });
+      positionY: this.state.positionY+5
+    })
+    // if (this.state.positionX < 700)
+    // if (this.state.positionY < 500)
+    // this.setState({
+    //   positionY: this.state.positionY+20
+    // });
+    // else 
+    // this.setState({
+    //   positionY: 1,
+    //   positionX: this.state.positionX + 50
+    // });
   }
 
   render(parentCtx) {
-    this.val.set({
-      text: 'val',
-      y: this.state.positionY,
-      x: this.state.positionX,
-      background: `rgb(${this.state.positionX%255},${this.state.positionY%255},100)`
-    });
+    this.component.testCard.set({
+      y: this.state.positionY
+    })
+    this.component.playButton.draw(parentCtx)
+    // this.val.set({
+    //   text: 'val',
+    //   y: this.state.positionY,
+    //   x: this.state.positionX,
+    //   background: `rgb(${this.state.positionX%255},${this.state.positionY%255},100)`
+    // });
   }
 
   onkeypress(e) {

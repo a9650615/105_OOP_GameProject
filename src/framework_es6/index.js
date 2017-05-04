@@ -109,6 +109,7 @@ export let ES6Trans =  class Es6Trans {
 		props['setState'] = this.setState;
 		props['forceUpdate'] = this.forceUpdate;
 		props['draw'] = this.draw;
+		props['_draw'] = this._draw;
 		props['update'] = this.update;
 		props['load'] = this.load;
 		props['initializeProgressResource'] = () => {};
@@ -192,19 +193,22 @@ export let ES6Trans =  class Es6Trans {
 	}
 
 	// 繪製畫面
-	draw(parentCtx) { 
+	_draw(parentCtx) { 
 		//this.rootScene.draw();一定要在第一行
-		this.ctx = parentCtx;
-		let canvas = parentCtx.canvas;
-		parentCtx.clearRect(0, 0, canvas.width, canvas.height);
-		this.render(parentCtx);
-		if (this.rootScene)
-			this.rootScene.draw(parentCtx);
-		if (this._stateUpdate)
-      this._stateUpdate = false;
-    if (this._firstRender)
-      this._firstRender = false;
+		if(this._stateUpdate||this._firstRender) {
+			this.ctx = parentCtx;
+			let canvas = parentCtx.canvas;
+			parentCtx.clearRect(0, 0, canvas.width, canvas.height);
+			this.render(parentCtx);
+			if (this.rootScene)
+				this.rootScene.draw(parentCtx);
+			if (this._stateUpdate)
+				this._stateUpdate = false;
+			if (this._firstRender)
+				this._firstRender = false;
+		}
   }
+
 	/**
 	 * 請勿取代 要使用請使用 fresh
 	 * 定期更新
@@ -212,8 +216,8 @@ export let ES6Trans =  class Es6Trans {
 	 */
 	update() {
 		this.rootScene.update();
-		if (this.rootScene)
-			this.draw(this.ctx);
+		// if (this.rootScene)
+		// 	this.draw(this.ctx);
 		this.fresh();
 	}
 
