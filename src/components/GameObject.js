@@ -16,7 +16,9 @@ class GameObject extends ES6Trans{
   __construct(prop) {
     this._tmpCanvas = new Canvas();
     this._tmpContent = this._tmpCanvas.ctx();
-    
+    this._parent = null;
+    this._parentCanvas = null;
+
     this._gameObject = {
       hide: false,
       uid: guid(),
@@ -80,6 +82,19 @@ class GameObject extends ES6Trans{
     event.setTouchmoveEvent(this.touchmove);
     event.setTouchstartEvent(this.touchstart);
   }
+
+  /**
+   * 設定父元件，共用同一個 canvas view
+   * @param {GameObject class} Object parent
+   */
+  setParent(parent) {
+    if (parent.type === 'GameObject') {
+      this._parentCanvas = parent._tmpCanvas.ctx()
+      this._parent = parent
+    }
+    return this
+  }
+
   /**
    * 提供外部調用 Event function
    *  @param {string} Event type
@@ -104,7 +119,9 @@ class GameObject extends ES6Trans{
 
   //一般不直接使用它, 背景自動繪製
   draw(ctx) {
+    let _ctx = this._parentCanvas || ctx;
     let offsetX = this.state.x, offsetY = this.state.y;
+    _ctx.save()
     if(!this._gameObject.hide||this._firstRender) {
       if (this._stateUpdate) {
         this._tmpCanvas.ctx().clearRect(0, 0, this._tmpCanvas.element().width, this._tmpCanvas.element().height);
@@ -115,8 +132,13 @@ class GameObject extends ES6Trans{
         offsetX = this.state.x - this.state.width / 2;
         offsetY = this.state.y - this.state.height / 2;
       }
-      ctx.globalAlpha = this.state.opacity;
-      ctx.drawImage(this._tmpCanvas.element(), offsetX, offsetY);
+      _ctx.globalAlpha = this.state.opacity;
+      _ctx.drawImage(this._tmpCanvas.element(), offsetX, offsetY);
+      // 子元件更新時 繪製父元件 todo: 很多子元件時繪製優化
+      if (this._parent && this._parent.draw) {
+        this._parent.draw(ctx);
+      }
+      _ctx.restore()
     };
     if (this._stateUpdate)
       this._stateUpdate = false;

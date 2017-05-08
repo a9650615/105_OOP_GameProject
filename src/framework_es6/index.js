@@ -236,6 +236,7 @@ export let ES6Trans =  class Es6Trans {
 	forceUpdate() {
 		if (this.ctx) 
 			this.draw(this.ctx);
+		return this
 	}
 
 	/**

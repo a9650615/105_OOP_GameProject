@@ -13,10 +13,9 @@ class menu extends ES6Trans {
     this.state = {
       loaded: false,
       positionY: 1,
-      positionX: 100
+      positionX: 100,
+      selectIndex: 0
     };
-
-    this.songMenu = [];
   }
 
  //初始化loadingProgress需要用到的圖片
@@ -38,9 +37,36 @@ class menu extends ES6Trans {
 
   load(){
     let t = this;
+    this.songMenu = [];
+
+    this.component = {
+      playButton: new Button(this).set(
+        {
+          text: "進入遊戲",
+          x: (Framework.Game.getCanvasWidth()/2)-100,
+          y: Framework.Game.getCanvasHeight()/2,
+          textColor: 'black'
+        }
+      ).setEvent('click', (e) => {
+        StaticData.set('playSceneData', {
+          song: '123',
+          dir: '321'
+        })
+        // console.log(StaticData.load('playSceneData'))
+        Framework.Game.goToLevel("GamePlayScene")
+      }),
+      selectCard: new SelectCard(this).set({
+        width: Game.window.width * 0.3,
+        height: Game.window.height - 20,
+        x: 200,
+        y: 10
+      })
+    }
+
     if (Game.client === 'web') {
       new BeatsMapParser('./Songs/songList.json').then((data) => {
-        console.log(data)
+        this.component.selectCard.loadFromList(data)
+        this.songMenu = data
       })
     } else {
 
@@ -68,37 +94,14 @@ class menu extends ES6Trans {
     //     });
     //   })
     // });
-    
-    this.component = {
-      playButton: new Button(this).set(
-        {
-          text: "進入遊戲",
-          x: (Framework.Game.getCanvasWidth()/2)-100,
-          y: Framework.Game.getCanvasHeight()/2,
-          textColor: 'black'
-        }
-      ).setEvent('click', (e) => {
-        StaticData.set('playSceneData', {
-          song: '123',
-          dir: '321'
-        })
-        console.log(StaticData.load('playSceneData'))
-        Framework.Game.goToLevel("GamePlayScene")
-      }),
-      testCard: new SelectCard(this).set({
-        width: Game.window.width * 0.3,
-        height: 400,
-        x: 100
-      })
-    }
   }
   
 
   fresh(){
-    if(this.state.positionY < 500)
-    this.setState({
-      positionY: this.state.positionY+5
-    })
+    // if(this.state.positionY < 500)
+    // this.setState({
+    //   positionY: this.state.positionY+5
+    // })
     // if (this.state.positionX < 700)
     // if (this.state.positionY < 500)
     // this.setState({
@@ -112,10 +115,13 @@ class menu extends ES6Trans {
   }
 
   render(parentCtx) {
-    this.component.testCard.set({
-      y: this.state.positionY
+    this.component.selectCard.set({
+      offset: this.state.selectIndex
     })
-    this.component.playButton.draw(parentCtx)
+    // this.component.testCard.set({
+    //   y: this.state.positionY
+    // })
+    // this.component.playButton.draw(parentCtx)
     // this.val.set({
     //   text: 'val',
     //   y: this.state.positionY,
@@ -124,7 +130,10 @@ class menu extends ES6Trans {
     // });
   }
 
-  onkeypress(e) {
+  onkeydown(e) {
+    let length = this.songMenu.length
+    let selectIndex = this.state.selectIndex
+    
     if (e.key == "Left")
       this.setState({
         positionX: this.state.positionX - 30
@@ -133,13 +142,13 @@ class menu extends ES6Trans {
       this.setState({
         positionX: this.state.positionX + 30
       });
-    if (e.key == "Up")
+    if (e.key == "Up" && (selectIndex - 1) >= 0)
       this.setState({
-        positionY: this.state.positionY - 30
+        selectIndex: selectIndex - 1
       });
-    if (e.key == "Down")
+    if (e.key == "Down" && (selectIndex + 1) < length)
       this.setState({
-        positionY: this.state.positionY + 30
+        selectIndex: selectIndex + 1
       });
   }
 
