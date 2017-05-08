@@ -234,8 +234,9 @@ export let ES6Trans =  class Es6Trans {
 	 * @return {null}
    */
 	forceUpdate() {
-		if (this.ctx) 
-			this.draw(this.ctx);
+		this._stateUpdate = true;
+		// if (this.ctx) 
+		// 	this._draw(this.ctx);
 		return this
 	}
 

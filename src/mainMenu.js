@@ -40,21 +40,21 @@ class menu extends ES6Trans {
     this.songMenu = [];
 
     this.component = {
-      playButton: new Button(this).set(
-        {
-          text: "進入遊戲",
-          x: (Framework.Game.getCanvasWidth()/2)-100,
-          y: Framework.Game.getCanvasHeight()/2,
-          textColor: 'black'
-        }
-      ).setEvent('click', (e) => {
-        StaticData.set('playSceneData', {
-          song: '123',
-          dir: '321'
-        })
-        // console.log(StaticData.load('playSceneData'))
-        Framework.Game.goToLevel("GamePlayScene")
-      }),
+      // playButton: new Button(this).set(
+      //   {
+      //     text: "進入遊戲",
+      //     x: (Framework.Game.getCanvasWidth()/2)-100,
+      //     y: Framework.Game.getCanvasHeight()/2,
+      //     textColor: 'black'
+      //   }
+      // ).setEvent('click', (e) => {
+      //   StaticData.set('playSceneData', {
+      //     song: '123',
+      //     dir: '321'
+      //   })
+      //   // console.log(StaticData.load('playSceneData'))
+      //   Framework.Game.goToLevel("GamePlayScene")
+      // }),
       selectCard: new SelectCard(this).set({
         width: Game.window.width * 0.3,
         height: Game.window.height - 20,
@@ -69,7 +69,26 @@ class menu extends ES6Trans {
         this.songMenu = data
       })
     } else {
-
+      new DirLoader().getBeatMapFile().then((beatsMap) => {
+        beatsMap.fileArray.forEach((val, i) => {
+          this.songMenu[i] = val
+          let meta = (/(.*)\[(.*)\].json$/g).exec(val.name)
+          // console.log(meta)
+          new BeatsMapParser(val.path).then((data) => {
+            this.songMenu[i].songName = data.songName
+            this.songMenu[i].songMeta = [{
+              difficulty: meta[2],
+              beatsFile: this.songMenu[i].name
+            }]
+            // console.log(this.songMenu[i])
+            if (i === beatsMap.fileArray.length - 1) {
+              // console.log(this.songMenu)
+              this.component.selectCard.loadFromList(this.songMenu)
+              this.forceUpdate()
+            }
+          });
+        }, this)
+      })
     }
     // new DirLoader().getBeatMapFile().then((beatsMap) => {
     //   beatsMap.fileArray.forEach((val, i) => {
@@ -134,22 +153,24 @@ class menu extends ES6Trans {
     let length = this.songMenu.length
     let selectIndex = this.state.selectIndex
     
-    if (e.key == "Left")
-      this.setState({
-        positionX: this.state.positionX - 30
-      });
-    if (e.key == "Right")
-      this.setState({
-        positionX: this.state.positionX + 30
-      });
-    if (e.key == "Up" && (selectIndex - 1) >= 0)
-      this.setState({
-        selectIndex: selectIndex - 1
-      });
-    if (e.key == "Down" && (selectIndex + 1) < length)
-      this.setState({
-        selectIndex: selectIndex + 1
-      });
+    switch(e.key) {
+      case 'Enter':
+        StaticData.set('playSceneData', this.songMenu[selectIndex])
+        Framework.Game.goToLevel("GamePlayScene")
+        break
+      case 'Up':
+        if ((selectIndex - 1) >= 0) 
+          this.setState({
+            selectIndex: selectIndex - 1
+          })
+        break
+      case 'Down':
+        if ((selectIndex + 1) < length)
+          this.setState({
+            selectIndex: selectIndex + 1
+          })
+        break
+    }
   }
 
   // autodelete() {

@@ -1,7 +1,7 @@
 import FileSystem from 'fs';
 import {Resource} from '../constant';
 
-const fileReg = /(.*)\((.*)\)\[(.*)\].json$/g;
+const fileReg = /(.*)\[(.*)\].json$/g;
 
 let songList = [];
 

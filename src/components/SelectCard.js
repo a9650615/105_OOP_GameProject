@@ -43,7 +43,7 @@ export default class SelectCard extends GameObject {
 
       this.component.cardElement.push(component)
     }, this);
-
+    return this
   }
 
   load() {
@@ -53,7 +53,7 @@ export default class SelectCard extends GameObject {
     
   }
 
-  set(data) {
+  set(data = {}) {
     this.setState(data);
     if (data.width || data.height)
       this._tmpCanvas.resize(this.state.width, this.state.height);

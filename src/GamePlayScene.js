@@ -12,7 +12,29 @@ import StaticData from './helper/StaticData';
 
 class GamePlayScene extends ES6Trans {
   initialize() {
-    // console.log(StaticData.load('playSceneData'))
+    let preLoad = StaticData.load('playSceneData')
+    let songFolder = Resource.songs+preLoad.songName+'/';
+    // console.log(songFolder+preLoad.songMeta[0].beatsFile)
+    new BeatsMapParser(songFolder+preLoad.songMeta[0].beatsFile).then((data) => {
+      this.beatsMap = data;
+      this.beatsMap.beatsMap = Object.keys(this.beatsMap.beatsMap).map((index) => {
+        return this.beatsMap.beatsMap[index];
+      });
+
+      this.song.setUrl(songFolder+this.beatsMap.songFile, this.beatsMap.songFile, () => {
+        this.setState({
+          loaded: true,
+          play: true
+        });
+        this.component.silderStage.loadbeatsMap(this.beatsMap);
+        if (!Game.debug)
+          this.playSong();
+      });
+    });
+  }
+
+  loadingProgress(ctx, requestInfo) {
+    
   }
 
   characterUpdate() {
@@ -20,7 +42,7 @@ class GamePlayScene extends ES6Trans {
     this.setState({
       frame: this.state.frame+0.1
     });
-    if(this.state.frame>list.length) 
+    if(this.state.frame > list.length) 
       this.setState({
         frame: 1,
         characterFaceTo: (this.state.characterFaceTo)? 0: 1
@@ -91,24 +113,6 @@ class GamePlayScene extends ES6Trans {
         text: 'debbug text'
       })
     };
-    
-    let songFolder = Resource.songs+'沢井美空 - カラフル/';
-    new BeatsMapParser(songFolder+'沢井美空 - カラフル[default].json').then((data) => {
-      this.beatsMap = data;
-      this.beatsMap.beatsMap = Object.keys(this.beatsMap.beatsMap).map((index) => {
-        return this.beatsMap.beatsMap[index];
-      });
-
-      this.song.setUrl(songFolder+this.beatsMap.songFile, this.beatsMap.songFile, () => {
-        this.setState({
-          loaded: true,
-          play: true
-        });
-        this.component.silderStage.loadbeatsMap(this.beatsMap);
-        if (!Game.debug)
-          this.playSong();
-      });
-    });
     // if (Game.debug)
     //   this.devTools = new devTools(this);
   }
