@@ -53,21 +53,21 @@ class GameObject extends ES6Trans{
     let event = new mouseManager(Framework);
     // event.setSubject(this);
     event.setClickEvent((e) => {
-      if (!this._gameObject.hide)
+      if (!this._gameObject.hide && this.click)
         this._callEventFunction(this.checkClick(e), this.click.bind(this, e));
     });
     // event.setContextmenuEvent
     if (typeof this.mousemove === "function")
       event.setMouseMoveEvent((e) => {
-        if (!this._gameObject.hide)
+        if (!this._gameObject.hide && this.mousemove)
           this._callEventFunction(this.checkMouseMove(e), this.mousemove.bind(this, e));
       });
     event.setMouseUpEvent((e) => {
-        if (!this._gameObject.hide)
+        if (!this._gameObject.hide && this.mouseup)
           this._callEventFunction(this.checkMouseUp(e), this.mouseup.bind(this, e));
       });
     event.setMousedownEvent((e) => {
-      if (!this._gameObject.hide)
+      if (!this._gameObject.hide && this.mousedown)
         this._callEventFunction(this.checkMouseDown(e), this.mousedown.bind(this, e));
     });
   }
@@ -132,6 +132,17 @@ class GameObject extends ES6Trans{
     let index = allElement.indexOf(this);
     if (index != -1)
       allElement.splice(index, 1);
+  }
+
+  /**
+   * auto removed
+   */
+  teardown() {
+    this.remove();
+    this.mousedown = null;
+    this.mouseup = null;
+    this.mousedown = null;
+    this.click = null;
   }
 
   /**

@@ -3,7 +3,7 @@ import Framework, {ES6Trans} from './framework_es6';
 import {Resource, Game} from './constant';
 import BeatsMapParser from './modules/BeatsMapParser';
 import Text from './components/Text';
-import Botton from './components/Botton';
+import Botton from './components/Button';
 import TextInput from './components/TextInput';
 import Rectangle from './components/Rectangle';
 import SongParser from './modules/SongParser';

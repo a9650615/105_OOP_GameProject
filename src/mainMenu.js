@@ -3,7 +3,7 @@ import { Resource , Game } from './constant';
 import DirLoader from './modules/DirLoader';
 import BeatsMapParser from './modules/BeatsMapParser';
 import Text from './components/Text';
-import Botton from './components/Botton';
+import Button from './components/Button';
 import Img from './components/Img';
 import StaticData from './helper/StaticData';
 import SelectCard from './components/SelectCard';
@@ -51,7 +51,7 @@ class menu extends ES6Trans {
     //     new BeatsMapParser(val.path).then((data) => {
           
     //     });
-    //     t.songMenu.push(new Botton(this).set(
+    //     t.songMenu.push(new Button(this).set(
     //         {
     //           text: val.name,
     //           x: 100,
@@ -70,7 +70,7 @@ class menu extends ES6Trans {
     // });
     
     this.component = {
-      playButton: new Botton(this).set(
+      playButton: new Button(this).set(
         {
           text: "進入遊戲",
           x: (Framework.Game.getCanvasWidth()/2)-100,
@@ -143,9 +143,9 @@ class menu extends ES6Trans {
       });
   }
 
-  autodelete() {
-    // console.log('destructor');
-  }
+  // autodelete() {
+  //   // console.log('destructor');
+  // }
 }
 
 

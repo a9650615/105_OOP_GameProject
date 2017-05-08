@@ -6,7 +6,7 @@ import Img from './components/Img';
 import Sprite from './components/Sprite';
 import Stage from './components/Stage';
 import SilderStage from './components/SilderStage';
-import Botton from './components/Botton';
+import Botton from './components/Button';
 import devTools from './helper/devTool';
 import StaticData from './helper/StaticData';
 

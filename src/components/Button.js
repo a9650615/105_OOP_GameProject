@@ -1,7 +1,7 @@
 import GameObject from './GameObject';
 import Text from './Text';
 
-export default class Botton extends GameObject {
+export default class Button extends GameObject {
   constructor(prop) {
 		super(prop);
 		this.state = {
@@ -67,5 +67,9 @@ export default class Botton extends GameObject {
 
 	// mousemove(e) {
 
+  // }
+
+	// teardown() {
+  //   console.log('button destructor');
   // }
 }

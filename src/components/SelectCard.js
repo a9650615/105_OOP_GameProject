@@ -1,7 +1,7 @@
 import GameObject from './GameObject'
 import Rect from './Rectangle'
 import Text from './Text'
-import Button from './Botton'
+import Button from './Button'
 
 export default class SelectCard extends GameObject {
   constructor(props) {
