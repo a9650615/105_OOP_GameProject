@@ -3,6 +3,7 @@ import { Game } from '../constant'
 import Rect from './Rectangle'
 import Text from './Text'
 import Button from './Button'
+import Ani from '../helper/Ani'
 
 export default class SelectCard extends GameObject {
   constructor(props) {
@@ -17,6 +18,18 @@ export default class SelectCard extends GameObject {
       margin: 10,
       viewRange: 1
     })
+
+    this.ani = new Ani(this).setAction({
+      slide: [
+        {offsetY: 0},
+        {offsetY: 100}
+      ]
+    })
+
+    // this.ani.call('slide')
+    // this.ani.on('slide', () => {
+    //   console.log('slide')
+    // })
   }
   
   loadFromList(data) {
@@ -50,7 +63,6 @@ export default class SelectCard extends GameObject {
     this.component = {
       cardElement: []
     }
-    
   }
 
   set(data = {}) {
@@ -65,7 +77,7 @@ export default class SelectCard extends GameObject {
   }
 
   update() {
-    
+    this.ani.update()
   }
 
   render() {
