@@ -61,7 +61,7 @@ export default function (Framework) {
 
         _initialize: function() { 
             this.cycleCount = 0;          
-            this.initialize();
+            // this.initialize(); // 暫時取消
             this._traversalAllElement(function(ele) {
                 ele.initialize();
             }); 

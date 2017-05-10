@@ -35,7 +35,7 @@ export default class TextInput extends GameObject {
     };
   }
 
-  load() {
+  initialize() {
     document.getElementById('ui-wrapper').appendChild(this.textInput);
     this.draw();
   }

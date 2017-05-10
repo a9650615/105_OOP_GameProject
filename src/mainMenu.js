@@ -43,21 +43,19 @@ class menu extends ES6Trans {
     this.songMenu = [];
 
     this.component = {
-      // playButton: new Button(this).set(
-      //   {
-      //     text: "選擇關卡",
-      //     x: (Framework.Game.getCanvasWidth()/2)-100,
-      //     y: Framework.Game.getCanvasHeight()/2,
-      //     textColor: 'black'
-      //   }
-      // ).setEvent('click', (e) => {
-      //   // StaticData.set('playSceneData', {
-      //   //   song: '123',
-      //   //   dir: '321'
-      //   // })
-      //   // // console.log(StaticData.load('playSceneData'))
-      //   // Framework.Game.goToLevel("GamePlayScene")
-      // }),
+      selectStage: new Button(this).set({
+          text: "選擇關卡",
+          x: (Framework.Game.getCanvasWidth()/2)-100,
+          y: Framework.Game.getCanvasHeight()/2,
+          textColor: 'black'
+      }).setEvent('click', (e) => {
+        // StaticData.set('playSceneData', {
+        //   song: '123',
+        //   dir: '321'
+        // })
+        // // console.log(StaticData.load('playSceneData'))
+        // Framework.Game.goToLevel("GamePlayScene")
+      }),
       selectCard: new SelectCard(this).set({
         width: Game.window.width * 0.3,
         height: Game.window.height - 20,
@@ -73,6 +71,21 @@ class menu extends ES6Trans {
         this.songMenu = data
       })
     } else {
+      this.component.goEditor = new Button(this).set({
+          text: "編輯器",
+          x: (Framework.Game.getCanvasWidth()/2)-100,
+          y: Framework.Game.getCanvasHeight()/2 + 40,
+          textColor: 'black',
+          background: '#ccc',
+      }).setEvent('click', (e) => {
+        // StaticData.set('playSceneData', {
+        //   song: '123',
+        //   dir: '321'
+        // })
+        // // console.log(StaticData.load('playSceneData'))
+        Framework.Game.goToLevel("beatsMapMaker")
+      })
+
       new DirLoader().getBeatMapFile().then((beatsMap) => {
         beatsMap.fileArray.forEach((val, i) => {
           this.songMenu[i] = val

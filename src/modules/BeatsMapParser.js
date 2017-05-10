@@ -59,6 +59,7 @@ export default class BeatsMapParser {
       if (!this._json.songFile) {
         fs.rename(`${Resource.songs}tmp/${this._json.tmpSongName}`, `${path}${songName}`, () => {
           this._json.songFile = `${songName}`;
+          this._json.songName = `${songName.split('.')[0]}`;
           delete this._json.tmpSongName;
           //console.log(this._json);
           fs.writeFileSync(`${path}${this._replace_path(songName.split('.')[0])}[${difficult}].json`, JSON.stringify(this._json), 'utf-8'); // write song file
