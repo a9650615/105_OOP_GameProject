@@ -7,6 +7,7 @@ import Button from './components/Button';
 import Img from './components/Img';
 import StaticData from './helper/StaticData';
 import SelectCard from './components/SelectCard';
+import Ani from './helper/Ani'
 
 class menu extends ES6Trans {
   initialize() {
@@ -14,7 +15,8 @@ class menu extends ES6Trans {
       loaded: false,
       positionY: 1,
       positionX: 100,
-      selectIndex: 0
+      selectIndex: 0,
+      aniSelect: 0 // 動畫效果
     };
   }
 
@@ -37,23 +39,24 @@ class menu extends ES6Trans {
 
   load(){
     let t = this;
+    this.ani = new Ani()
     this.songMenu = [];
 
     this.component = {
       // playButton: new Button(this).set(
       //   {
-      //     text: "進入遊戲",
+      //     text: "選擇關卡",
       //     x: (Framework.Game.getCanvasWidth()/2)-100,
       //     y: Framework.Game.getCanvasHeight()/2,
       //     textColor: 'black'
       //   }
       // ).setEvent('click', (e) => {
-      //   StaticData.set('playSceneData', {
-      //     song: '123',
-      //     dir: '321'
-      //   })
-      //   // console.log(StaticData.load('playSceneData'))
-      //   Framework.Game.goToLevel("GamePlayScene")
+      //   // StaticData.set('playSceneData', {
+      //   //   song: '123',
+      //   //   dir: '321'
+      //   // })
+      //   // // console.log(StaticData.load('playSceneData'))
+      //   // Framework.Game.goToLevel("GamePlayScene")
       // }),
       selectCard: new SelectCard(this).set({
         width: Game.window.width * 0.3,
@@ -61,6 +64,7 @@ class menu extends ES6Trans {
         x: 200,
         y: 10
       })
+
     }
 
     if (Game.client === 'web') {
@@ -90,89 +94,62 @@ class menu extends ES6Trans {
         }, this)
       })
     }
-    // new DirLoader().getBeatMapFile().then((beatsMap) => {
-    //   beatsMap.fileArray.forEach((val, i) => {
-    //     let yTop = i * 40;
-    //     new BeatsMapParser(val.path).then((data) => {
-          
-    //     });
-    //     t.songMenu.push(new Button(this).set(
-    //         {
-    //           text: val.name,
-    //           x: 100,
-    //           y: yTop
-    //         }
-    //       ).setEvent('click', (e) => {
-    //         console.log('按到 Button' + i)
-    //         Framework.Game.goToLevel("beatsMapMaker")
-    //       })
-    //     )
-        
-    //     t.setState({
-    //       loaded: true
-    //     });
-    //   })
-    // });
   }
   
 
   fresh(){
-    // if(this.state.positionY < 500)
-    // this.setState({
-    //   positionY: this.state.positionY+5
-    // })
-    // if (this.state.positionX < 700)
-    // if (this.state.positionY < 500)
-    // this.setState({
-    //   positionY: this.state.positionY+20
-    // });
-    // else 
-    // this.setState({
-    //   positionY: 1,
-    //   positionX: this.state.positionX + 50
-    // });
+    this.ani.update()
   }
 
   render(parentCtx) {
     this.component.selectCard.set({
-      offset: this.state.selectIndex
+      offset: this.state.selectIndex,
+      aniOffset: this.state.aniSelect
     })
-    // this.component.testCard.set({
-    //   y: this.state.positionY
-    // })
-    // this.component.playButton.draw(parentCtx)
-    // this.val.set({
-    //   text: 'val',
-    //   y: this.state.positionY,
-    //   x: this.state.positionX,
-    //   background: `rgb(${this.state.positionX%255},${this.state.positionY%255},100)`
-    // });
+    
   }
 
-  onkeydown(e) {
+  songMenuGo(selectIndex) {
+    this.ani.fromTo({aniSelect: this.state.aniSelect}, {aniSelect: selectIndex}, 0.2, (data) => {
+      this.setState(data)
+    }, 'sildeTest')
+  }
+
+  keyEvent(e) {
     let length = this.songMenu.length
     let selectIndex = this.state.selectIndex
     
     switch(e.key) {
-      case 'Enter':
-        StaticData.set('playSceneData', this.songMenu[selectIndex])
-        Framework.Game.goToLevel("GamePlayScene")
-        break
       case 'Up':
-        if ((selectIndex - 1) >= 0) 
+        if ((selectIndex - 1) >= 0) {
+          this.songMenuGo(selectIndex - 1)
           this.setState({
             selectIndex: selectIndex - 1
           })
+        }
         break
       case 'Down':
-        if ((selectIndex + 1) < length)
+        if ((selectIndex + 1) < length) {
+          this.songMenuGo(selectIndex + 1)
           this.setState({
             selectIndex: selectIndex + 1
           })
+        }
         break
     }
   }
 
+  onkeydown(e) {
+    if (e.key === 'Enter') {
+      StaticData.set('playSceneData', this.songMenu[this.state.selectIndex])
+      Framework.Game.goToLevel("GamePlayScene")
+    }
+    this.keyEvent(e)
+  }
+
+  onkeypress(e) {
+    this.keyEvent(e)
+  }
   // autodelete() {
   //   // console.log('destructor');
   // }
