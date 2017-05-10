@@ -113,7 +113,7 @@ class SilderStage extends GameObject {
   keyHit(type, callback = () => {}) {
     let beatsMap = this.beatsMap.beatsMap;
     let currentStep = this.state.currentStep;
-    let hitTypeName = ["Critical Perfect","Perfect","Good","Bad","Miss"];  
+    let hitTypeName = ["Critical Great","Great","Good","Bad","Miss"];  
     let hitType = -1;
     beatsMap.forEach((val, i) => {
       if (this._checkIsInBlock(currentStep, val.startStep) && type === val.align) { //節拍數進入範圍時
@@ -132,7 +132,7 @@ class SilderStage extends GameObject {
         }      
         console.log(this.countPercent(), "/", this.beatsMap.totalStep * 100, hitTypeName[hitType-1]);
         console.log(Math.round((this.countPercent() * 1000000) / (this.beatsMap.totalStep * 100)));
-        console.log("Critical Perfect:",this.hit[0],"Perfect:",this.hit[1],"Good:",this.hit[2],"Bad:",this.hit[3],"Miss:",this.hit[4]);
+        console.log("Critical Great:",this.hit[0],"Great:",this.hit[1],"Good:",this.hit[2],"Bad:",this.hit[3],"Miss:",this.hit[4]);
         val.element.hide();
       }
     });
@@ -180,7 +180,7 @@ class SilderStage extends GameObject {
             val.status = -1;
             this.hit[4] += 1;
             console.log(this.countPercent(), "/", this.beatsMap.totalStep * 100, "Miss");
-            console.log("Critical Perfect:",this.hit[0],"Perfect:",this.hit[1],"Good:",this.hit[2],"Bad:",this.hit[3],"Miss:",this.hit[4]);
+            console.log("Critical Great:",this.hit[0],"Great:",this.hit[1],"Good:",this.hit[2],"Bad:",this.hit[3],"Miss:",this.hit[4]);
           }
           if (val.status === 0)
             val.element.set({
