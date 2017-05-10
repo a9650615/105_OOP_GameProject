@@ -21,12 +21,21 @@ export default class Ani {
         tmp.tmpData = {}
         tmp.status = 0
         tmp.count = 0
+        tmp.isTmp = false //  臨時呼叫
         actionData[i] = tmp
       }
     this.actions = actionData
     
     return this
   }
+  /**
+   * 刪除 action
+   */
+  _deleteAction(actionType) {
+    delete this.actions[actionType]
+    this.callback[actionType] = null
+  }
+
   /**
    * 更新邏輯 ( 外部呼叫 )
    */
@@ -37,13 +46,40 @@ export default class Ani {
       if (actionData.hasOwnProperty(type)) {
         let data = actionData[type]
         let act = data.action
+        let actLength = act.length
+        let parts = 1 / (actLength - 1)
         if (data.status === 1) { //running
 
-          if (time >= data.endTime) {
+          if (time >= data.endTime) { //end
             data.status = 0
+            if (this.callback[type])
+              this.callback[type].call(this._parent, act[actLength - 1])
+            
+            if (data.isTmp) 
+              this._deleteAction(type)
+          } else {
+            let percent = (time - data.startTime) / (data.endTime - data.startTime)
+            let nowStep = parseInt(percent / parts)
+            let certainPercnt = (percent / parts) % 1
+            
+            data.tmpData = {}
+
+            for (let i in data.action[nowStep]) {
+              if (data.action[nowStep + 1][i] != null) {
+                // console.log(certainPercnt, data.action[nowStep][i], data.action[nowStep + 1][i])
+                data.tmpData[i] = ((data.action[nowStep + 1][i] - data.action[nowStep][i]) * certainPercnt) + data.action[nowStep][i]
+              }
+            }
+
+            // data.tmpData = {
+            //   percent,
+            //   nowStep,
+            //   actLength
+            // }
+
+            if (this.callback[type])
+              this.callback[type].call(this._parent, data.tmpData)
           }
-          if (this.callback[type])
-            this.callback[type].call(this._parent, actionData[type].tmpData)
 
         }
       }
@@ -61,5 +97,40 @@ export default class Ani {
 
   on(type, callback) {
     this.callback[type] = callback
+  }
+  /**
+   * 直接呼叫動畫 從 到 時間 func (暫定名稱)
+   */
+  fromTo(from = {}, to = {}, resTime = 0, callback = () => {}, tmpName = null) {
+    let time = new Date().getTime()
+    this.callback[tmpName || time] = callback
+    this.actions[tmpName || time] = {
+      status: 1,
+      count: 0,
+      startTime: time,
+      endTime: time + resTime * 1000,
+      isTmp: true,
+      action: [from, to]
+    }
+
+    return this
+  }
+
+  /**
+   * 直接呼叫動畫流
+   */
+  go(actions = [], resTime = 0, callback = () => {}, tmpName = null) {
+    let time = new Date().getTime()
+    this.callback[tmpName || time] = callback
+    this.actions[tmpName || time] = {
+      status: 1,
+      count: 0,
+      startTime: time,
+      endTime: time + resTime * 1000,
+      isTmp: true,
+      action: actions
+    }
+
+    return this
   }
 }

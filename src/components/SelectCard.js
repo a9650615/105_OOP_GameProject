@@ -11,6 +11,7 @@ export default class SelectCard extends GameObject {
     this._parent = props;
     Object.assign(this.state, {
       offset: 0,
+      aniOffset: null,
       card: {
         height: 200,
         width: 300
@@ -19,16 +20,19 @@ export default class SelectCard extends GameObject {
       viewRange: 1
     })
 
-    this.ani = new Ani(this).setAction({
-      slide: [
-        {offsetY: 0},
-        {offsetY: 100}
-      ]
-    })
+    this.ani = new Ani(this)
+    // this.ani = new Ani(this).setAction({
+    //   slide: [
+    //     {offsetY: 0},
+    //     {offsetY: 70},
+    //     {offsetY: 100}
+    //   ]
+    // })
 
-    // this.ani.call('slide')
-    // this.ani.on('slide', () => {
-    //   console.log('slide')
+    // this.ani.call('slide', 2)
+    
+    // this.ani.on('slide', (data) => {
+    //   console.log(data)
     // })
   }
   
@@ -66,6 +70,12 @@ export default class SelectCard extends GameObject {
   }
 
   set(data = {}) {
+    // if (data.offset && data.offset !== this.state.offset) {
+    //   this.ani.fromTo({aniOffset: this.state.aniOffset}, {aniOffset: data.offset}, 1, (data) => {
+    //     console.log(data)
+    //     this.setState(data)
+    //   }, 'sildeTest')
+    // }
     this.setState(data);
     if (data.width || data.height)
       this._tmpCanvas.resize(this.state.width, this.state.height);
@@ -82,7 +92,7 @@ export default class SelectCard extends GameObject {
 
   render() {
     this.component.cardElement.forEach((val, i) => {
-      let cutIndex = i - this.state.offset;
+      let cutIndex = i - (this.state.aniOffset || this.state.offset);
       
       if ( cutIndex < this.state.viewRange && cutIndex >= this.state.viewRange * -1) {
         val.background.show()

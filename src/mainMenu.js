@@ -7,6 +7,7 @@ import Button from './components/Button';
 import Img from './components/Img';
 import StaticData from './helper/StaticData';
 import SelectCard from './components/SelectCard';
+import Ani from './helper/Ani'
 
 class menu extends ES6Trans {
   initialize() {
@@ -14,7 +15,8 @@ class menu extends ES6Trans {
       loaded: false,
       positionY: 1,
       positionX: 100,
-      selectIndex: 0
+      selectIndex: 0,
+      aniSelect: 0 // 動畫效果
     };
   }
 
@@ -37,6 +39,7 @@ class menu extends ES6Trans {
 
   load(){
     let t = this;
+    this.ani = new Ani()
     this.songMenu = [];
 
     this.component = {
@@ -61,6 +64,7 @@ class menu extends ES6Trans {
         x: 200,
         y: 10
       })
+
     }
 
     if (Game.client === 'web') {
@@ -131,11 +135,13 @@ class menu extends ES6Trans {
     //   positionY: 1,
     //   positionX: this.state.positionX + 50
     // });
+    this.ani.update()
   }
 
   render(parentCtx) {
     this.component.selectCard.set({
-      offset: this.state.selectIndex
+      offset: this.state.selectIndex,
+      aniOffset: this.state.aniSelect
     })
     // this.component.testCard.set({
     //   y: this.state.positionY
@@ -149,7 +155,13 @@ class menu extends ES6Trans {
     // });
   }
 
-  onkeydown(e) {
+  songMenuGo(selectIndex) {
+    this.ani.fromTo({aniSelect: this.state.aniSelect}, {aniSelect: selectIndex}, 0.2, (data) => {
+      this.setState(data)
+    }, 'sildeTest')
+  }
+
+  keyEvent(e) {
     let length = this.songMenu.length
     let selectIndex = this.state.selectIndex
     
@@ -159,20 +171,31 @@ class menu extends ES6Trans {
         Framework.Game.goToLevel("GamePlayScene")
         break
       case 'Up':
-        if ((selectIndex - 1) >= 0) 
+        if ((selectIndex - 1) >= 0) {
+          this.songMenuGo(selectIndex - 1)
           this.setState({
             selectIndex: selectIndex - 1
           })
+        }
         break
       case 'Down':
-        if ((selectIndex + 1) < length)
+        if ((selectIndex + 1) < length) {
+          this.songMenuGo(selectIndex + 1)
           this.setState({
             selectIndex: selectIndex + 1
           })
+        }
         break
     }
   }
 
+  onkeydown(e) {
+    this.keyEvent(e)
+  }
+
+  onkeypress(e) {
+    this.keyEvent(e)
+  }
   // autodelete() {
   //   // console.log('destructor');
   // }
