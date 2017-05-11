@@ -125,11 +125,12 @@ class GamePlayScene extends ES6Trans {
         text: 'debbug text'
       }),
       beatsType: new Img(this).set({
-        width: 100,
-        x: Game.window.width * 0.8,
-        y: 50,
+        width: 50,
+        height: 30,
+        x: Game.window.width * 0.7,
+        y: Game.window.height * 0.6,
         scale: 1.2,
-        scaleResolveX: 200,
+        scaleResolveX: 50,
         scaleResolveY: 10,
         // url: `${Resource.image}/Great.png`
       })
@@ -142,10 +143,10 @@ class GamePlayScene extends ES6Trans {
   onBeat(returnKey) {
     if (returnKey > -1) {
       this.component.beatsType.changeImg(this.beatsTypeImg[returnKey])
-      this.ani.fromTo({opacity: 0, scale: 1},{opacity: 1, scale: 1.2}, 0.3, (data) => {
+      this.ani.fromTo({opacity: 0, scale: 0.5},{opacity: 1, scale: 0.7}, 0.2, (data) => {
         this.component.beatsType.set(data)
       }, 'beat').then(() => {
-        this.ani.fromTo({opacity: 1},{opacity: 0}, 0.5, (data) => {
+        this.ani.fromTo({opacity: 1},{opacity: 0}, 0.4, (data) => {
           this.component.beatsType.set(data)
         }, 'fade', 1)
       })
