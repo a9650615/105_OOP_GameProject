@@ -53,6 +53,10 @@ export default class SongParser {
     this.audio.currentTime = currentTime;
   }
 
+  setVolume(number) {
+    this.audio.volume = number;
+  }
+
   getDuration() {
     return this.duration;
   }

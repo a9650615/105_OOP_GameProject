@@ -40,9 +40,9 @@ class SilderStage extends GameObject {
         if (beatsMap[i+1].startStep == beatsMap[i].startStep){
           color = '#EAC100';
       }
-      val.element = new Rect(this._parent).set({
+      val.element = new Rect(this._parent).setParent(this).set({
         x: 0,
-        y: this.state.y,
+        // y: this.state.y,
         width: this.state.width/(2*this.state.range), //*2 是因為畫面砍半
         height: this.state.height,
         background: color
@@ -81,6 +81,9 @@ class SilderStage extends GameObject {
   }
 
   set(data) {
+    if (data.width||data.height) {
+      this._tmpCanvas.resize(data.width, data.height)
+    }
     this.setState(data);
     return this;
   }
@@ -169,12 +172,12 @@ class SilderStage extends GameObject {
         this._checkSilderInSpace(val.startStep, () => {
           let elementTime = 1-((val.startStep*difference)-currentTime)%rangeTime;
           let x = (val.align==0)?(width*(elementTime/rangeTime) - eleWidth):(width - width*(elementTime/rangeTime));
-          if (val.align == 0 && (x+eleWidth)>(width-this.state.hpWidth)/2) {  // 左半部區塊寬度調整
-            eleWidth = (((width)/2) - x) - this.state.hpWidth/2;
+          if (val.align == 0 && (x+eleWidth+this.state.x)>(width-this.state.hpWidth)/2) {  // 左半部區塊寬度調整
+            eleWidth = (((width)/2) - x) - this.state.hpWidth/2 - this.state.x;
           }
-          if (val.align == 1 && x<(width+this.state.hpWidth)/2) {  // 右半部區塊寬度調整
-            eleWidth = eleWidth - (((width)/2) - x) - this.state.hpWidth/2;
-            x = (width+this.state.hpWidth)/2;
+          if (val.align == 1 && (x+this.state.x)<(width+this.state.hpWidth)/2) {  // 右半部區塊寬度調整
+            eleWidth = eleWidth - (((width)/2) - x) - this.state.hpWidth/2 - this.state.x;
+            x = (width+this.state.hpWidth)/2 - this.state.x;
           }
           if (rangeTime - elementTime * 1.5 <= 0 && val.status === 0) { //滑塊 miss
             val.status = -1;

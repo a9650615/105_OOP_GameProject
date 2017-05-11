@@ -33,35 +33,35 @@ export default class Stage extends GameObject{
     this._tmpCanvas.resize(GameWidth, GameHeight);
     // 元件集合包, 但是由於不了解 framework GameObject 運作, 只能添加到主場景, 管理難度可能增加
     this.component = {
-      stageBg: new Rect(this._parent).set({
+      stageBg: new Rect(this._parent).setParent(this).set({
           x: 0,
           y: GameHeight * 0.5,
           width: GameWidth,
           height: GameHeight * 0.5,
           background: '#222222'
         }),
-      stageBlock: new Rect(this._parent).set({
+      stageBlock: new Rect(this._parent).setParent(this).set({
           x: offsetX + 10,
           y: GameHeight * 0.525,
           width: GameWidth - 20,
           height: (GameHeight*0.45),
           background: '#cfcfcf'
         }),
-      stageCentLine: new Rect(this._parent).set({
+      stageCentLine: new Rect(this._parent).setParent(this).set({
           x: (GameWidth - hpWidth)/2,
           y: GameHeight*0.5,
           width: hpWidth,
           height: GameHeight * 0.5,
           background: '#fff'
         }),
-      stageCentLineBlood: new Rect(this._parent).set({
+      stageCentLineBlood: new Rect(this._parent).setParent(this).set({
           x: (GameWidth - hpWidth)/2,
           y: GameHeight - (GameHeight/2)*(this.state.hp/100),
           width: hpWidth,
           height: (GameHeight/2)*(this.state.hp/100),
           background: 'green'
         }),
-      stageLeftClick: new Rect(this._parent).set({
+      stageLeftClick: new Rect(this._parent).setParent(this).set({
         x: ((GameWidth - hpWidth)/2) * 0.5,
         y: (GameHeight * 0.5) + 15,
         width: ((GameWidth - hpWidth)/2) * 0.5,
@@ -71,7 +71,7 @@ export default class Stage extends GameObject{
           'rgba(244, 66, 116, 0.5)'
         ]
       }).hide(),
-      stageRightClick: new Rect(this._parent).set({
+      stageRightClick: new Rect(this._parent).setParent(this).set({
         x: ((GameWidth + hpWidth)/2),
         y: (GameHeight * 0.5) + 15,
         width: ((GameWidth - hpWidth)/2) * 0.5,

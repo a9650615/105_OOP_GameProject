@@ -22,7 +22,8 @@ class GamePlayScene extends ES6Trans {
       this.beatsMap.beatsMap = Object.keys(this.beatsMap.beatsMap).map((index) => {
         return this.beatsMap.beatsMap[index];
       });
-
+      
+      this.beatsMap.endStep = this.beatsMap.beatsMap[this.beatsMap.beatsMap.length - 1].startStep
       this.song.setUrl(songFolder+this.beatsMap.songFile, this.beatsMap.songFile, () => {
         this.setState({
           loaded: true,
@@ -74,21 +75,24 @@ class GamePlayScene extends ES6Trans {
       currentStep: 0,
       hpWidth: 5,
       totalScore: 0,
-      characterFaceTo: 0
+      characterFaceTo: 0,
+      stageOpacity: 1,
+      endStateRange: 15,
+      endTimeOut: 0, // 距離結束 beat 過了多久
     };
 
     this.beatsMap = {};
     this.song = new SongParser();
     
     let GameWidth = Game.window.width, GameHeight = Game.window.height;
-    new Img(this).set({
-      url: Resource.image+'/background.jpg',
-      x: 0,
-      y: -200,
-      width: 1920
-    });
    
     this.component = {
+      background: new Img(this).set({
+        url: Resource.image+'/background.jpg',
+        x: 0,
+        y: -200,
+        width: 1920
+      }),
       stage: new Stage(this).set({
         hpWidth: this.state.hpWidth
       }),
@@ -127,9 +131,10 @@ class GamePlayScene extends ES6Trans {
         scale: 1.2,
         scaleResolveX: 200,
         scaleResolveY: 10,
-        url: `${Resource.image}/Great.png`
+        // url: `${Resource.image}/Great.png`
       })
     };
+
     // if (Game.debug)
     //   this.devTools = new devTools(this);
   }
@@ -168,10 +173,14 @@ class GamePlayScene extends ES6Trans {
       case 32:
         let player = this.song.getPlayer();
         if (Game.debug) {
-          if (player.paused) 
+          if (player.paused) {
             player.play()
-          else 
+            this.setState({play: true})
+          }
+          else {
             player.pause()
+            this.setState({play: false})
+          }
         }
         break;
     }
@@ -198,9 +207,9 @@ class GamePlayScene extends ES6Trans {
     if (this.state.play) {
       if(this.state.hp>0) {
         // 扣血範例
-        this.setState({
-          hp: this.state.hp - 0.01
-        });
+        // this.setState({
+        //   hp: this.state.hp - 0.01
+        // });
       }
       let silder = this.component.silderStage;
       this.state.totalScore = Math.round(1000000 * (silder.getScore()));
@@ -225,8 +234,30 @@ class GamePlayScene extends ES6Trans {
       this.component.scoreText.set({
         text: 'score:'+this.state.totalScore
       });
+      if (step > this.beatsMap.endStep + this.state.endStateRange) {
+        this.ani.fromTo({stageOpacity: 1},{stageOpacity: 0}, 0.5, (data) => {
+          this.setState(data)
+        }, 'beat').then(() => {
+          this.song.getPlayer().pause()
+          // Framework.Game.goToLevel("menu")
+        })
+        this.setState({play: false})
+      }
+    } else {
+      this.component.stage.set({
+        opacity: this.state.stageOpacity
+      })
+      this.component.silderStage.set({
+        opacity: this.state.stageOpacity
+      })
+      this.component.character.set({
+        opacity: this.state.stageOpacity
+      })
+      this.component.debugText.set({opacity: this.state.stageOpacity})
+      this.component.scoreText.set({opacity: this.state.stageOpacity})
+      this.component.background.set({opacity: this.state.stageOpacity})
     }
   }
 }
 
-export default Framework.exClass(Framework.Level , new GamePlayScene().transClass());
+export default Framework.exClass(Framework.Level, new GamePlayScene().transClass());
