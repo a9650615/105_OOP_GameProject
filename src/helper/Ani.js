@@ -3,6 +3,7 @@ export default class Ani {
     this._parent = parent
     this.actions = {}
     this.callback = {}
+    this.finishCall = {}
   }
 
   _aniCounter() {
@@ -48,13 +49,14 @@ export default class Ani {
         let act = data.action
         let actLength = act.length
         let parts = 1 / (actLength - 1)
-        if (data.status === 1) { //running
+        if (data.status === 1 && time >= data.startTime) { //running
 
           if (time >= data.endTime) { //end
             data.status = 0
             if (this.callback[type])
               this.callback[type].call(this._parent, act[actLength - 1])
-            
+            if (this.finishCall[type])
+              this.finishCall[type].call(this._parent)
             if (data.isTmp) 
               this._deleteAction(type)
           } else {
@@ -101,8 +103,8 @@ export default class Ani {
   /**
    * 直接呼叫動畫 從 到 時間 func (暫定名稱)
    */
-  fromTo(from = {}, to = {}, resTime = 0, callback = () => {}, tmpName = null) {
-    let time = new Date().getTime()
+  fromTo(from = {}, to = {}, resTime = 0, callback = () => {}, tmpName = null, timeout = 0) {
+    let time = new Date().getTime() + timeout * 1000
     this.callback[tmpName || time] = callback
     this.actions[tmpName || time] = {
       status: 1,
@@ -112,8 +114,9 @@ export default class Ani {
       isTmp: true,
       action: [from, to]
     }
-
-    return this
+    return new Promise((resolve, reject) => {
+      this.finishCall[tmpName || time] = resolve
+    })
   }
 
   /**

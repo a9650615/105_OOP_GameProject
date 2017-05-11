@@ -5,7 +5,7 @@ import {Resource} from '../constant';
 class Img extends GameObject {
   constructor(prop) {
     super(prop);
-    this.state = {
+    Object.assign(this.state, {
       x: 10,
       y: 10,
       width: null,
@@ -13,8 +13,7 @@ class Img extends GameObject {
       naturalHeight: null,
       naturalWidth: null,
       url: null
-    };
-    
+    })
   }
 
   _getAutoSize(w = null, h = null, naturalWidth = 0, naturalHeight = 0) {
@@ -33,32 +32,35 @@ class Img extends GameObject {
     };
   }
 
+  changeImg(uid) {
+    let img = Framework.ResourceManager.getResource(uid||this._gameObject.uid);
+    let obj = {}
+    let scaleSize = this._getAutoSize(obj['width'], obj['height'], img.naturalWidth, img.naturalHeight);
+    obj['width'] = scaleSize['width'];
+    obj['height'] = scaleSize['height'];
+    this.preLoadImg = img;
+    obj['naturalWidth'] = img.naturalWidth;
+    obj['naturalHeight'] = img.naturalHeight;
+    this._tmpCanvas.resize(obj['width']||obj['naturalWidth'], obj['height']||obj['naturalHeight']);
+    this.setState(obj);
+  }
+
   set(setting) {
     //let img = new Framework.Sprite(`${Resource.image}${setting.image}`);
     let t = this;
-    
+    if (setting.url)
     Framework.ResourceManager.loadImage({id: this._gameObject.uid, url: setting.url})
       .then(() => {
-        let img = Framework.ResourceManager.getResource(this._gameObject.uid);
-        let obj = Object.assign(
-          {},
-          this.state,
-          setting
-        );
-        let scaleSize = this._getAutoSize(obj['width'], obj['height'], img.naturalWidth, img.naturalHeight);
-        obj['width'] = scaleSize['width'];
-        obj['height'] = scaleSize['height'];
-        this.preLoadImg = img;
-        obj['naturalWidth'] = img.naturalWidth;
-        obj['naturalHeight'] = img.naturalHeight;
-        this._tmpCanvas.resize(obj['width']||obj['naturalWidth'], obj['height']||obj['naturalHeight']);
-        this.setState(Object.assign(setting, obj));
+        this.changeImg();
+        this.setState(setting);
       });
+    else this.setState(setting)
     return this;
   }
 
   render(ctx) {
     let obj = this.state;
+    if (this.preLoadImg)
     ctx.drawImage(this.preLoadImg, 0, 0, 
       obj['width']||obj['naturalWidth'], 
       obj['height']||obj['naturalHeight']);

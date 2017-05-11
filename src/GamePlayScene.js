@@ -9,12 +9,14 @@ import SilderStage from './components/SilderStage';
 import Botton from './components/Button';
 import devTools from './helper/devTool';
 import StaticData from './helper/StaticData';
+import Ani from './helper/Ani';
 
 class GamePlayScene extends ES6Trans {
   initialize() {
     let preLoad = StaticData.load('playSceneData')
     let songFolder = Resource.songs+preLoad.songName+'/';
     // console.log(songFolder+preLoad.songMeta[0].beatsFile)
+    this.ani = new Ani();
     new BeatsMapParser(songFolder+preLoad.songMeta[0].beatsFile).then((data) => {
       this.beatsMap = data;
       this.beatsMap.beatsMap = Object.keys(this.beatsMap.beatsMap).map((index) => {
@@ -31,6 +33,12 @@ class GamePlayScene extends ES6Trans {
           this.playSong();
       });
     });
+    this.beatsTypeImg = ['beats_crit_great', 'beats_good', 'beats_great', 'beats_bad', 'beats_miss'];
+    Framework.ResourceManager.loadImage({id: 'beats_great',url: `${Resource.image}/Great.png`})
+    Framework.ResourceManager.loadImage({id: 'beats_bad',url: `${Resource.image}/bad.png`})
+    Framework.ResourceManager.loadImage({id: 'beats_crit_great',url: `${Resource.image}/Critical_Great.png`})
+    Framework.ResourceManager.loadImage({id: 'beats_good',url: `${Resource.image}/good.png`})
+    Framework.ResourceManager.loadImage({id: 'beats_miss',url: `${Resource.image}/miss.png`})
   }
 
   loadingProgress(ctx, requestInfo) {
@@ -111,25 +119,48 @@ class GamePlayScene extends ES6Trans {
         y: 50,
         textColor: 'white',
         text: 'debbug text'
+      }),
+      beatsType: new Img(this).set({
+        width: 100,
+        x: Game.window.width * 0.8,
+        y: 50,
+        scale: 1.2,
+        scaleResolveX: 200,
+        scaleResolveY: 10,
+        url: `${Resource.image}/Great.png`
       })
     };
     // if (Game.debug)
     //   this.devTools = new devTools(this);
   }
 
+  onBeat(returnKey) {
+    if (returnKey > -1) {
+      this.component.beatsType.changeImg(this.beatsTypeImg[returnKey])
+      this.ani.fromTo({opacity: 0, scale: 1},{opacity: 1, scale: 1.2}, 0.3, (data) => {
+        this.component.beatsType.set(data)
+      }, 'beat').then(() => {
+        this.ani.fromTo({opacity: 1},{opacity: 0}, 0.5, (data) => {
+          this.component.beatsType.set(data)
+        }, 'fade', 1)
+      })
+    }
+  }
+  
   onkeydown(e) {
     let keyCode = Game.keyCode;
     switch(e.keyCode) {
       case keyCode.leftHit:
         this.component.silderStage.keyHit(0, (returnKey) => {
-        console.log(returnKey);
+          this.onBeat(returnKey)
+          console.log(returnKey);
         });
         this.component.stage.clickEffect(0)
         this.component.stage.component.stageLeftClick.show()
         break;
       case keyCode.rightHit:
         this.component.silderStage.keyHit(1, (returnKey) => {
-        console.log(returnKey);
+          this.onBeat(returnKey)
         });
         this.component.stage.clickEffect(1)
         this.component.stage.component.stageRightClick.show()
@@ -174,6 +205,8 @@ class GamePlayScene extends ES6Trans {
       let silder = this.component.silderStage;
       this.state.totalScore = Math.round(1000000 * (silder.getScore()));
     }
+
+    this.ani.update()
   }
 
   render() {

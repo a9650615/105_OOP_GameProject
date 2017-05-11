@@ -28,7 +28,10 @@ class GameObject extends ES6Trans{
     this.state = {
       x: 0,
       y: 0,
-      opacity: 1
+      opacity: 1,
+      scale: 1,
+      scaleResolveX: 0,
+      scaleResolveY: 0
     };
     
     this.prop = prop;
@@ -128,9 +131,13 @@ class GameObject extends ES6Trans{
         this.render(this._tmpCanvas.ctx());
       }
 
-      if(this._gameObject.align == 'center') {
+      if (this._gameObject.align == 'center') {
         offsetX = this.state.x - this.state.width / 2;
         offsetY = this.state.y - this.state.height / 2;
+      }
+      if (this.state.scale != 1) {
+        _ctx.scale(this.state.scale, this.state.scale)
+        _ctx.translate(-this.state.scaleResolveX * this.state.scale, -this.state.scaleResolveY * this.state.scale);
       }
       _ctx.globalAlpha = this.state.opacity;
       _ctx.drawImage(this._tmpCanvas.element(), offsetX, offsetY);
