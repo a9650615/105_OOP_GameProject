@@ -53,7 +53,7 @@ export default class TextInput extends GameObject {
   }
 
   value(val = null) {
-    if(val)
+    if(val !== null)
       this.setState({value: val});
     else 
       return this.state.value;

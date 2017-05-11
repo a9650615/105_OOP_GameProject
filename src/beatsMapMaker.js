@@ -7,6 +7,7 @@ import Botton from './components/Button';
 import TextInput from './components/TextInput';
 import Rectangle from './components/Rectangle';
 import SongParser from './modules/SongParser';
+import StaticData from './helper/StaticData'
 
 class beatsMapMaker extends ES6Trans {
   load(){
@@ -20,7 +21,7 @@ class beatsMapMaker extends ES6Trans {
       currentStep: 0, // 目前播放節拍介於
       loaded: false
     };
-
+    
     this.audio = new Framework.Audio({
       clap:{
         wav: Resource.sounds+'clap.wav'
@@ -159,120 +160,144 @@ class beatsMapMaker extends ES6Trans {
         Scene.forceUpdate();*/
         this.loadStepLine(t.value());
       }).value(this.state.timeLine).hide();
-    
-    this.loadStepLine(this.state.timeLine, true);
-
-    this.component.play = new Botton(this).set(
-        {
-          text: "播放",
-          x: 50,
-          y: this.state.firstTop,
-          textColor: 'black'
-        }
-      ).setEvent('click', (e) => {
-        this.togglePlay();
-      }).hide();
-
-    this.component.turnBack = new Botton(this).set(
-        {
-          text: "往前 10 秒",
-          x: 120,
-          y: this.state.firstTop,
-          textColor: 'black'
-        }
-      ).setEvent('click', (e) => {
-        this.song.setCurrentTime(this.song.getCurrentTime()-10);
-        this.sTimer(true);
-      }).hide();
-
-   this.component.fastForward = new Botton(this).set(
-        {
-          text: "往後 10 秒",
-          x: 250,
-          y: this.state.firstTop,
-          textColor: 'black'
-        }
-      ).setEvent('click', (e) => {
-         this.song.setCurrentTime(this.song.getCurrentTime()+10);
-         this.sTimer(true);
-      }).hide();
-
-    this.component.reset = new Botton(this).set(
-        {
-          text: "重置",
-          x: 380,
-          y: this.state.firstTop,
-          textColor: 'black'
-        }
-      ).setEvent('click', (e) => {
-        this.song.setCurrentTime(0);
-        this.sTimer(true);
-        this.update();
-        // this.setState({
-        //   time: 0
-        // });
-      }).hide();
-//
-      this.component.clapswitch = new Botton(this).set(
-        {
-          text: "節拍音",
-          x: 445,
-          y: this.state.firstTop,
-          textColor: 'black'
-        }
-      ).setEvent('click', (e) => {
-        this.mapSetting.isClapOn= !this.mapSetting.isClapOn;
-        this.forceUpdate();
-      }).hide();
-//
-
-  this.component.timer = new Botton(this).set({
-      text: "00:00 / 00:00",
-      x: 550,
-      y: this.state.firstTop,
-      textColor: 'black'
-    }).hide();
       
-  this.component.uploader = new Botton(this).set(
-      {
-        text: "選擇歌曲",
-        x: 700,
+      this.component.offsetLabel = new Botton(this).set(
+        {
+          text: "開始時間:",
+          x:  Game.window.width * 0.55,
+          y: this.state.firstTop+50,
+          textColor: 'black'
+        }
+      ).hide();
+
+      this.component.offsetSelector = new TextInput(this).setStyle({
+        x: 550,
+        y: this.state.firstTop+25,
+        borderBottom: '1px solid #ccc',
+        width: 40
+      }).set({
+        attr:{
+          type: 'number',
+        }
+      }).setEvent('change', (e, t) => {
+        /*Scene.state.timeLine = t.value();
+        Scene.forceUpdate();*/
+        this.mapSetting.songOffset = Number(t.value())
+      }).hide()
+
+      this.loadStepLine(this.state.timeLine, true);
+
+      this.component.play = new Botton(this).set(
+          {
+            text: "播放",
+            x: 50,
+            y: this.state.firstTop,
+            textColor: 'black'
+          }
+        ).setEvent('click', (e) => {
+          this.togglePlay();
+        }).hide();
+
+      this.component.turnBack = new Botton(this).set(
+          {
+            text: "往前 10 秒",
+            x: 120,
+            y: this.state.firstTop,
+            textColor: 'black'
+          }
+        ).setEvent('click', (e) => {
+          this.song.setCurrentTime(this.song.getCurrentTime()-10);
+          this.sTimer(true);
+        }).hide();
+
+    this.component.fastForward = new Botton(this).set(
+          {
+            text: "往後 10 秒",
+            x: 250,
+            y: this.state.firstTop,
+            textColor: 'black'
+          }
+        ).setEvent('click', (e) => {
+          this.song.setCurrentTime(this.song.getCurrentTime()+10);
+          this.sTimer(true);
+        }).hide();
+
+      this.component.reset = new Botton(this).set(
+          {
+            text: "重置",
+            x: 380,
+            y: this.state.firstTop,
+            textColor: 'black'
+          }
+        ).setEvent('click', (e) => {
+          this.song.setCurrentTime(0);
+          this.sTimer(true);
+          this.update();
+          // this.setState({
+          //   time: 0
+          // });
+        }).hide();
+  //
+        this.component.clapswitch = new Botton(this).set(
+          {
+            text: "節拍音",
+            x: 445,
+            y: this.state.firstTop,
+            textColor: 'black'
+          }
+        ).setEvent('click', (e) => {
+          this.mapSetting.isClapOn= !this.mapSetting.isClapOn;
+          this.forceUpdate();
+        }).hide();
+  //
+
+    this.component.timer = new Botton(this).set({
+        text: "00:00 / 00:00",
+        x: 550,
         y: this.state.firstTop,
         textColor: 'black'
-      }
-    ).setEvent('click', (e) => {
-      let file = document.createElement('input');
-      file.setAttribute("type", "file");
-      file.addEventListener("change", () => {
-        let dir = `${Resource.songs}tmp/`;
-        let files = file.files[0];
-        if (file.files.length) {
-          this.songFile = files;
+      }).hide();
+        
+    this.component.uploader = new Botton(this).set(
+        {
+          text: "選擇歌曲",
+          x: 700,
+          y: this.state.firstTop,
+          textColor: 'black'
+        }
+      ).setEvent('click', (e) => {
+        let file = document.createElement('input');
+        file.setAttribute("type", "file");
+        file.addEventListener("change", () => {
+          let dir = `${Resource.songs}tmp/`;
+          let files = file.files[0];
+          if (file.files.length) {
+            this.songFile = files;
 
-          if (!fs.existsSync(dir)){
-            fs.mkdirSync(dir);
-          } else {
-            fs.readdir(dir, function(err, files) {
-              files.forEach((file) => {
-                fs.unlinkSync(dir+file);
-              })
-            });
-          }
-          var t = this;
-          let fileReader = new FileReader();
-          fileReader.onload = function() {
-            t.mapSetting.tmpSongName = 'song'+ Math.random();
-            fs.writeFileSync(dir+t.mapSetting.tmpSongName, Buffer.from(new Uint8Array(this.result)));
-            t.song.setUrl(dir+t.mapSetting.tmpSongName, files.name, () => {
-              t.sTimer(true);
-            });
-            t.forceUpdate();
+            if (!fs.existsSync(dir)){
+              fs.mkdirSync(dir);
+            } else {
+              fs.readdir(dir, function(err, files) {
+                files.forEach((file) => {
+                  fs.unlinkSync(dir+file);
+                })
+              });
+            }
+            var t = this;
+            let fileReader = new FileReader();
+            fileReader.onload = function() {
+              t.mapSetting.tmpSongName = 'song'+ Math.random();
+              fs.writeFileSync(dir+t.mapSetting.tmpSongName, Buffer.from(new Uint8Array(this.result)));
+              t.song.setUrl(dir+t.mapSetting.tmpSongName, files.name, () => {
+                t.sTimer(true);
+              });
+              t.forceUpdate();
+            };
+            fileReader.readAsArrayBuffer(files);
           };
-          fileReader.readAsArrayBuffer(files);
-        };
-      }, false);
-      file.click();
-    });
+        }, false);
+        file.click();
+      });
       
     this.component.songName = new Botton(this).set(
       {
@@ -286,28 +311,44 @@ class beatsMapMaker extends ES6Trans {
     this.component.save = new Botton(this).set(
       {
         text: "儲存",
-        x: 1000,
+        x: Game.window.width * 0.85,
         y: this.state.firstTop + 50,
         textColor: 'black'
       }
-    ).setEvent('click', () => {
-      let tmpData = Object.assign({}, this.mapSetting);
-      let currentTime = this.song.getCurrentTime();
-      tmpData.beatsMap = {};
-      this.beatsMap.forEach((val, i) => {
-        tmpData['beatsMap'][i] = Object.assign({}, val);
-        delete tmpData['beatsMap'][i]['element'];
-      });
-      new BeatsMapParser(tmpData).save(this.songFile.name, this.songFile.name).then((object) => {
-        this.song.setUrl(object.path, object.songFile, () => {
-          // t.sTimer(true);
-          this.song.setCurrentTime(currentTime);
-          (this.state.play) ? this.song.getPlayer().play(): this.song.getPlayer().pause();
-        });
-      });
-    }).hide();
+    ).setEvent('click', this.saveBeatsMap.bind(this)).hide();
+
+    this.component.saveAndBack = new Botton(this).set(
+      {
+        text: "儲存回選單",
+        x: Game.window.width * 0.9,
+        y: this.state.firstTop + 50,
+        textColor: 'black'
+      }
+    ).setEvent('click', (() => {
+      this.saveBeatsMap()
+      StaticData.set('needMenuReload', true)
+      this.song.getPlayer().pause()
+      Framework.Game.goToLevel("selectMusic")
+    }).bind(this)).hide();
       
     this.setState({loaded: true})
+  }
+
+  saveBeatsMap() {
+    let tmpData = Object.assign({}, this.mapSetting);
+    let currentTime = this.song.getCurrentTime();
+    tmpData.beatsMap = {};
+    this.beatsMap.forEach((val, i) => {
+      tmpData['beatsMap'][i] = Object.assign({}, val);
+      delete tmpData['beatsMap'][i]['element'];
+    });
+    new BeatsMapParser(tmpData).save(this.songFile.name, this.songFile.name).then((object) => {
+      this.song.setUrl(object.path, object.songFile, () => {
+        // t.sTimer(true);
+        this.song.setCurrentTime(currentTime);
+        (this.state.play) ? this.song.getPlayer().play(): this.song.getPlayer().pause();
+      });
+    });
   }
 
   //在initialize時會觸發的事件
@@ -459,6 +500,9 @@ class beatsMapMaker extends ES6Trans {
         this.component.stepLabel.show();
         this.component.stepSelector.show();
         this.component.save.show();
+        this.component.offsetLabel.show()
+        this.component.offsetSelector.show()
+        this.component.saveAndBack.show()
       }
       this.component.songName.set({
         text: this.songFile?this.songFile.name:"尚未選擇歌曲"
@@ -506,7 +550,9 @@ class beatsMapMaker extends ES6Trans {
 
   autodelete() {
     //臨時移除方式
-    this.bpmSelecter.remove();
+    this.component.bpmSelector.remove();
+    this.component.stepSelector.remove();
+    this.component.offsetSelector.remove();
   }
 }
 

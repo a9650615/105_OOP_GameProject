@@ -41,7 +41,7 @@ class menu extends ES6Trans {
       aniSelect: 0, // 動畫效果
       isPress: false
     };
-  
+
     this.ani = new Ani()
     this.songMenu = [];
 
@@ -69,25 +69,7 @@ class menu extends ES6Trans {
     }
     let t = this;
 
-    if (StaticData.load('songMenu')){ // 快取系統
-      setTimeout(() => {
-        let lastSelect = StaticData.load('lastSelectIndex')
-        this.songMenu = StaticData.load('songMenu')
-        this.component.selectCard.loadFromList(this.songMenu)
-        this.component.selectCard.set({offset: StaticData.load('lastSelectIndex')||0})
-        this.setState({aniSelect: lastSelect, selectIndex: lastSelect})
-      }, 500) //不知道為何需要延遲
-    }
-    else
-    if (Game.client === 'web') {  
-      new BeatsMapParser('./Songs/songList.json').then((data) => {
-        this.component.selectCard.loadFromList(data)
-        this.songMenu = data
-        StaticData.set('songMenu', data)
-        //   console.log('web load')
-        this.setState({load: true})
-      })
-    } else {
+    if(Game.client === 'client'){
       this.component.goEditor = new Button(this).set({ 
           text: "編輯器", 
           x: (Framework.Game.getCanvasWidth()/2)-100, 
@@ -102,6 +84,28 @@ class menu extends ES6Trans {
         // // console.log(StaticData.load('playSceneData')) 
         Framework.Game.goToLevel("beatsMapMaker") 
       }) 
+    }
+
+    if (StaticData.load('songMenu') && !StaticData.load('needMenuReload')){ // 快取系統
+      setTimeout(() => {
+        let lastSelect = StaticData.load('lastSelectIndex')
+        this.songMenu = StaticData.load('songMenu')
+        this.component.selectCard.loadFromList(this.songMenu)
+        this.component.selectCard.set({offset: StaticData.load('lastSelectIndex')||0})
+        this.setState({aniSelect: lastSelect, selectIndex: lastSelect})
+        this.forceUpdate()
+      }, 300) //不知道為何需要延遲
+    }
+    else
+    if (Game.client === 'web') {  
+      new BeatsMapParser('./Songs/songList.json').then((data) => {
+        this.component.selectCard.loadFromList(data)
+        this.songMenu = data
+        StaticData.set('songMenu', data)
+        //   console.log('web load')
+        this.setState({load: true})
+      })
+    } else {
       new DirLoader().getBeatMapFile().then((beatsMap) => {
         beatsMap.fileArray.forEach((val, i) => {
           this.songMenu[i] = val
@@ -118,7 +122,7 @@ class menu extends ES6Trans {
               StaticData.set('songMenu', this.songMenu)
               this.component.selectCard.set({offset: 0})
               this.component.selectCard.loadFromList(this.songMenu)
-              this.setState({load: true})
+              setTimeout(() => {this.setState({load: true})}, 200);
               this.forceUpdate()
             }
           });
@@ -195,5 +199,5 @@ class menu extends ES6Trans {
 }
 
 
-export default Framework.exClass(Framework.Level , new menu().transClass());
+export default Framework.exClass(Framework.GameMainMenu , new menu().transClass());
 //Framework.GameMainMenu

@@ -77,7 +77,7 @@ class GamePlayScene extends ES6Trans {
       totalScore: 0,
       characterFaceTo: 0,
       stageOpacity: 1,
-      endStateRange: 15,
+      endStateRange: 5,
       endTimeOut: 0, // 距離結束 beat 過了多久
     };
 
