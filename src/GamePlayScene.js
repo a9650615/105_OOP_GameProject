@@ -239,7 +239,7 @@ class GamePlayScene extends ES6Trans {
           this.setState(data)
         }, 'beat').then(() => {
           this.song.getPlayer().pause()
-          // Framework.Game.goToLevel("menu")
+          Framework.Game.goToLevel("selectMusic")
         })
         this.setState({play: false})
       }

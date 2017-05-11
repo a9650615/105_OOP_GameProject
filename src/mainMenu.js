@@ -11,13 +11,7 @@ import Ani from './helper/Ani'
 
 class menu extends ES6Trans {
   initialize() {
-    this.state = {
-      loaded: false,
-      positionY: 1,
-      positionX: 100,
-      selectIndex: 0,
-      aniSelect: 0 // 動畫效果
-    };
+    
   }
 
  //初始化loadingProgress需要用到的圖片
@@ -38,16 +32,25 @@ class menu extends ES6Trans {
   }
 
   load(){
-    let t = this;
+    this.state = {
+      loaded: false,
+      positionY: 1,
+      positionX: 100,
+      selectIndex: 0,
+      load: false,
+      aniSelect: 0, // 動畫效果
+      isPress: false
+    };
+  
     this.ani = new Ani()
     this.songMenu = [];
 
     this.component = {
       selectStage: new Button(this).set({
-          text: "選擇關卡",
-          x: (Framework.Game.getCanvasWidth()/2)-100,
-          y: Framework.Game.getCanvasHeight()/2,
-          textColor: 'black'
+        text: "選擇關卡",
+        x: (Framework.Game.getCanvasWidth()/2)-100,
+        y: Framework.Game.getCanvasHeight()/2,
+        textColor: 'black'
       }).setEvent('click', (e) => {
         // StaticData.set('playSceneData', {
         //   song: '123',
@@ -64,28 +67,27 @@ class menu extends ES6Trans {
       })
 
     }
+    let t = this;
 
-    if (Game.client === 'web') {
+    if (StaticData.load('songMenu')){ // 快取系統
+      setTimeout(() => {
+        let lastSelect = StaticData.load('lastSelectIndex')
+        this.songMenu = StaticData.load('songMenu')
+        this.component.selectCard.loadFromList(this.songMenu)
+        this.component.selectCard.set({offset: StaticData.load('lastSelectIndex')||0})
+        this.setState({aniSelect: lastSelect, selectIndex: lastSelect})
+      }, 500) //不知道為何需要延遲
+    }
+    else
+    if (Game.client === 'web') {  
       new BeatsMapParser('./Songs/songList.json').then((data) => {
         this.component.selectCard.loadFromList(data)
         this.songMenu = data
+        StaticData.set('songMenu', data)
+        //   console.log('web load')
+        this.setState({load: true})
       })
     } else {
-      this.component.goEditor = new Button(this).set({
-          text: "編輯器",
-          x: (Framework.Game.getCanvasWidth()/2)-100,
-          y: Framework.Game.getCanvasHeight()/2 + 40,
-          textColor: 'black',
-          background: '#ccc',
-      }).setEvent('click', (e) => {
-        // StaticData.set('playSceneData', {
-        //   song: '123',
-        //   dir: '321'
-        // })
-        // // console.log(StaticData.load('playSceneData'))
-        Framework.Game.goToLevel("beatsMapMaker")
-      })
-
       new DirLoader().getBeatMapFile().then((beatsMap) => {
         beatsMap.fileArray.forEach((val, i) => {
           this.songMenu[i] = val
@@ -99,8 +101,10 @@ class menu extends ES6Trans {
             }]
             // console.log(this.songMenu[i])
             if (i === beatsMap.fileArray.length - 1) {
-              // console.log(this.songMenu)
+              StaticData.set('songMenu', this.songMenu)
+              this.component.selectCard.set({offset: 0})
               this.component.selectCard.loadFromList(this.songMenu)
+              this.setState({load: true})
               this.forceUpdate()
             }
           });
@@ -115,16 +119,20 @@ class menu extends ES6Trans {
   }
 
   render(parentCtx) {
-    this.component.selectCard.set({
-      offset: this.state.selectIndex,
-      aniOffset: this.state.aniSelect
-    })
+    // this.component.selectCard.set({
+    //   offset: this.state.selectIndex,
+    //   aniOffset: this.state.aniSelect
+    // })
     
   }
 
   songMenuGo(selectIndex) {
     this.ani.fromTo({aniSelect: this.state.aniSelect}, {aniSelect: selectIndex}, 0.2, (data) => {
       this.setState(data)
+       this.component.selectCard.set({
+          offset: this.state.selectIndex,
+          aniOffset: data.aniSelect
+        })
     }, 'sildeTest')
   }
 
@@ -155,13 +163,17 @@ class menu extends ES6Trans {
   onkeydown(e) {
     if (e.key === 'Enter') {
       StaticData.set('playSceneData', this.songMenu[this.state.selectIndex])
+      StaticData.set('lastSelectIndex', this.state.selectIndex)
       Framework.Game.goToLevel("GamePlayScene")
     }
-    this.keyEvent(e)
+    // if (!this.state.isPress)
+      this.keyEvent(e)
   }
 
   onkeypress(e) {
-    this.keyEvent(e)
+    // this.keyEvent(e)
+    // this.setState({isPress: true})
+    // setTimeout(() => {this.setState({isPress: false}), 500})
   }
   // autodelete() {
   //   // console.log('destructor');
@@ -169,4 +181,5 @@ class menu extends ES6Trans {
 }
 
 
-export default Framework.exClass(Framework.GameMainMenu , new menu().transClass());
+export default Framework.exClass(Framework.Level , new menu().transClass());
+//Framework.GameMainMenu

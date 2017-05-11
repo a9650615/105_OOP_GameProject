@@ -24,10 +24,13 @@ window.addEventListener("resize", uiResize);
 
 // 場景管理部分
 Framework.Game.addNewLevel({
-  menu: new mainMenu(), 
-  beatsMapMaker: (Game.client=='web')?{}:new beatsMapMaker(),
-  GamePlayScene: new GamePlayScene()
+  selectMusic: new mainMenu(),
+  GamePlayScene: new GamePlayScene(),
 });
+if (Game.client=='client')
+  Framework.Game.addNewLevel({
+    beatsMapMaker: new beatsMapMaker(),
+  })
 //Framework.Game.addNewLevel({beatsMapMaker: new beatsMapMaker()});
 Framework.Game.start();
 // Framework.Game.goToLevel("GamePlayScene");
