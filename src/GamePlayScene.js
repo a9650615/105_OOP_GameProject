@@ -34,7 +34,7 @@ class GamePlayScene extends ES6Trans {
           this.playSong();
       });
     });
-    this.beatsTypeImg = ['beats_crit_great', 'beats_good', 'beats_great', 'beats_bad', 'beats_miss'];
+    this.beatsTypeImg = ['beats_miss','beats_crit_great', 'beats_great', 'beats_good', 'beats_bad'];
     Framework.ResourceManager.loadImage({id: 'beats_great',url: `${Resource.image}/Great.png`})
     Framework.ResourceManager.loadImage({id: 'beats_bad',url: `${Resource.image}/bad.png`})
     Framework.ResourceManager.loadImage({id: 'beats_crit_great',url: `${Resource.image}/Critical_Great.png`})
@@ -166,6 +166,7 @@ class GamePlayScene extends ES6Trans {
       case keyCode.rightHit:
         this.component.silderStage.keyHit(1, (returnKey) => {
           this.onBeat(returnKey)
+          console.log(returnKey);
         });
         this.component.stage.clickEffect(1)
         this.component.stage.component.stageRightClick.show()
