@@ -88,6 +88,20 @@ class menu extends ES6Trans {
         this.setState({load: true})
       })
     } else {
+      this.component.goEditor = new Button(this).set({ 
+          text: "編輯器", 
+          x: (Framework.Game.getCanvasWidth()/2)-100, 
+          y: Framework.Game.getCanvasHeight()/2 + 40, 
+          textColor: 'black', 
+          background: '#ccc', 
+      }).setEvent('click', (e) => { 
+        // StaticData.set('playSceneData', { 
+        //   song: '123', 
+        //   dir: '321' 
+        // }) 
+        // // console.log(StaticData.load('playSceneData')) 
+        Framework.Game.goToLevel("beatsMapMaker") 
+      }) 
       new DirLoader().getBeatMapFile().then((beatsMap) => {
         beatsMap.fileArray.forEach((val, i) => {
           this.songMenu[i] = val
