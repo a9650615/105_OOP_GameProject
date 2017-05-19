@@ -89,6 +89,15 @@ class SilderStage extends GameObject {
   }
 
   load() {
+    // this.component = {
+    //   background: new Rect(this._parent).setParent(this).set({
+    //     width: this.state.width,
+    //     height: this.state.height,
+    //     x: this.state.x,
+    //     y: this.state.y,
+    //     background: this.state.background
+    //   })
+    // }
   }
 
   _checkRangeType(difference = 0) {
@@ -155,6 +164,7 @@ class SilderStage extends GameObject {
   }
 
   render() {
+    // console.log(this._stateUpdate)
     if (this.beatsMap) {
       let width = this.state.width;
       let beatsMap = this.beatsMap.beatsMap;

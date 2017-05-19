@@ -10,6 +10,7 @@ import Botton from './components/Button';
 import devTools from './helper/devTool';
 import StaticData from './helper/StaticData';
 import Ani from './helper/Ani';
+import SystemMenu from './components/SystemMenu'
 
 class GamePlayScene extends ES6Trans {
   initialize() {
@@ -26,8 +27,8 @@ class GamePlayScene extends ES6Trans {
       this.beatsMap.endStep = this.beatsMap.beatsMap[this.beatsMap.beatsMap.length - 1].startStep
       this.song.setUrl(songFolder+this.beatsMap.songFile, this.beatsMap.songFile, () => {
         this.setState({
-          loaded: true,
-          play: true
+          loaded: 1,
+          // play: true
         });
         this.component.silderStage.loadbeatsMap(this.beatsMap);
         if (!Game.debug)
@@ -79,6 +80,7 @@ class GamePlayScene extends ES6Trans {
       stageOpacity: 1,
       endStateRange: 5,
       endTimeOut: 0, // 距離結束 beat 過了多久
+      menuOpen: false
     };
 
     this.beatsMap = {};
@@ -133,7 +135,8 @@ class GamePlayScene extends ES6Trans {
         scaleResolveX: 50,
         scaleResolveY: 10,
         // url: `${Resource.image}/Great.png`
-      })
+      }),
+      systemMenu: new SystemMenu(this).hide()
     };
 
     // if (Game.debug)
@@ -185,6 +188,16 @@ class GamePlayScene extends ES6Trans {
           }
         }
         break;
+      case 27:
+        this.setState({
+          menuOpen: !this.state.menuOpen,
+          play: this.state.menuOpen
+        })
+        if (this.state.menuOpen)
+          this.component.systemMenu.show()
+        else 
+          this.component.systemMenu.hide()
+        break;
     }
   }
 
@@ -224,7 +237,8 @@ class GamePlayScene extends ES6Trans {
     this.component.stage.set({
       hp: this.state.hp
     });
-    if (this.state.play) {
+    if (this.state.play || this.state.loaded === 1) {
+      this.state.loaded = 2;
       let fixCurrentTime = this.song.getCurrentTime()-this.beatsMap.songOffset;
       let revertBpm = 60/this.beatsMap.bpm;
       let step = (fixCurrentTime / revertBpm).toFixed(2);
@@ -238,26 +252,24 @@ class GamePlayScene extends ES6Trans {
       });
       if (step > this.beatsMap.endStep + this.state.endStateRange) {
         this.ani.fromTo({stageOpacity: 1},{stageOpacity: 0}, 0.5, (data) => {
-          this.setState(data)
+          this.component.stage.set({
+            opacity: this.state.stageOpacity
+          })
+          this.component.silderStage.set({
+            opacity: this.state.stageOpacity
+          })
+          this.component.character.set({
+            opacity: this.state.stageOpacity
+          })
+          this.component.debugText.set({opacity: this.state.stageOpacity})
+          this.component.scoreText.set({opacity: this.state.stageOpacity})
+          this.component.background.set({opacity: this.state.stageOpacity})
         }, 'beat').then(() => {
           this.song.getPlayer().pause()
           Framework.Game.goToLevel("selectMusic")
         })
         this.setState({play: false})
       }
-    } else {
-      this.component.stage.set({
-        opacity: this.state.stageOpacity
-      })
-      this.component.silderStage.set({
-        opacity: this.state.stageOpacity
-      })
-      this.component.character.set({
-        opacity: this.state.stageOpacity
-      })
-      this.component.debugText.set({opacity: this.state.stageOpacity})
-      this.component.scoreText.set({opacity: this.state.stageOpacity})
-      this.component.background.set({opacity: this.state.stageOpacity})
     }
   }
 }
