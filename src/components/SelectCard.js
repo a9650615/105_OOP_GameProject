@@ -1,9 +1,10 @@
 import GameObject from './GameObject'
-import { Game } from '../constant'
+import { Game, Resource } from '../constant'
 import Rect from './Rectangle'
 import Text from './Text'
 import Button from './Button'
 import Ani from '../helper/Ani'
+import Img from './Img';
 
 export default class SelectCard extends GameObject {
   constructor(props) {
@@ -46,7 +47,7 @@ export default class SelectCard extends GameObject {
           height: this.state.card.height,
           y: this.state.y + (this.state.card.height+this.state.margin) * i,
           // x: this.state.x,
-          background: '#4286f4'
+          background: '#2F2F2F'
         })
       }
       component['songTitle'] = 
@@ -57,7 +58,7 @@ export default class SelectCard extends GameObject {
           // y: this.state.y + (this.state.card.height+this.state.margin) * i + 30,
           textColor: '#fff'
         })
-
+        
       this.component.cardElement.push(component)
     }, this);
     return this

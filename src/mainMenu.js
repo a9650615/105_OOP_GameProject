@@ -5,6 +5,7 @@ import BeatsMapParser from './modules/BeatsMapParser';
 import Text from './components/Text';
 import Button from './components/Button';
 import Img from './components/Img';
+import Rect from './components/Rectangle'
 import StaticData from './helper/StaticData';
 import SelectCard from './components/SelectCard';
 import Ani from './helper/Ani'
@@ -45,12 +46,20 @@ class menu extends ES6Trans {
     this.ani = new Ani()
     this.songMenu = [];
 
-    this.component = {
+    this.component = {    
+      background: new Img(this).set({
+        url: Resource.image+'/menu_background.jpg',
+        x: 0,
+        y: 0  ,
+        width: 1280,
+        height: 720
+      }),
+
       selectStage: new Button(this).set({
         text: "選擇關卡",
-        x: (Framework.Game.getCanvasWidth()/2)-100,
-        y: Framework.Game.getCanvasHeight()/2,
-        textColor: 'black'
+        x: 30,
+        y: 30,
+        textColor: 'white'
       }).setEvent('click', (e) => {
         // StaticData.set('playSceneData', {
         //   song: '123',
@@ -64,16 +73,32 @@ class menu extends ES6Trans {
         height: Game.window.height - 20,
         x: 200,
         y: 10
+      }),
+      
+      coverBackground: new Rect(this).set({
+          width: 410,
+          height: 410,
+          x: Game.window.width * 0.5 - 5,
+          y: Game.window.height * 0.5 - 205,
+          // x: this.state.x,
+          background: '#5F5F5F'
+      }),
+      
+      cover: new Img(this).set({
+        url: Resource.image+'/cover.jpg',
+        x: Game.window.width * 0.5,
+        y: Game.window.height * 0.5 - 200,
+        width: 400,
+        height: 400
       })
-
     }
     let t = this;
 
     if(Game.client === 'client'){
       this.component.goEditor = new Button(this).set({ 
           text: "編輯器", 
-          x: (Framework.Game.getCanvasWidth()/2)-100, 
-          y: Framework.Game.getCanvasHeight()/2 + 40, 
+          x: 30, 
+          y: 70, 
           textColor: 'black', 
           background: '#ccc', 
       }).setEvent('click', (e) => { 
@@ -84,6 +109,7 @@ class menu extends ES6Trans {
         // // console.log(StaticData.load('playSceneData')) 
         Framework.Game.goToLevel("beatsMapMaker") 
       }) 
+
     }
 
     if (StaticData.load('songMenu') && !StaticData.load('needMenuReload')){ // 快取系統
