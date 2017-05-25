@@ -1,0 +1,11 @@
+{
+  "name": "mon1",
+  "wPiece": 5,
+  "hPiece": 5,
+  "action": {
+    "move": [1,2,3,4,5],
+    "attack": [6,7,8,9,10],
+    "die": [11,12,13,14,15]
+  },
+  "img": "mon1.png"
+}

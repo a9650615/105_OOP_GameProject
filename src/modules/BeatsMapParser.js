@@ -14,8 +14,8 @@ export default class BeatsMapParser {
       // path type
       t._json = Object();
       return new Promise((resolve, reject) => {
-        Framework.ResourceManager.loadJSON({id: 'BeatsMapParser', type: 'GET', url: pathOrObject}).then(() => {
-          let data = Framework.ResourceManager.getResource('BeatsMapParser');
+        Framework.ResourceManager.loadJSON({id: `${pathOrObject}_BeatsMapParser`, type: 'GET', url: pathOrObject}).then(() => {
+          let data = Framework.ResourceManager.getResource(`${pathOrObject}_BeatsMapParser`);
           this._json = data;
           resolve(data);
         });

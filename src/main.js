@@ -1,5 +1,6 @@
 import Framework, {ES6Trans} from './framework_es6';
 import {Game} from './constant';
+import StaticData from './helper/StaticData'
 import DebugTest from './DebugTest';
 import mainMenu from './mainMenu';
 import beatsMapMaker from './beatsMapMaker';
@@ -32,8 +33,10 @@ if (Game.client=='client')
     beatsMapMaker: new beatsMapMaker(),
   })
 //Framework.Game.addNewLevel({beatsMapMaker: new beatsMapMaker()});
+StaticData.set('playSceneData', {songName: 'asd', songMeta:[{beatsFile:"asd[default].json",difficulty:"default",songFile:"asd/asd.mp3"}]})
+StaticData.set('lastSelectIndex', 1)
 Framework.Game.start();
-// Framework.Game.goToLevel("GamePlayScene");
+Framework.Game.goToLevel("GamePlayScene");
 // Framework.Game.goToLevel("beatsMapMaker");
 global.Framework = Framework;
 uiResize();

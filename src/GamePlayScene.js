@@ -11,6 +11,7 @@ import devTools from './helper/devTool';
 import StaticData from './helper/StaticData';
 import Ani from './helper/Ani';
 import SystemMenu from './components/SystemMenu'
+import EnemyStage from './components/EnemyStage'
 
 class GamePlayScene extends ES6Trans {
   initialize() {
@@ -107,6 +108,7 @@ class GamePlayScene extends ES6Trans {
         height: (Game.window.height*0.45),
         hpWidth: this.state.hpWidth
       }),
+      enemyStage: new EnemyStage(this).loadEnemy('mon1'),
       character: new Sprite(this).set({
         url: Resource.image+'bisca_battler_rpg_maker_mv_by_retrospriteresources-dagd3xg.png',
         wPiece: 9,
@@ -212,6 +214,12 @@ class GamePlayScene extends ES6Trans {
           })
           this.component.silderStage.show()
         }
+        break;
+      case 75: //k
+        this.component.enemyStage.push('mon1')
+        break;
+      case 76: //l
+
         break;
     }
   }
