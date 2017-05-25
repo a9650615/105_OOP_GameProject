@@ -108,7 +108,10 @@ class GamePlayScene extends ES6Trans {
         height: (Game.window.height*0.45),
         hpWidth: this.state.hpWidth
       }),
-      enemyStage: new EnemyStage(this).loadEnemy('mon1'),
+      enemyStage: new EnemyStage(this).set({
+        width: 500,
+        height: 250
+      }).loadEnemy('mon1'),
       character: new Sprite(this).set({
         url: Resource.image+'bisca_battler_rpg_maker_mv_by_retrospriteresources-dagd3xg.png',
         wPiece: 9,
@@ -140,7 +143,7 @@ class GamePlayScene extends ES6Trans {
         scaleResolveY: 10,
         // url: `${Resource.image}/Great.png`
       }),
-      systemMenu: new SystemMenu(this).hide()
+      systemMenu: new SystemMenu(this).hide(),
     };
 
     // if (Game.debug)

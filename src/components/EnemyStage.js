@@ -4,7 +4,7 @@ import GameObject from './GameObject'
 import JsonParser from '../modules/BeatsMapParser'
 import Sprite from './Sprite'
 import Ani from '../helper/Ani'
-
+import Rect from './Rectangle'
 
 export default class EnemyStage extends GameObject {
   constructor(props) {
@@ -15,11 +15,19 @@ export default class EnemyStage extends GameObject {
     })
 
     this.component = {
-      enemys: []
+      enemys: [],
+      box : new Rect(this._parent).setParent(this).set({
+        background: '#ffffff',
+        width: 200,
+        height: 100,
+        x: 0,
+        y: 0
+      })
     }
 
     this.enemyList = {}
     this.ani = new Ani(this)
+    // document.body.appendChild(this._tmpCanvas.element())
   }
 
   /**
@@ -38,6 +46,7 @@ export default class EnemyStage extends GameObject {
       this._tmpCanvas.resize(data.width, data.height)
     }
     this.setState(data)
+    return this
   }
 
   setEnemy(data) {
@@ -50,19 +59,23 @@ export default class EnemyStage extends GameObject {
     let char
     if (this.enemyList[name]) {
       char = this.enemyList[name]
-      new Sprite(this._parents).setParent(this).set(Object.assign(this.state.enemy,{
-        url: Resource.image+char.img,
-        wPiece: char.wPiece,
-        hPiece: char.hPiece,
-        x: 10,
-        y: 10
-      }))
+      this.component.enemys.push(
+        new Sprite(this._parents).setParent(this).set(Object.assign(this.state.enemy,{
+          url: Resource.image+char.img,
+          wPiece: char.wPiece,
+          hPiece: char.hPiece,
+          x: 10+this.component.enemys.length * 10,
+          y: 10,
+          sprWidth: 200,
+          sprHeight: 200,
+          }))
+      )
       this.forceUpdate()
     }
   }
 
   fresh() {
-
+    
   }
 
 }
