@@ -47,13 +47,13 @@ export default class SelectCard extends GameObject {
           height: this.state.card.height,
           y: this.state.y + (this.state.card.height+this.state.margin) * i,
           // x: this.state.x,
-          background: '#2F2F2F'
+          background: 'rgba(47,47,47,0.3)'
         })
       }
       component['songTitle'] = 
         new Button(this._parent).setParent(component.background).set({
           text: name,
-          x: 30,
+          x: 20,
           y: 30,
           // y: this.state.y + (this.state.card.height+this.state.margin) * i + 30,
           textColor: '#fff'
@@ -96,6 +96,14 @@ export default class SelectCard extends GameObject {
       let cutIndex = i - (this.state.aniOffset || this.state.offset);
       
       if ( cutIndex < this.state.viewRange && cutIndex >= this.state.viewRange * -1) {
+        if (parseInt(cutIndex) == 0) {
+          // this.ani.fromTo({width: this.state.card.width}, {width: 400}, 1, data => {
+          //   val.background.set(data)
+          // }, 'menu')
+          val.background.set({width: 400})
+        } else {
+          val.background.set({width: this.state.card.width})
+        }
         val.background.show()
         val.background.set({
           y: (this.state.card.height+this.state.margin) * cutIndex+ Game.window.height / 2 - this.state.card.height / 2

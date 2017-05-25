@@ -80,8 +80,6 @@ class GamePlayScene extends ES6Trans {
       currentStep: 0,
       hpWidth: 5,
       totalScore: 0,
-      characterFaceTo: 0,
-      stageOpacity: 1,
       endStateRange: 5,
       endTimeOut: 0, // 距離結束 beat 過了多久
       menuOpen: false
@@ -280,17 +278,17 @@ class GamePlayScene extends ES6Trans {
         })
         this.ani.fromTo({stageOpacity: 1},{stageOpacity: 0}, 0.5, (data) => {
           this.component.stage.set({
-            opacity: this.state.stageOpacity
+            opacity: data.stageOpacity
           })
           this.component.silderStage.set({
-            opacity: this.state.stageOpacity
+            opacity: data.stageOpacity
           })
           this.component.character.set({
-            opacity: this.state.stageOpacity
+            opacity: data.stageOpacity
           })
-          this.component.debugText.set({opacity: this.state.stageOpacity})
-          this.component.scoreText.set({opacity: this.state.stageOpacity})
-          this.component.background.set({opacity: this.state.stageOpacity})
+          this.component.debugText.set({opacity: data.stageOpacity})
+          this.component.scoreText.set({opacity: data.stageOpacity})
+          this.component.background.set({opacity: data.stageOpacity})
         }, 'beat').then(() => {
           this.song.getPlayer().pause()
           Framework.Game.goToLevel("selectMusic")
@@ -301,7 +299,7 @@ class GamePlayScene extends ES6Trans {
   }
   
   autodelete() {
-    console.log('destruct')
+    //console.log('destruct')
     delete this.component
     delete this.song
   }
