@@ -30,6 +30,10 @@ export default class SystemMenu extends GameObject {
     return this
   }
 
+  set(data) {
+    this.setState(data)
+  }
+
   load() {
     this._tmpCanvas.resize(Game.window.width, Game.window.height);
     Object.assign(this.component,{
@@ -56,6 +60,14 @@ export default class SystemMenu extends GameObject {
   }
 
   render() {
-    console.log('caller render')
+    let state = this.state
+    this.component.box.set({
+      opacity: state.opacity,
+    })
+    this.component.menu.set({
+      width: state.menuScale?state.menuScale * 0.4 * Game.window.width: 0.4 * Game.window.width,
+      x: (state.menuScale?((1-state.menuScale) * 0.5):0) * Game.window.width * 0.4 + Game.window.width * 0.3
+    })
+    // console.log('caller render')
   }
 }

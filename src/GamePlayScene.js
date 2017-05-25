@@ -47,18 +47,22 @@ class GamePlayScene extends ES6Trans {
     
   }
 
-  characterUpdate() {
+  characterUpdate(faceTo = 0) {
     let list = [1,2,3,4,5,6,4,3,2,1];
-    this.setState({
-      frame: this.state.frame+0.1
-    });
-    if(this.state.frame > list.length) 
-      this.setState({
-        frame: 1,
-        characterFaceTo: (this.state.characterFaceTo)? 0: 1
-      });
-    this.component.character.flip(this.state.characterFaceTo);
-    this.component.character.showPiece(list[parseInt(this.state.frame)]);
+    // this.setState({
+    //   frame: this.state.frame+0.1
+    // });
+    // if(this.state.frame > list.length) 
+    //   this.setState({
+    //     frame: 1,
+    //     characterFaceTo: (this.state.characterFaceTo)? 0: 1
+    //   });
+    this.component.character.flip(faceTo);
+    this.ani.fromTo({ani: 0}, {ani: list.length}, 0.3, data => {
+      this.component.character.showPiece(list[parseInt(data.ani)]);
+    }, 'charactAttack').then(() => {
+      this.component.character.showPiece(list[0]);
+    })
   }
 
   playSong() {
@@ -160,6 +164,7 @@ class GamePlayScene extends ES6Trans {
     let keyCode = Game.keyCode;
     switch(e.keyCode) {
       case keyCode.leftHit:
+        this.characterUpdate(0)
         this.component.silderStage.keyHit(0, (returnKey) => {
           this.onBeat(returnKey)
           console.log(returnKey);
@@ -168,6 +173,7 @@ class GamePlayScene extends ES6Trans {
         this.component.stage.component.stageLeftClick.show()
         break;
       case keyCode.rightHit:
+        this.characterUpdate(1)
         this.component.silderStage.keyHit(1, (returnKey) => {
           this.onBeat(returnKey)
           console.log(returnKey);
@@ -179,11 +185,11 @@ class GamePlayScene extends ES6Trans {
         let player = this.song.getPlayer();
         if (Game.debug) {
           if (player.paused) {
-            player.play()
+            // player.play()
             this.setState({play: true})
           }
           else {
-            player.pause()
+            // player.pause()
             this.setState({play: false})
           }
         }
@@ -193,10 +199,21 @@ class GamePlayScene extends ES6Trans {
           menuOpen: !this.state.menuOpen,
           play: this.state.menuOpen
         })
-        if (this.state.menuOpen)
+        if (this.state.menuOpen) {
           this.component.systemMenu.show()
-        else 
-          this.component.systemMenu.hide()
+          this.component.silderStage.hide()
+          this.ani.fromTo({opacity: 0, menuScale: 0.5}, {opacity: 1, menuScale: 1}, 0.2, (data) => {
+            this.component.systemMenu.set(data)
+          }, 'menu')
+        }
+        else {
+          this.ani.fromTo({opacity: 1}, {opacity: 0}, 0.1, (data) => {
+            this.component.systemMenu.set(data)
+          }, 'menu').then(() => {
+            this.component.systemMenu.hide()
+          })
+          this.component.silderStage.show()
+        }
         break;
     }
   }
@@ -215,10 +232,17 @@ class GamePlayScene extends ES6Trans {
   }
 
   fresh() {
-    this.characterUpdate();
     // if (this.devTools) {
     //   this.devTools.update();
     // }
+    if (this.state.loaded) {
+      this.forceUpdate()
+      let player = this.song.getPlayer()
+      if (this.state.play)
+        player.play()
+      else
+        player.pause()
+    }
     if (this.state.play) {
       if(this.state.hp>0) {
         // 扣血範例
@@ -251,6 +275,9 @@ class GamePlayScene extends ES6Trans {
         text: 'score:'+this.state.totalScore
       });
       if (step > this.beatsMap.endStep + this.state.endStateRange) {
+        this.ani.fromTo({volumn: 0.5}, {volumn: 0}, 0.5, data => {
+          this.song.setVolume(data.volumn)
+        })
         this.ani.fromTo({stageOpacity: 1},{stageOpacity: 0}, 0.5, (data) => {
           this.component.stage.set({
             opacity: this.state.stageOpacity
@@ -271,6 +298,12 @@ class GamePlayScene extends ES6Trans {
         this.setState({play: false})
       }
     }
+  }
+  
+  autodelete() {
+    console.log('destruct')
+    delete this.component
+    delete this.song
   }
 }
 
