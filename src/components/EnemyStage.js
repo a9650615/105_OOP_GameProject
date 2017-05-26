@@ -16,13 +16,13 @@ export default class EnemyStage extends GameObject {
 
     this.component = {
       enemys: [],
-      box : new Rect(this._parent).setParent(this).set({
-        background: '#ffffff',
-        width: 200,
-        height: 100,
-        x: 0,
-        y: 0
-      })
+      // box : new Rect(this._parents).set({
+      //   background: '#ffffff',
+      //   width: 200,
+      //   height: 100,
+      //   x: 0,
+      //   y: 0
+      // })
     }
 
     this.enemyList = {}

@@ -309,12 +309,16 @@ class GamePlayScene extends ES6Trans {
     }
   }
   
-  autodelete() {
-    //console.log('destruct')
-    delete this.component
-    delete this.song
-    delete this
-  }
+  // autodelete() {
+  //   //console.log('destruct')
+    
+  //   delete this.component
+  //   this.component = null
+  //   delete this._allGameElement
+  //   delete this.song
+  //   delete this.beatsMap.beatsMap
+  //   console.log(this)
+  // }
 }
 
 export default Framework.exClass(Framework.Level, new GamePlayScene().transClass());
