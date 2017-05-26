@@ -313,6 +313,7 @@ class GamePlayScene extends ES6Trans {
     //console.log('destruct')
     delete this.component
     delete this.song
+    delete this
   }
 }
 

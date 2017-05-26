@@ -1,4 +1,5 @@
 import GameObject from './GameObject'
+import Button from './Button';
 import { Game } from '../constant'
 import Rect from './Rectangle'
 
@@ -46,10 +47,20 @@ export default class SystemMenu extends GameObject {
       // }),
       menu: new Rect(this._parent).setParent(this.component.box).set({
         background: '#ffffff',
-        width: Game.window.width * 0.4,
-        height: Game.window.height* 0.5,
+        width: Game.window.width * 0.2,
+        height: Game.window.height * 0.2,
         x: Game.window.width * 0.3,
-        y: Game.window.width * 0.1
+        y: Game.window.width * 0.2
+      })
+    })
+    Object.assign(this.component, {
+      back: new Button(this._parent).setParent(this.component.box).set({
+        text: "回主選單",
+          x: Game.window.width * 0.46,
+          y: Game.window.width * 0.25,
+          textColor: 'black'
+      }).setEvent('click', (e) => {
+        Framework.Game.goToLevel("mainMenu")
       })
     })
     // document.body.appendChild(this._tmpCanvas.element()) 
@@ -65,8 +76,8 @@ export default class SystemMenu extends GameObject {
       opacity: state.opacity,
     })
     this.component.menu.set({
-      width: state.menuScale?state.menuScale * 0.4 * Game.window.width: 0.4 * Game.window.width,
-      x: (state.menuScale?((1-state.menuScale) * 0.5):0) * Game.window.width * 0.4 + Game.window.width * 0.3
+      width: state.menuScale?state.menuScale * 0.2 * Game.window.width: 0.2 * Game.window.width,
+      x: (state.menuScale?((1-state.menuScale) * 0.5):0) * Game.window.width * 0.2 + Game.window.width * 0.4  
     })
     // console.log('caller render')
   }
