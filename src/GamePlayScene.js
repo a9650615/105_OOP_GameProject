@@ -309,15 +309,10 @@ class GamePlayScene extends ES6Trans {
     }
   }
   
+  //不可調用
   // autodelete() {
   //   //console.log('destruct')
-    
-  //   delete this.component
-  //   this.component = null
-  //   delete this._allGameElement
-  //   delete this.song
-  //   delete this.beatsMap.beatsMap
-  //   console.log(this)
+  //   super.autodelete()
   // }
 }
 

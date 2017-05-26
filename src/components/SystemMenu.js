@@ -22,11 +22,13 @@ export default class SystemMenu extends GameObject {
   }
 
   hide() {
+    this._gameObject.hide = true
     this.component.box.hide()
     return this
   }
 
   show() {
+    this._gameObject.hide = false
     this.component.box.show()
     return this
   }
@@ -66,8 +68,8 @@ export default class SystemMenu extends GameObject {
     // document.body.appendChild(this._tmpCanvas.element()) 
   }
 
-  fresh() {
-    
+  update() {
+    this.component.back._gameObject.hide = this._gameObject.hide
   }
 
   render() {

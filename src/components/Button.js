@@ -45,7 +45,8 @@ export default class Button extends GameObject {
 		if (this.previousTouch.x > this.state.x && 
 				this.previousTouch.x < this.state.x + this.state.buttonWidth && 
 				this.previousTouch.y > this.state.y && 
-				this.previousTouch.y < this.state.y + this.state.buttonHeight ) 
+				this.previousTouch.y < this.state.y + this.state.buttonHeight&&
+				!this._gameObject.hide ) 
 			return true;
 			
 		return false;
