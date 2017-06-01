@@ -58,6 +58,14 @@ export default class EnemyStage extends GameObject {
     })
   }
 
+  setTarget(data) {
+    this.setState({
+      target: data
+    })
+
+    return this
+  }
+
   push(name, side = null) {
     let char
     if (this.enemyList[name]) {
@@ -92,13 +100,19 @@ export default class EnemyStage extends GameObject {
       for( let i in this.component.enemys ) {
         enemy = this.component.enemys[i]
         nameData = this.enemyList[enemy.type]
-        if (enemy.side) { //face left
-          enemy.sprite.set({x: enemy.x - nameData.moveSpeed})
-          enemy.x -= nameData.moveSpeed
+        if((enemy.side==0&&(enemy.x+this.state.height * 0.5)>this.state.target.x+50)
+          ||(enemy.side==1&&enemy.x<(this.state.target.x+this.state.target.width-50) )) { //change attack
+            enemy.status = 'attack'
         } else {
-          enemy.sprite.set({x: enemy.x + nameData.moveSpeed})
-          enemy.x += nameData.moveSpeed
+            if (enemy.side) { //face left
+            enemy.sprite.set({x: enemy.x - nameData.moveSpeed})
+            enemy.x -= nameData.moveSpeed
+          } else {
+            enemy.sprite.set({x: enemy.x + nameData.moveSpeed})
+            enemy.x += nameData.moveSpeed
+          }
         }
+
         if (this.counter%(this.state.actionTime*5)===0) {
           enemy.frame = ++enemy.frame%nameData.action[enemy.status].length
           enemy.sprite.showPiece(nameData.action[enemy.status][enemy.frame])

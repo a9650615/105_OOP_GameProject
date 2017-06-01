@@ -116,6 +116,9 @@ class GamePlayScene extends ES6Trans {
         height: Game.window.height*0.25,
         y: this.state.sense.landpos/100 * Game.window.height,
         x: 0
+      }).setTarget({
+        width: 120,
+        x: (Game.window.width-120)/2,
       }).loadEnemy('mon1'),
       character: new Sprite(this).set({
         url: Resource.image+'bisca_battler_rpg_maker_mv_by_retrospriteresources-dagd3xg.png',
@@ -305,6 +308,7 @@ class GamePlayScene extends ES6Trans {
           this.component.debugText.set({opacity: data.stageOpacity})
           this.component.scoreText.set({opacity: data.stageOpacity})
           this.component.background.set({opacity: data.stageOpacity})
+          this.component.enemyStage.set({opacity: data.stageOpacity})
         }, 'beat').then(() => {
           this.song.getPlayer().pause()
           Framework.Game.goToLevel("selectMusic")
