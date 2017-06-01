@@ -13,7 +13,8 @@ export default class EnemyStage extends GameObject {
     Object.assign(this.state, {
       enemy: {},
       emenySize: 100,
-      actionTime: 5 //update time
+      actionTime: 5, //update time
+      pause: false
     })
 
     this.component = {
@@ -96,6 +97,7 @@ export default class EnemyStage extends GameObject {
   update() {
     let enemy, nameData
     this.counter ++
+    if(!this.state.pause)
     if(this.counter%this.state.actionTime===0) {
       for( let i in this.component.enemys ) {
         enemy = this.component.enemys[i]

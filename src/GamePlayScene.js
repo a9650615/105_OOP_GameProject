@@ -198,10 +198,12 @@ class GamePlayScene extends ES6Trans {
           if (player.paused) {
             // player.play()
             this.setState({play: true})
+            this.component.enemyStage.set({pause: false})
           }
           else {
             // player.pause()
             this.setState({play: false})
+            this.component.enemyStage.set({pause: true})
           }
         }
         break;
@@ -213,6 +215,7 @@ class GamePlayScene extends ES6Trans {
         if (this.state.menuOpen) {
           this.component.systemMenu.show()
           this.component.silderStage.hide()
+          this.component.enemyStage.set({pause: true})
           this.ani.fromTo({opacity: 0, menuScale: 0.5}, {opacity: 1, menuScale: 1}, 0.2, (data) => {
             this.component.systemMenu.set(data)
           }, 'menu')
@@ -222,6 +225,7 @@ class GamePlayScene extends ES6Trans {
             this.component.systemMenu.set(data)
           }, 'menu').then(() => {
             this.component.systemMenu.hide()
+            this.component.enemyStage.set({pause: false})
           })
           this.component.silderStage.show()
         }
