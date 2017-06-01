@@ -83,7 +83,10 @@ class GamePlayScene extends ES6Trans {
       totalScore: 0,
       endStateRange: 5,
       endTimeOut: 0, // 距離結束 beat 過了多久
-      menuOpen: false
+      menuOpen: false,
+      sense: {
+        landpos: 14 // %
+      }
     };
 
     this.beatsMap = {};
@@ -109,8 +112,10 @@ class GamePlayScene extends ES6Trans {
         hpWidth: this.state.hpWidth
       }),
       enemyStage: new EnemyStage(this).set({
-        width: 500,
-        height: 250
+        width: Game.window.width,
+        height: Game.window.height*0.25,
+        y: this.state.sense.landpos/100 * Game.window.height,
+        x: 0
       }).loadEnemy('mon1'),
       character: new Sprite(this).set({
         url: Resource.image+'bisca_battler_rpg_maker_mv_by_retrospriteresources-dagd3xg.png',
@@ -219,10 +224,10 @@ class GamePlayScene extends ES6Trans {
         }
         break;
       case 75: //k
-        this.component.enemyStage.push('mon1')
+        this.component.enemyStage.push('mon1', 0)
         break;
       case 76: //l
-
+        this.component.enemyStage.push('mon1', 1)
         break;
     }
   }

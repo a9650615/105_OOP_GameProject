@@ -32,6 +32,8 @@ export default class Sprite extends Img{
     this.setState({
       flip: isFlip
     })
+
+    return this
   }
 
   render(ctx) {
@@ -55,6 +57,7 @@ export default class Sprite extends Img{
       ctx.translate(sprWidth||pieceX, 0);
       ctx.scale(-1, 1);
     }
+    if(this.state.loaded)
     ctx.drawImage(this.preLoadImg, 
       offsetX, offsetY, parseInt(pieceX), parseInt(pieceY),
       0, 0, parseInt(sprWidth||pieceX), parseInt(sprHeight||pieceY)

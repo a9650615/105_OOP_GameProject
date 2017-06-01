@@ -11,7 +11,9 @@ export default class EnemyStage extends GameObject {
     super(props)
     this._parents = props
     Object.assign(this.state, {
-      enemy: {}
+      enemy: {},
+      emenySize: 100,
+      actionTime: 5 //update time
     })
 
     this.component = {
@@ -27,6 +29,7 @@ export default class EnemyStage extends GameObject {
 
     this.enemyList = {}
     this.ani = new Ani(this)
+    this.counter = 0
     // document.body.appendChild(this._tmpCanvas.element())
   }
 
@@ -60,22 +63,49 @@ export default class EnemyStage extends GameObject {
     if (this.enemyList[name]) {
       char = this.enemyList[name]
       this.component.enemys.push(
-        new Sprite(this._parents).setParent(this).set(Object.assign(this.state.enemy,{
-          url: Resource.image+char.img,
-          wPiece: char.wPiece,
-          hPiece: char.hPiece,
-          x: 10+this.component.enemys.length * 10,
-          y: 10,
-          sprWidth: 200,
-          sprHeight: 200,
-          }))
+        {
+          status: 'move',
+          frame: 0,
+          type: name,
+          side: side,
+          x: side?this.state.width - 100: 100,
+          y: this.state.height * 0.5,
+          sprite: new Sprite(this._parents).setParent(this).set(Object.assign(this.state.enemy,{
+            url: Resource.image+char.img,
+            wPiece: char.wPiece,
+            hPiece: char.hPiece,
+            x: side?this.state.width - 100: 100,
+            y: this.state.height * 0.5,
+            sprWidth: this.state.height * 0.5,
+            sprHeight: this.state.height * 0.5,
+          })).flip(side)
+        }
       )
       this.forceUpdate()
     }
   }
 
-  fresh() {
-    
+  update() {
+    let enemy, nameData
+    this.counter ++
+    if(this.counter%this.state.actionTime===0) {
+      for( let i in this.component.enemys ) {
+        enemy = this.component.enemys[i]
+        nameData = this.enemyList[enemy.type]
+        if (enemy.side) { //face left
+          enemy.sprite.set({x: enemy.x - nameData.moveSpeed})
+          enemy.x -= nameData.moveSpeed
+        } else {
+          enemy.sprite.set({x: enemy.x + nameData.moveSpeed})
+          enemy.x += nameData.moveSpeed
+        }
+        if (this.counter%(this.state.actionTime*5)===0) {
+          enemy.frame = ++enemy.frame%nameData.action[enemy.status].length
+          enemy.sprite.showPiece(nameData.action[enemy.status][enemy.frame])
+        }
+      }
+      this.forceUpdate()
+    }
   }
 
 }

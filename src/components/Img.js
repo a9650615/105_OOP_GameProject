@@ -12,7 +12,8 @@ class Img extends GameObject {
       height: null,
       naturalHeight: null,
       naturalWidth: null,
-      url: null
+      url: null,
+      loaded: false
     })
   }
 
@@ -52,7 +53,7 @@ class Img extends GameObject {
     Framework.ResourceManager.loadImage({id: this._gameObject.uid, url: setting.url})
       .then(() => {
         this.changeImg();
-        this.setState(setting);
+        this.setState(Object.assign(setting, {loaded: true}));
       });
     else this.setState(setting)
     return this;
