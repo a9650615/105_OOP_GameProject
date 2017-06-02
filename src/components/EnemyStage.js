@@ -31,6 +31,7 @@ export default class EnemyStage extends GameObject {
     this.enemyList = {}
     this.ani = new Ani(this)
     this.counter = 0
+    this.attackAction = () => {}
     // document.body.appendChild(this._tmpCanvas.element())
   }
 
@@ -94,6 +95,10 @@ export default class EnemyStage extends GameObject {
     }
   }
 
+  setAttack(func) {
+    this.attackAction = func
+  }
+
   update() {
     let enemy, nameData
     this.counter ++
@@ -105,6 +110,7 @@ export default class EnemyStage extends GameObject {
         if((enemy.side==0&&(enemy.x+this.state.height * 0.5)>this.state.target.x+50)
           ||(enemy.side==1&&enemy.x<(this.state.target.x+this.state.target.width-50) )) { //change attack
             enemy.status = 'attack'
+            this.attackAction()
         } else {
             if (enemy.side) { //face left
             enemy.sprite.set({x: enemy.x - nameData.moveSpeed})

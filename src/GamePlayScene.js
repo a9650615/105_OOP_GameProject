@@ -154,6 +154,11 @@ class GamePlayScene extends ES6Trans {
       systemMenu: new SystemMenu(this).hide(),
     };
 
+    this.component.enemyStage.setAttack(() => {
+      this.setState({
+        hp: this.state.hp - 0.01
+      })
+    })
     // if (Game.debug)
     //   this.devTools = new devTools(this);
   }
