@@ -140,6 +140,7 @@ class GameObject extends ES6Trans{
         _ctx.translate(-this.state.scaleResolveX * this.state.scale, -this.state.scaleResolveY * this.state.scale);
       }
       _ctx.globalAlpha = this.state.opacity;
+      if(!this._gameObject.hide)
       _ctx.drawImage(this._tmpCanvas.element(), offsetX, offsetY);
       // 子元件更新時 繪製父元件 todo: 很多子元件時繪製優化
       if (this._parent && this._parent.draw) {

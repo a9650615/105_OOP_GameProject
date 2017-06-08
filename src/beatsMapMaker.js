@@ -317,19 +317,32 @@ class beatsMapMaker extends ES6Trans {
       }
     ).setEvent('click', this.saveBeatsMap.bind(this)).hide();
 
-    this.component.saveAndBack = new Botton(this).set(
+    // this.component.saveAndBack = new Botton(this).set(
+    //   {
+    //     text: "儲存回選單",
+    //     x: Game.window.width * 0.9,
+    //     y: this.state.firstTop + 50,
+    //     textColor: 'black'
+    //   }
+    // ).setEvent('click', (() => {
+    //   this.saveBeatsMap()
+    //   StaticData.set('needMenuReload', true)
+    //   this.song.getPlayer().pause()
+    //   this.exit()
+    //   Framework.Game.goToLevel("selectMusic")
+    // }).bind(this)).hide();
+
+    this.component.exit = new Botton(this).set(
       {
-        text: "儲存回選單",
-        x: Game.window.width * 0.9,
+        text: "離開",
+        x: Game.window.width * 0.8,
         y: this.state.firstTop + 50,
         textColor: 'black'
       }
     ).setEvent('click', (() => {
-      this.saveBeatsMap()
-      StaticData.set('needMenuReload', true)
-      this.song.getPlayer().pause()
+      this.exit()
       Framework.Game.goToLevel("selectMusic")
-    }).bind(this)).hide();
+    }).bind(this));
       
     this.setState({loaded: true})
   }
@@ -348,6 +361,8 @@ class beatsMapMaker extends ES6Trans {
         this.song.setCurrentTime(currentTime);
         (this.state.play) ? this.song.getPlayer().play(): this.song.getPlayer().pause();
       });
+      
+      this.exit()
     });
   }
 
@@ -502,7 +517,7 @@ class beatsMapMaker extends ES6Trans {
         this.component.save.show();
         this.component.offsetLabel.show()
         this.component.offsetSelector.show()
-        this.component.saveAndBack.show()
+        // this.component.saveAndBack.show()
       }
       this.component.songName.set({
         text: this.songFile?this.songFile.name:"尚未選擇歌曲"
@@ -548,12 +563,16 @@ class beatsMapMaker extends ES6Trans {
     }
   }
 
-  autodelete() {
-    //臨時移除方式
+  exit() {
     this.component.bpmSelector.remove();
     this.component.stepSelector.remove();
     this.component.offsetSelector.remove();
   }
+  
+  // autodelete() {
+  //   //臨時移除方式
+    
+  // }
 }
 
 

@@ -2,6 +2,7 @@ import path from 'path';
 let appDir = path.dirname(require.main.filename);
 
 export const Resource = {
+  sontList: `${appDir}/Songs/songList.json`,
   image: `${appDir}/res/Image/`,
   songs: `${appDir}/Songs/`,
   sounds: `${appDir}/res/Sounds/`,

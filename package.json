@@ -24,6 +24,7 @@
   "scripts": {
     "start": "cross-env RUN_ENVIRON=client electron -r babel-register .",
     "build": "cross-env RUN_ENVIRON=web WEBPACK_ENV=build webpack",
+    "bclient": "cross-env RUN_ENVIRON=client WEBPACK_ENV=build webpack",
     "dev": "cross-env RUN_ENVIRON=web webpack-dev-server --hot --inline --watch-poll --content-base ."
   },
   "repository": {

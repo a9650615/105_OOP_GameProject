@@ -123,7 +123,7 @@ class menu extends ES6Trans {
       }, 300) //不知道為何需要延遲
     }
     else
-    if (Game.client === 'web') {  
+    // if (Game.client === 'web') {  
       new BeatsMapParser('./Songs/songList.json').then((data) => {
         this.component.selectCard.loadFromList(data)
         this.songMenu = data
@@ -131,30 +131,30 @@ class menu extends ES6Trans {
         //   console.log('web load')
         this.setState({load: true})
       })
-    } else {
-      new DirLoader().getBeatMapFile().then((beatsMap) => {
-        beatsMap.fileArray.forEach((val, i) => {
-          this.songMenu[i] = val
-          let meta = (/(.*)\[(.*)\].json$/g).exec(val.name)
-          // console.log(meta)
-          new BeatsMapParser(val.path).then((data) => {
-            this.songMenu[i].songName = data.songName
-            this.songMenu[i].songMeta = [{
-              difficulty: meta[2],
-              beatsFile: this.songMenu[i].name
-            }]
-            // console.log(this.songMenu[i])
-            if (i === beatsMap.fileArray.length - 1) {
-              StaticData.set('songMenu', this.songMenu)
-              this.component.selectCard.set({offset: 0})
-              this.component.selectCard.loadFromList(this.songMenu)
-              setTimeout(() => {this.setState({load: true})}, 200);
-              this.forceUpdate()
-            }
-          });
-        }, this)
-      })
-    }
+    // } else {
+    //   new DirLoader().getBeatMapFile().then((beatsMap) => {
+    //     beatsMap.fileArray.forEach((val, i) => {
+    //       this.songMenu[i] = val
+    //       let meta = (/(.*)\[(.*)\].json$/g).exec(val.name)
+    //       // console.log(meta)
+    //       new BeatsMapParser(val.path).then((data) => {
+    //         this.songMenu[i].songName = data.songName
+    //         this.songMenu[i].songMeta = [{
+    //           difficulty: meta[2],
+    //           beatsFile: this.songMenu[i].name
+    //         }]
+    //         // console.log(this.songMenu[i])
+    //         if (i === beatsMap.fileArray.length - 1) {
+    //           StaticData.set('songMenu', this.songMenu)
+    //           this.component.selectCard.set({offset: 0})
+    //           this.component.selectCard.loadFromList(this.songMenu)
+    //           setTimeout(() => {this.setState({load: true})}, 200);
+    //           this.forceUpdate()
+    //         }
+    //       });
+    //     }, this)
+    //   })
+    // }
   }
   
 
