@@ -27,9 +27,9 @@ export default function (Framework) {
 
 		var loadImage = function(requestOption) {
 
-			if(_responsedResource[requestOption.id]) {
-				return _responsedResource[requestOption.id];
-			}
+			// if(_responsedResource[requestOption.id]) {
+			// 	return _responsedResource[requestOption.id];
+			// }
 			
 
 			var imageObj = new Image();

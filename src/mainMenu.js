@@ -45,7 +45,7 @@ class menu extends ES6Trans {
 
     this.ani = new Ani()
     this.songMenu = [];
-
+    this.songCover = [];
     this.component = {    
       background: new Img(this).set({
         url: Resource.image+'/menu_background.jpg',
@@ -130,6 +130,11 @@ class menu extends ES6Trans {
         StaticData.set('songMenu', data)
         //   console.log('web load')
         this.setState({load: true})
+        console.log(this.songMenu.length);
+        for(let i = 0 ; i < this.songMenu.length;i++){
+          this.songCover[i] = this.songMenu[i].songMeta[0].cover;
+          console.log(this.songCover[i]);
+        }
       })
     // } else {
     //   new DirLoader().getBeatMapFile().then((beatsMap) => {
@@ -188,6 +193,9 @@ class menu extends ES6Trans {
       case 'Up':
         if ((selectIndex - 1) >= 0) {
           this.songMenuGo(selectIndex - 1)
+          if(this.songCover[selectIndex - 1] == "")
+            this.component.cover.set({url: Resource.image+'/cover.jpg',}) 
+          else this.component.cover.set({url: './Songs/'+ this.songCover[selectIndex - 1]});
           this.setState({
             selectIndex: selectIndex - 1
           })
@@ -196,6 +204,9 @@ class menu extends ES6Trans {
       case 'Down':
         if ((selectIndex + 1) < length) {
           this.songMenuGo(selectIndex + 1)
+          if(this.songCover[selectIndex + 1] == "")
+            this.component.cover.set({url: Resource.image+'/cover.jpg',}) 
+          else this.component.cover.set({url: './Songs/'+ this.songCover[selectIndex + 1]});
           this.setState({
             selectIndex: selectIndex + 1
           })

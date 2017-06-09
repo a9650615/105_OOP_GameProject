@@ -156,7 +156,7 @@ class GamePlayScene extends ES6Trans {
 
     this.component.enemyStage.setAttack(() => {
       this.setState({
-        hp: this.state.hp - 0.01
+        hp: this.state.hp - 0.5
       })
     })
 

@@ -41,24 +41,40 @@ export default class SelectCard extends GameObject {
     data.forEach(function(element, i) {
       let song = element.songMeta[0]
       let name = element.songName
+      console.log(element.songMeta[0].difficulty)
+      let color ='rgba(47,47,47,0.7)'
+      switch(element.songMeta[0].difficulty){
+        case "default":
+          color = 'rgba(32,32,255,0.7)';
+        break;
+        case "easy":
+          color = 'rgba(0,192,0,0.7)';
+        break; 
+        case "normal":
+          color = 'rgba(255,128,0,0.7)';
+        break; 
+        case "hard":
+          color = 'rgba(216,0,0,0.7)';
+        break; 
+      }
       let component = {
         background: new Rect(this._parent).setParent(this).set({
           width: this.state.card.width,
           height: this.state.card.height,
           y: this.state.y + (this.state.card.height+this.state.margin) * i,
           // x: this.state.x,
-          background: 'rgba(47,47,47,0.3)'
+          background: color
         })
       }
       component['songTitle'] = 
         new Button(this._parent).setParent(component.background).set({
-          text: name,
+          text: name + "[" + element.songMeta[0].difficulty+ "]",
           x: 20,
           y: 30,
           // y: this.state.y + (this.state.card.height+this.state.margin) * i + 30,
           textColor: '#fff'
         })
-        
+                
       this.component.cardElement.push(component)
     }, this);
     return this

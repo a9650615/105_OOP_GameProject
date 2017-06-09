@@ -70,7 +70,8 @@ export default class BeatsMapParser {
         let meta = {
           "difficulty": difficult,
           "songFile": `${folder}/${songName}`,
-          "beatsFile": `${folder}[${difficult}].json`
+          "beatsFile": `${folder}[${difficult}].json`,
+          "cover": cover?`${folder}/${cover}`:""
         }
 
         for(let i in data) {
