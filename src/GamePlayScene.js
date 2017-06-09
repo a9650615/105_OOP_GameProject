@@ -193,6 +193,7 @@ class GamePlayScene extends ES6Trans {
         });
         this.component.stage.clickEffect(0)
         this.component.stage.component.stageLeftClick.show()
+        this.component.enemyStage.killEnemy(0)
         break;
       case keyCode.rightHit:
         this.characterUpdate(1)
@@ -202,6 +203,7 @@ class GamePlayScene extends ES6Trans {
         });
         this.component.stage.clickEffect(1)
         this.component.stage.component.stageRightClick.show()
+        this.component.enemyStage.killEnemy(1)
         break;
       case 32:
         let player = this.song.getPlayer();

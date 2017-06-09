@@ -60,12 +60,29 @@ export default class EnemyStage extends GameObject {
     })
   }
 
+  /**
+   * 設定攻擊目標寬度 , x 軸
+   * @param {object} data 
+   */
   setTarget(data) {
     this.setState({
       target: data
     })
 
     return this
+  }
+
+  /**
+   * 殺目標方向的怪物
+   */
+  killEnemy(align) {
+    for (let enemy of this.component.enemys) {
+      if(enemy.side === align && enemy.status !== 'die') {
+         enemy.status = 'die'
+         enemy.frame = 0
+         break
+      }
+    }
   }
 
   push(name, side = null) {
@@ -122,7 +139,7 @@ export default class EnemyStage extends GameObject {
               enemy.status = 'attack'
               enemy.lastStatusFrame = enemy.frame
             }
-        } else {
+        } else if (enemy.status === 'move') {
             if (enemy.side) { //face left
             enemy.sprite.set({x: enemy.x - nameData.moveSpeed})
             enemy.x -= nameData.moveSpeed
@@ -137,6 +154,7 @@ export default class EnemyStage extends GameObject {
           enemy.sprite.showPiece(nameData.action[enemy.status][enemy.frame])
           if (enemy.status==='die' && enemy.frame >= nameData.action[enemy.status].length - 1) {
             enemy.sprite.hide()
+            this.component.enemys.splice( i, 1)
           }
         }
       }

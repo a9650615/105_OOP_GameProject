@@ -229,10 +229,10 @@ export let ES6Trans =  class Es6Trans {
 	}
 
 	/**
-   * 強制更新畫面狀態
-   * @param {null}
+	 * 強制更新畫面狀態
+	 * @param {null}
 	 * @return {null}
-   */
+	 */
 	forceUpdate() {
 		this._stateUpdate = true;
 		// if (this.ctx) 
