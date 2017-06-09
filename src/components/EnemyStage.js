@@ -76,6 +76,7 @@ export default class EnemyStage extends GameObject {
         {
           status: 'move',
           frame: 0,
+          lastStatusFrame: 0,
           type: name,
           side: side,
           x: side?this.state.width - 100: 100,
@@ -107,10 +108,20 @@ export default class EnemyStage extends GameObject {
       for( let i in this.component.enemys ) {
         enemy = this.component.enemys[i]
         nameData = this.enemyList[enemy.type]
-        if((enemy.side==0&&(enemy.x+this.state.height * 0.5)>this.state.target.x+50)
-          ||(enemy.side==1&&enemy.x<(this.state.target.x+this.state.target.width-50) )) { //change attack
-            enemy.status = 'attack'
-            this.attackAction()
+        if((enemy.side==0&&(enemy.x+this.state.height * 0.5)>=this.state.target.x+50)
+          ||(enemy.side==1&&enemy.x<=(this.state.target.x+this.state.target.width-50) )) { //change attack
+            if (enemy.status === 'attack') {
+              this.attackAction()
+              // console.log('now attack'+ (enemy.frame - enemy.lastStatusFrame))
+              if (Math.abs(enemy.frame - enemy.lastStatusFrame) >= nameData.action['attack'].length -1) {
+                // console.log(i+' dispared')
+                enemy.status = 'die'
+                enemy.frame = 0
+              }
+            } else if (enemy.status === 'move') {
+              enemy.status = 'attack'
+              enemy.lastStatusFrame = enemy.frame
+            }
         } else {
             if (enemy.side) { //face left
             enemy.sprite.set({x: enemy.x - nameData.moveSpeed})
@@ -124,6 +135,9 @@ export default class EnemyStage extends GameObject {
         if (this.counter%(this.state.actionTime*5)===0) {
           enemy.frame = ++enemy.frame%nameData.action[enemy.status].length
           enemy.sprite.showPiece(nameData.action[enemy.status][enemy.frame])
+          if (enemy.status==='die' && enemy.frame >= nameData.action[enemy.status].length - 1) {
+            enemy.sprite.hide()
+          }
         }
       }
       this.forceUpdate()

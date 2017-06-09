@@ -17,6 +17,7 @@ class SilderStage extends GameObject {
     this.hit = [0, 0, 0, 0, 0];
     this.beatsMap = null;
     this.onHitType = () => {};
+    this.sildInFunc = () => {}
   }
   /**
    * 載入地圖檔
@@ -31,6 +32,7 @@ class SilderStage extends GameObject {
     console.log(beatsMap.length-1,beatsMap[beatsMap.length-1]);
     beatsMap.forEach((val, i) => {
       val.status = 0; // 目前狀態 失敗 -1 , 成功 > 0
+      val.inScreen = false //是否在畫面內
       let color = '#d15169';
       if(i != 0) 
         if (beatsMap[i-1].startStep == beatsMap[i].startStep){
@@ -163,6 +165,15 @@ class SilderStage extends GameObject {
     return this.countPercent() / (this.beatsMap.totalStep * 100);
   }
 
+  /**
+   * 設定滑入事件啟動 function
+   * @param {function} func 
+   */
+
+  setSildIn(func) {
+    this.sildInFunc = func
+  }
+
   render() {
     // console.log(this._stateUpdate)
     if (this.beatsMap) {
@@ -195,11 +206,17 @@ class SilderStage extends GameObject {
             console.log(this.countPercent(), "/", this.beatsMap.totalStep * 100, "Miss");
             console.log("Critical Great:",this.hit[0],"Great:",this.hit[1],"Good:",this.hit[2],"Bad:",this.hit[3],"Miss:",this.hit[4]);
           }
-          if (val.status === 0)
+          if (val.status === 0){
             val.element.set({
               x: x + 10,
               width: eleWidth
             }).show();
+
+            if (!val.inScreen){
+              val.inScreen = true
+              this.sildInFunc(val.align)
+            }
+          }
         });
       });
     };

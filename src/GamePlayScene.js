@@ -159,6 +159,12 @@ class GamePlayScene extends ES6Trans {
         hp: this.state.hp - 0.01
       })
     })
+
+
+    this.component.silderStage.setSildIn((align) => {
+      this.component.enemyStage.push('mon1', align)
+    })
+
     // if (Game.debug)
     //   this.devTools = new devTools(this);
   }
@@ -236,10 +242,12 @@ class GamePlayScene extends ES6Trans {
         }
         break;
       case 75: //k
-        this.component.enemyStage.push('mon1', 0)
+        if (Game.debug)
+          this.component.enemyStage.push('mon1', 0)
         break;
       case 76: //l
-        this.component.enemyStage.push('mon1', 1)
+        if (Game.debug)
+          this.component.enemyStage.push('mon1', 1)
         break;
     }
   }
