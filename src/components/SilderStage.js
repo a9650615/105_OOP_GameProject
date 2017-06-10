@@ -165,6 +165,10 @@ class SilderStage extends GameObject {
     return this.countPercent() / (this.beatsMap.totalStep * 100);
   }
 
+  getHit() {
+    return this.hit;
+  }
+
   /**
    * 設定滑入事件啟動 function
    * @param {function} func 

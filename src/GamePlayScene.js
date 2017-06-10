@@ -350,7 +350,8 @@ class GamePlayScene extends ES6Trans {
           this.component.enemyStage.set({opacity: data.stageOpacity})
         }, 'beat').then(() => {
           this.song.getPlayer().pause()
-          this.component.resultSence.setScore(this.state.totalScore)
+          let hit = this.component.silderStage.getHit()
+          this.component.resultSence.setScore(this.state.totalScore, hit)
           this.component.resultSence.show()
           // Framework.Game.goToLevel("selectMusic") 
         })

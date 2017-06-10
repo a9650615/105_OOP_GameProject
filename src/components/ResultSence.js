@@ -1,7 +1,10 @@
 import GameObject from './GameObject'
 import Button from './Button';
+import { Resource } from '../constant'
 import { Game } from '../constant'
 import Rect from './Rectangle'
+import Img from './Img';
+import SilderStage from './SilderStage';
 
 export default class ResultSence extends GameObject {
   constructor(props) {
@@ -37,9 +40,24 @@ export default class ResultSence extends GameObject {
     this.setState(data)
   }
 
-  setScore(data) {
+  setScore(data, hit) {
     this.component.result.set({
-            text:'Total:' + data
+      text: 'Total:' + data
+    });
+    this.component.numberCritGreat.set({
+      text: hit[0]
+    });
+    this.component.numberGreat.set({
+      text: hit[1]
+    });
+    this.component.numberGood.set({
+      text: hit[2]
+    });
+    this.component.numberBad.set({
+      text: hit[3]
+    });
+    this.component.numberMiss.set({
+      text: hit[4]
     });
   }
 
@@ -59,24 +77,83 @@ export default class ResultSence extends GameObject {
         height: Game.window.height * 0.8,
         x: Game.window.width * 0.05,
         y: Game.window.width * 0.05
+      }),
+
+      beatsCritGreat: new Img(this._parent).setParent(this.component.box).set({
+        url: Resource.image+'Critical_Great.png',
+        x: Game.window.width * 0.40,
+        y: Game.window.width * 0.10       
+      }),
+      numberCritGreat: new Button(this._parent).setParent(this.component.box).set({
+        text: "debugtext",
+        x: Game.window.width * 0.52,
+        y: Game.window.width * 0.11,
+        textColor: 'white'
+      }),
+
+      beatsGreat: new Img(this._parent).setParent(this.component.box).set({
+        url: Resource.image+'Great.png',
+        x: Game.window.width * 0.65,
+        y: Game.window.width * 0.10       
+      }),
+      numberGreat: new Button(this._parent).setParent(this.component.box).set({
+        text: "debugtext",
+        x: Game.window.width * 0.77,
+        y: Game.window.width * 0.11,
+        textColor: 'white'
+      }),
+
+      beatsGood: new Img(this._parent).setParent(this.component.box).set({
+        url: Resource.image+'Good.png',
+        x: Game.window.width * 0.40,
+        y: Game.window.width * 0.22,      
+      }),
+      numberGood: new Button(this._parent).setParent(this.component.box).set({
+        text: "debugtext",
+        x: Game.window.width * 0.52,
+        y: Game.window.width * 0.23,
+        textColor: 'white'
+      }),
+
+      beatsBad: new Img(this._parent).setParent(this.component.box).set({
+        url: Resource.image+'Bad.png',
+        x: Game.window.width * 0.65,
+        y: Game.window.width * 0.22      
+      }),
+      numberBad: new Button(this._parent).setParent(this.component.box).set({
+        text: "debugtext",
+        x: Game.window.width * 0.77,
+        y: Game.window.width * 0.23,
+        textColor: 'white'
+      }),
+
+      beatsMiss: new Img(this._parent).setParent(this.component.box).set({
+        url: Resource.image+'Miss.png',
+        x: Game.window.width * 0.40,
+        y: Game.window.width * 0.34      
+      }),
+      numberMiss: new Button(this._parent).setParent(this.component.box).set({
+        text: "debugtext",
+        x: Game.window.width * 0.52,
+        y: Game.window.width * 0.35,
+        textColor: 'white'
+      }),
+
+      result: new Button(this._parent).setParent(this.component.box).set({
+        text: "debugtext",
+        x: Game.window.width * 0.15,
+        y: Game.window.width * 0.25,
+        textColor: 'white'
       })
     })
     Object.assign(this.component, {
       back: new Button(this._parent).setParent(this.component.box).set({
         text: "回主選單",
-          x: Game.window.width * 0.46,
-          y: Game.window.width * 0.45,
-          textColor: 'white'
+        x: Game.window.width * 0.46,
+        y: Game.window.width * 0.45,
+        textColor: 'white'
       }).setEvent('click', (e) => {
         Framework.Game.goToLevel("mainMenu")
-      })
-    })
-    Object.assign(this.component, {
-      result: new Button(this._parent).setParent(this.component.box).set({
-        text: "debugtext",
-          x: Game.window.width * 0.15,
-          y: Game.window.width * 0.25,
-          textColor: 'white'
       })
     })
     // document.body.appendChild(this._tmpCanvas.element()) 
