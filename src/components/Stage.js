@@ -18,16 +18,8 @@ export default class Stage extends GameObject{
       leftClick: 0,
       rightClick: 0
     };
-  }
 
-  set(data) {
-    let newState = Object.assign({}, this.state, data);
-    this.setState(newState);
-    return this;
-  }
-
-  load() {
-    let GameWidth = Game.window.width, GameHeight = Game.window.height;
+     let GameWidth = Game.window.width, GameHeight = Game.window.height;
     let offsetX = this.state.offsetX;
     let hpWidth = this.state.hpWidth;
     this._tmpCanvas.resize(GameWidth, GameHeight);
@@ -83,6 +75,16 @@ export default class Stage extends GameObject{
       }).hide()
     };
   }
+
+  set(data) {
+    let newState = Object.assign({}, this.state, data);
+    this.setState(newState);
+    return this;
+  }
+
+  // load() {
+   
+  // }
 
   clickEffect(type = null) {
     // if (type !== null) {

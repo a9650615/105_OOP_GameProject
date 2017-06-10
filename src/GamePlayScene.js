@@ -12,12 +12,16 @@ import StaticData from './helper/StaticData';
 import Ani from './helper/Ani';
 import SystemMenu from './components/SystemMenu'
 import EnemyStage from './components/EnemyStage'
+import LoadingMusic from './components/LodingMusic'
 
 class GamePlayScene extends ES6Trans {
   initialize() {
     let preLoad = StaticData.load('playSceneData')
     let songFolder = Resource.songs+preLoad.songName+'/';
     // console.log(songFolder+preLoad.songMeta[0].beatsFile)
+    this.component.loadingMusic.set({
+      songName: preLoad.songName
+    })
     this.ani = new Ani();
     new BeatsMapParser(songFolder+preLoad.songMeta[0].beatsFile).then((data) => {
       this.beatsMap = data;
@@ -27,13 +31,17 @@ class GamePlayScene extends ES6Trans {
       
       this.beatsMap.endStep = this.beatsMap.beatsMap[this.beatsMap.beatsMap.length - 1].startStep
       this.song.setUrl(songFolder+this.beatsMap.songFile, this.beatsMap.songFile, () => {
-        this.setState({
-          loaded: 1,
-          // play: true
-        });
-        this.component.silderStage.loadbeatsMap(this.beatsMap);
-        if (!Game.debug)
-          this.playSong();
+        this.component.silderStage.hide() //先隱藏
+        this.component.silderStage.loadbeatsMap(this.beatsMap)
+          this.setState({
+            loaded: 1,
+            // play: true
+          });
+        this.component.loadingMusic.slideOut().then(() => {
+          // if (!Game.debug)
+            // this.playSong();
+          this.showSilder()
+        })
       });
     });
     this.beatsTypeImg = ['beats_miss','beats_crit_great', 'beats_great', 'beats_good', 'beats_bad'];
@@ -66,9 +74,19 @@ class GamePlayScene extends ES6Trans {
     })
   }
 
+  showSilder(func) {
+    this.component.silderStage.show()
+    return this.ani.fromTo({opacity: 0}, {opacity: 1}, 0.3, (data) => {
+      this.component.silderStage.set(data)
+    }, 'silderFadeIn').then(this.playSong.bind(this))
+  }
+
   playSong() {
-    if (this.song.getPlayer().paused)
-      this.song.getPlayer().play(); // 播放歌曲
+    if (this.song.getPlayer().paused && !Game.debug) {
+      this.setState({play: true})
+      this.component.enemyStage.set({pause: false})
+    }
+      // this.song.getPlayer().play(); // 播放歌曲
   }
 
   load() {
@@ -101,6 +119,15 @@ class GamePlayScene extends ES6Trans {
         y: -200,
         width: 1920
       }),
+      enemyStage: new EnemyStage(this).set({
+        width: Game.window.width,
+        height: Game.window.height*0.25,
+        y: this.state.sense.landpos/100 * Game.window.height,
+        x: 0
+      }).setTarget({
+        width: 120,
+        x: (Game.window.width-120)/2,
+      }).loadEnemy('mon1').set({pause: true}),
       stage: new Stage(this).set({
         hpWidth: this.state.hpWidth
       }),
@@ -111,15 +138,6 @@ class GamePlayScene extends ES6Trans {
         height: (Game.window.height*0.45),
         hpWidth: this.state.hpWidth
       }),
-      enemyStage: new EnemyStage(this).set({
-        width: Game.window.width,
-        height: Game.window.height*0.25,
-        y: this.state.sense.landpos/100 * Game.window.height,
-        x: 0
-      }).setTarget({
-        width: 120,
-        x: (Game.window.width-120)/2,
-      }).loadEnemy('mon1'),
       character: new Sprite(this).set({
         url: Resource.image+'bisca_battler_rpg_maker_mv_by_retrospriteresources-dagd3xg.png',
         wPiece: 9,
@@ -152,6 +170,7 @@ class GamePlayScene extends ES6Trans {
         // url: `${Resource.image}/Great.png`
       }),
       systemMenu: new SystemMenu(this).hide(),
+      loadingMusic: new LoadingMusic(this)
     };
 
     this.component.enemyStage.setAttack(() => {
@@ -164,7 +183,6 @@ class GamePlayScene extends ES6Trans {
     this.component.silderStage.setSildIn((align) => {
       this.component.enemyStage.push('mon1', align)
     })
-
     // if (Game.debug)
     //   this.devTools = new devTools(this);
   }

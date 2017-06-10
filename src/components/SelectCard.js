@@ -41,7 +41,7 @@ export default class SelectCard extends GameObject {
     data.forEach(function(element, i) {
       let song = element.songMeta[0]
       let name = element.songName
-      console.log(element.songMeta[0].difficulty)
+      // console.log(element.songMeta[0].difficulty)
       let color ='rgba(47,47,47,0.7)'
       switch(element.songMeta[0].difficulty){
         case "default":
