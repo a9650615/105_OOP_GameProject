@@ -10,6 +10,7 @@ import Botton from './components/Button';
 import devTools from './helper/devTool';
 import StaticData from './helper/StaticData';
 import Ani from './helper/Ani';
+import ResultSence from './components/ResultSence'
 import SystemMenu from './components/SystemMenu'
 import EnemyStage from './components/EnemyStage'
 import LoadingMusic from './components/LodingMusic'
@@ -170,6 +171,7 @@ class GamePlayScene extends ES6Trans {
         // url: `${Resource.image}/Great.png`
       }),
       systemMenu: new SystemMenu(this).hide(),
+      resultSence: new ResultSence(this).hide(),  
       loadingMusic: new LoadingMusic(this)
     };
 
@@ -348,7 +350,9 @@ class GamePlayScene extends ES6Trans {
           this.component.enemyStage.set({opacity: data.stageOpacity})
         }, 'beat').then(() => {
           this.song.getPlayer().pause()
-          Framework.Game.goToLevel("selectMusic")
+          this.component.resultSence.setScore(this.state.totalScore)
+          this.component.resultSence.show()
+          // Framework.Game.goToLevel("selectMusic") 
         })
         this.setState({play: false})
       }
