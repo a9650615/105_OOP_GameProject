@@ -212,7 +212,7 @@ class menu extends ES6Trans {
     for(let i = 0 ; i < this.songMenu.length;i++){
       this.songCover[i] = this.songMenu[i].songMeta[0].cover;
     }
-    if(this.songCover[selectIndex - 1] == "")
+    if(this.songCover[selectIndex] == "")
       this.component.cover.set({url: Resource.image+'/cover.jpg',}) 
     else this.component.cover.set({url: './Songs/'+ this.songCover[selectIndex]});
   }
