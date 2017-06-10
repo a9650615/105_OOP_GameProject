@@ -68,9 +68,17 @@ export default class SelectCard extends GameObject {
       }
       component['songTitle'] = 
         new Button(this._parent).setParent(component.background).set({
-          text: name + "[" + element.songMeta[0].difficulty+ "]",
+          text: name,
           x: 20,
           y: 30,
+          // y: this.state.y + (this.state.card.height+this.state.margin) * i + 30,
+          textColor: '#fff'
+        })
+      component['songDifficulty'] = 
+        new Button(this._parent).setParent(component.background).set({
+          text: "[" + element.songMeta[0].difficulty+ "]",
+          x: 20,
+          y: 60,
           // y: this.state.y + (this.state.card.height+this.state.margin) * i + 30,
           textColor: '#fff'
         })

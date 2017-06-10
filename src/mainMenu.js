@@ -120,6 +120,7 @@ class menu extends ES6Trans {
         this.component.selectCard.set({offset: StaticData.load('lastSelectIndex')||0})
         this.setState({aniSelect: lastSelect, selectIndex: lastSelect})
         this.forceUpdate()
+        this.changeCover(this.state.selectIndex)
       }, 300) //不知道為何需要延遲
     }
     else
@@ -129,12 +130,8 @@ class menu extends ES6Trans {
         this.songMenu = data
         StaticData.set('songMenu', data)
         //   console.log('web load')
-        this.setState({load: true})
-        console.log(this.songMenu.length);
-        for(let i = 0 ; i < this.songMenu.length;i++){
-          this.songCover[i] = this.songMenu[i].songMeta[0].cover;
-          console.log(this.songCover[i]);
-        }
+        this.setState({load: true})  
+        this.changeCover(this.state.selectIndex)
       })
     // } else {
     //   new DirLoader().getBeatMapFile().then((beatsMap) => {
@@ -193,9 +190,7 @@ class menu extends ES6Trans {
       case 'Up':
         if ((selectIndex - 1) >= 0) {
           this.songMenuGo(selectIndex - 1)
-          if(this.songCover[selectIndex - 1] == "")
-            this.component.cover.set({url: Resource.image+'/cover.jpg',}) 
-          else this.component.cover.set({url: './Songs/'+ this.songCover[selectIndex - 1]});
+          this.changeCover(selectIndex - 1)
           this.setState({
             selectIndex: selectIndex - 1
           })
@@ -204,9 +199,7 @@ class menu extends ES6Trans {
       case 'Down':
         if ((selectIndex + 1) < length) {
           this.songMenuGo(selectIndex + 1)
-          if(this.songCover[selectIndex + 1] == "")
-            this.component.cover.set({url: Resource.image+'/cover.jpg',}) 
-          else this.component.cover.set({url: './Songs/'+ this.songCover[selectIndex + 1]});
+          this.changeCover(selectIndex + 1)
           this.setState({
             selectIndex: selectIndex + 1
           })
@@ -215,6 +208,15 @@ class menu extends ES6Trans {
     }
   }
 
+  changeCover(selectIndex){
+    for(let i = 0 ; i < this.songMenu.length;i++){
+      this.songCover[i] = this.songMenu[i].songMeta[0].cover;
+    }
+    if(this.songCover[selectIndex - 1] == "")
+      this.component.cover.set({url: Resource.image+'/cover.jpg',}) 
+    else this.component.cover.set({url: './Songs/'+ this.songCover[selectIndex]});
+  }
+  
   onkeydown(e) {
     if (e.key === 'Enter') {
       StaticData.set('playSceneData', this.songMenu[this.state.selectIndex])
