@@ -190,7 +190,7 @@ export default class ResultSence extends GameObject {
       result: new Button(this._parent).setParent(this.component.box).set({
         text: "RANK:",
         x: Game.window.width * 0.09,
-        y: Game.window.width * 0.06,
+        y: Game.window.width * 0.1,
         textColor: 'white',
         textSize: 64
       }),
