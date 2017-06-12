@@ -49,7 +49,7 @@ export default class Text extends GameObject {
   }
 
   setText(text) {
-    this._tmpContent.font = `${this.state.style.textSize||25}px ${this.state.style.font||'Arial'}`;
+    this._tmpContent.font = `${this.state.style.textSize||25}px ${this.state.style.textFont||'Arial'}`;
     let width = this._tmpContent.measureText(text).width;
     this.setState({
       text: text,
@@ -57,7 +57,7 @@ export default class Text extends GameObject {
     });
     
     this._tmpCanvas.resize(width);
-
+    
     return this;
   }
 
@@ -66,7 +66,7 @@ export default class Text extends GameObject {
     let content = ctx||this._tmpContent;//因該只會跑到 ctx
     let style = this.state.style;
     content.textBaseline = 'top';
-    content.font = `${style.textSize||25}px ${style.font||'Arial'}`;
+    content.font = `${style.textSize||25}px ${style.textFont||'Arial'}`;
     content.textAlign = style.textAlign || 'left';
     content.fillStyle = style.textColor || 'black';
     content.fillText(this.state.text, 0, 0);

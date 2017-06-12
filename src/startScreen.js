@@ -21,13 +21,15 @@ class startScreen extends ES6Trans {
         text: "上下選擇歌曲, Enter 鍵進入, q e 進行遊戲, esc 暫停選單",
         x: Game.window.width * 0.4,
         y: Game.window.height * 0.9,
-        textColor: '#91dfff'
+        textColor: '#91dfff',
+				textFont: '微軟正黑體'
       }),
 			start: new Button(this).set({
         text: "開始遊戲",
         x: Game.window.width * 0.45,
         y: Game.window.height * 0.5,
-        textColor: '#91dfff'
+        textColor: '#91dfff',
+				textFont: '微軟正黑體'
       }).setEvent('click', (e) => {
         Framework.Game.goToLevel("selectMusic")
       })
