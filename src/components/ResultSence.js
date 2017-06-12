@@ -22,6 +22,10 @@ export default class ResultSence extends GameObject {
         y: 0
       })
     }
+
+    this.audio = new Framework.Audio({
+      
+    });
   }
 
   hide() {
@@ -59,6 +63,8 @@ export default class ResultSence extends GameObject {
     this.component.numberMiss.set({
       text: hit[4]
     });
+    
+    this.audio.play({name: 'complete', loop: false})
   }
 
   load() {
@@ -153,6 +159,7 @@ export default class ResultSence extends GameObject {
         y: Game.window.width * 0.45,
         textColor: 'white'
       }).setEvent('click', (e) => {
+        this.audio.pause('complete')
         Framework.Game.goToLevel("mainMenu")
       })
     })

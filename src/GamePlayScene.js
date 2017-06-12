@@ -23,6 +23,15 @@ class GamePlayScene extends ES6Trans {
     this.component.loadingMusic.set({
       songName: preLoad.songName
     })
+    this.audio = new Framework.Audio({
+      fail:{
+        mp3: Resource.sounds+'failed.mp3'
+      },
+      complete:{
+        mp3: Resource.sounds+'complete.mp3'
+      }
+    });
+    this.audio.pauseAll();
     this.ani = new Ani();
     new BeatsMapParser(songFolder+preLoad.songMeta[0].beatsFile).then((data) => {
       this.beatsMap = data;
@@ -97,6 +106,7 @@ class GamePlayScene extends ES6Trans {
       combo: 0, // 連擊
       loaded: false,
       play: false,
+      failed: false,
       currentStep: 0,
       hpWidth: 5,
       totalScore: 0,
@@ -201,6 +211,32 @@ class GamePlayScene extends ES6Trans {
       })
     }
   }
+
+  menuShow() {
+    this.setState({
+      menuOpen: !this.state.menuOpen,
+      play: this.state.menuOpen
+    })
+    if (this.state.menuOpen) {
+      this.component.systemMenu.show()
+      this.component.silderStage.hide()
+      this.component.enemyStage.hide()
+      this.component.enemyStage.set({pause: true})
+      this.ani.fromTo({opacity: 0, menuScale: 0.5}, {opacity: 1, menuScale: 1}, 0.2, (data) => {
+        this.component.systemMenu.set(data)
+      }, 'menu')
+    }
+    else {
+      this.ani.fromTo({opacity: 1}, {opacity: 0}, 0.1, (data) => {
+        this.component.systemMenu.set(data)
+      }, 'menu').then(() => {
+        this.component.systemMenu.hide()
+        this.component.enemyStage.set({pause: false})
+      })
+      this.component.enemyStage.show()
+      this.component.silderStage.show()
+    }
+  }
   
   onkeydown(e) {
     let keyCode = Game.keyCode;
@@ -241,27 +277,8 @@ class GamePlayScene extends ES6Trans {
         }
         break;
       case 27:
-        this.setState({
-          menuOpen: !this.state.menuOpen,
-          play: this.state.menuOpen
-        })
-        if (this.state.menuOpen) {
-          this.component.systemMenu.show()
-          this.component.silderStage.hide()
-          this.component.enemyStage.set({pause: true})
-          this.ani.fromTo({opacity: 0, menuScale: 0.5}, {opacity: 1, menuScale: 1}, 0.2, (data) => {
-            this.component.systemMenu.set(data)
-          }, 'menu')
-        }
-        else {
-          this.ani.fromTo({opacity: 1}, {opacity: 0}, 0.1, (data) => {
-            this.component.systemMenu.set(data)
-          }, 'menu').then(() => {
-            this.component.systemMenu.hide()
-            this.component.enemyStage.set({pause: false})
-          })
-          this.component.silderStage.show()
-        }
+        if(!this.state.failed)
+          this.menuShow()
         break;
       case 75: //k
         if (Game.debug)
@@ -299,8 +316,14 @@ class GamePlayScene extends ES6Trans {
       else
         player.pause()
     }
-    if (this.state.play) {
-      if(this.state.hp>0) {
+    if (this.state.play && !this.state.failed) {
+      if(this.state.hp<=0) {
+        console.log('die')
+        this.setState({
+          failed: true
+        })
+        this.menuShow()
+        this.audio.play({name: 'fail', loop: false})
         // 扣血範例
         // this.setState({
         //   hp: this.state.hp - 0.01

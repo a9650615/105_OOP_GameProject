@@ -12,7 +12,6 @@ import Ani from './helper/Ani'
 
 class menu extends ES6Trans {
   initialize() {
-    
   }
 
  //初始化loadingProgress需要用到的圖片
@@ -33,6 +32,15 @@ class menu extends ES6Trans {
   }
 
   load(){
+    this.audio = new Framework.Audio({
+      welcome:{
+        mp3: Resource.sounds+'welcome.mp3'
+      },
+      ready: {
+        wav: Resource.sounds+'ready.wav'
+      }
+    });
+    
     this.state = {
       loaded: false,
       positionY: 1,
@@ -123,8 +131,7 @@ class menu extends ES6Trans {
         this.changeCover(this.state.selectIndex)
       }, 300) //不知道為何需要延遲
     }
-    else
-    // if (Game.client === 'web') {  
+    else {
       new BeatsMapParser('./Songs/songList.json').then((data) => {
         this.component.selectCard.loadFromList(data)
         this.songMenu = data
@@ -133,6 +140,9 @@ class menu extends ES6Trans {
         this.setState({load: true})  
         this.changeCover(this.state.selectIndex)
       })
+      this.audio.play({name: 'welcome', loop: false})
+    }
+    // if (Game.client === 'web') {  
     // } else {
     //   new DirLoader().getBeatMapFile().then((beatsMap) => {
     //     beatsMap.fileArray.forEach((val, i) => {
@@ -219,9 +229,12 @@ class menu extends ES6Trans {
   
   onkeydown(e) {
     if (e.key === 'Enter') {
-      StaticData.set('playSceneData', this.songMenu[this.state.selectIndex])
-      StaticData.set('lastSelectIndex', this.state.selectIndex)
-      Framework.Game.goToLevel("GamePlayScene")
+      this.audio.play({name: 'ready', loop: false})
+      setTimeout(() => {
+        StaticData.set('playSceneData', this.songMenu[this.state.selectIndex])
+        StaticData.set('lastSelectIndex', this.state.selectIndex)
+        Framework.Game.goToLevel("GamePlayScene")
+      }, 500)
     }
     // if (!this.state.isPress)
       this.keyEvent(e)
