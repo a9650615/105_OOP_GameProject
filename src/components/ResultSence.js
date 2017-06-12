@@ -45,8 +45,8 @@ export default class ResultSence extends GameObject {
   }
 
   setScore(data, hit) {
-    this.component.result.set({
-      text: 'Total:' + data
+    this.component.score.set({
+      text: data
     });
     this.component.numberCritGreat.set({
       text: hit[0]
@@ -63,8 +63,41 @@ export default class ResultSence extends GameObject {
     this.component.numberMiss.set({
       text: hit[4]
     });
-    
-    this.audio.play({name: 'complete', loop: false})
+    if(data >= 1000000){
+      this.component.score.set({
+        textColor: 'yellow',
+        x: Game.window.width * 0.14,
+      });
+      this.component.rank.set({url: Resource.image+'rankX.png'})
+      this.audio.play({name: 'complete', loop: false})
+    }
+    if(data >= 700000 && data < 1000000){
+      this.component.score.set({
+        textColor: 'white',
+        x: Game.window.width * 0.16,
+      });
+      if(data >= 900000){
+        this.component.rank.set({url: Resource.image+'rankS.png'})
+      }
+      if(data >= 850000 && data < 900000){
+        this.component.rank.set({url: Resource.image+'rankA.png'})
+      }
+      if(data >= 800000 && data < 850000){
+        this.component.rank.set({url: Resource.image+'rankB.png'})
+      }
+      if(data < 800000){
+        this.component.rank.set({url: Resource.image+'rankC.png'})
+      }
+      this.audio.play({name: 'complete', loop: false})
+    }
+    if(data < 700000){
+      this.component.score.set({
+        textColor: 'red',
+        x: Game.window.width * 0.16,
+      });
+      this.component.rank.set({url: Resource.image+'rankD.png'})
+      this.audio.play({name: 'fail', loop: false})
+    }
   }
 
   load() {
@@ -84,72 +117,90 @@ export default class ResultSence extends GameObject {
         x: Game.window.width * 0.05,
         y: Game.window.width * 0.05
       }),
-
+      rank: new Img(this._parent).setParent(this.component.box).set({
+        url: Resource.image+'rankN.png',
+        x: Game.window.width * 0.11,
+        y: Game.window.width * 0.20          
+      }),
       beatsCritGreat: new Img(this._parent).setParent(this.component.box).set({
         url: Resource.image+'Critical_Great.png',
-        x: Game.window.width * 0.40,
+        x: Game.window.width * 0.45,
         y: Game.window.width * 0.10       
       }),
       numberCritGreat: new Button(this._parent).setParent(this.component.box).set({
         text: "debugtext",
-        x: Game.window.width * 0.52,
-        y: Game.window.width * 0.11,
-        textColor: 'white'
+        x: Game.window.width * 0.57,
+        y: Game.window.width * 0.095,
+        textColor: 'white',
+        textSize: 64
       }),
 
       beatsGreat: new Img(this._parent).setParent(this.component.box).set({
         url: Resource.image+'Great.png',
-        x: Game.window.width * 0.65,
+        x: Game.window.width * 0.70,
         y: Game.window.width * 0.10       
       }),
       numberGreat: new Button(this._parent).setParent(this.component.box).set({
         text: "debugtext",
-        x: Game.window.width * 0.77,
-        y: Game.window.width * 0.11,
-        textColor: 'white'
+        x: Game.window.width * 0.82,
+        y: Game.window.width * 0.095,
+        textColor: 'white',
+        textSize: 64
       }),
 
       beatsGood: new Img(this._parent).setParent(this.component.box).set({
         url: Resource.image+'Good.png',
-        x: Game.window.width * 0.40,
+        x: Game.window.width * 0.45,
         y: Game.window.width * 0.22,      
       }),
       numberGood: new Button(this._parent).setParent(this.component.box).set({
         text: "debugtext",
-        x: Game.window.width * 0.52,
-        y: Game.window.width * 0.23,
-        textColor: 'white'
+        x: Game.window.width * 0.57,
+        y: Game.window.width * 0.215,
+        textColor: 'white',
+        textSize: 64
       }),
 
       beatsBad: new Img(this._parent).setParent(this.component.box).set({
         url: Resource.image+'Bad.png',
-        x: Game.window.width * 0.65,
+        x: Game.window.width * 0.70,
         y: Game.window.width * 0.22      
       }),
       numberBad: new Button(this._parent).setParent(this.component.box).set({
         text: "debugtext",
-        x: Game.window.width * 0.77,
-        y: Game.window.width * 0.23,
-        textColor: 'white'
+        x: Game.window.width * 0.82,
+        y: Game.window.width * 0.215,
+        textColor: 'white',
+        textSize: 64
       }),
 
       beatsMiss: new Img(this._parent).setParent(this.component.box).set({
         url: Resource.image+'Miss.png',
-        x: Game.window.width * 0.40,
+        x: Game.window.width * 0.45,
         y: Game.window.width * 0.34      
       }),
       numberMiss: new Button(this._parent).setParent(this.component.box).set({
         text: "debugtext",
-        x: Game.window.width * 0.52,
-        y: Game.window.width * 0.35,
-        textColor: 'white'
+        x: Game.window.width * 0.57,
+        y: Game.window.width * 0.335,
+        textColor: 'white',
+        textSize: 64
       }),
 
       result: new Button(this._parent).setParent(this.component.box).set({
+        text: "Result:",
+        x: Game.window.width * 0.09,
+        y: Game.window.width * 0.06,
+        textColor: 'white',
+        textSize: 64
+      }),
+
+      score: new Button(this._parent).setParent(this.component.box).set({
         text: "debugtext",
-        x: Game.window.width * 0.15,
-        y: Game.window.width * 0.25,
-        textColor: 'white'
+        x: Game.window.width * 0.16,
+        y: Game.window.width * 0.36,
+        textColor: 'white',
+        textSize: 64
       })
     })
     Object.assign(this.component, {
