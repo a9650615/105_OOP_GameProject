@@ -62,7 +62,7 @@ export default class SystemMenu extends GameObject {
           y: Game.window.width * 0.25,
           textColor: 'black'
       }).setEvent('click', (e) => {
-        Framework.Game.goToLevel("mainMenu")
+        Framework.Game.goToLevel("selectMusic")
       })
     })
     // document.body.appendChild(this._tmpCanvas.element()) 

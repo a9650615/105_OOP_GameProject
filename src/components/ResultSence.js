@@ -160,7 +160,7 @@ export default class ResultSence extends GameObject {
         textColor: 'white'
       }).setEvent('click', (e) => {
         this.audio.pause('complete')
-        Framework.Game.goToLevel("mainMenu")
+        Framework.Game.goToLevel("selectMusic")
       })
     })
     // document.body.appendChild(this._tmpCanvas.element()) 
