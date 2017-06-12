@@ -3,6 +3,7 @@ import {Resource, Game} from './constant';
 import BeatsMapParser from './modules/BeatsMapParser';
 import SongParser from './modules/SongParser';
 import Img from './components/Img';
+import Rect from './components/Rectangle'
 import Sprite from './components/Sprite';
 import Stage from './components/Stage';
 import SilderStage from './components/SilderStage';
@@ -163,11 +164,17 @@ class GamePlayScene extends ES6Trans {
         y: 30,
         textColor: 'white',
         text: 'debbug text'
+      }).hide(),
+      scoreBackground: new Img(this).set({
+        url: Resource.image+'score_s.png',
+        x: 99,
+        y: 49,
       }),
       scoreText: new Botton(this).set({
-        x: 100,
-        y: 50,
+        x: 110,
+        y: 48,
         textColor: 'white',
+        textSize: 40,
         text: 'debbug text'
       }),
       beatsType: new Img(this).set({
@@ -351,8 +358,20 @@ class GamePlayScene extends ES6Trans {
         text: 'step:'+step
       });
       this.component.scoreText.set({
-        text: 'score:'+this.state.totalScore
+        text: this.state.totalScore
       });
+      if(this.state.totalScore >= 1000000)
+        this.component.scoreText.set({
+          textColor: 'yellow',
+        });
+      if(this.state.totalScore < 1000000 && this.state.totalScore >= 700000)
+        this.component.scoreText.set({
+          textColor: 'white',
+        });
+      if(this.state.totalScore < 700000)
+        this.component.scoreText.set({
+          textColor: 'gray',
+        });
       if (step > this.beatsMap.endStep + this.state.endStateRange) {
         this.ani.fromTo({volumn: 0.5}, {volumn: 0}, 0.5, data => {
           this.song.setVolume(data.volumn)
@@ -368,6 +387,7 @@ class GamePlayScene extends ES6Trans {
             opacity: data.stageOpacity
           })
           this.component.debugText.set({opacity: data.stageOpacity})
+          this.component.scoreBackground.set({opacity: data.stageOpacity})
           this.component.scoreText.set({opacity: data.stageOpacity})
           this.component.background.set({opacity: data.stageOpacity})
           this.component.enemyStage.set({opacity: data.stageOpacity})

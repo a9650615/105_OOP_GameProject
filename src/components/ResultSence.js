@@ -49,19 +49,19 @@ export default class ResultSence extends GameObject {
       text: data
     });
     this.component.numberCritGreat.set({
-      text: hit[0]
+      text: hit[0]+'x'
     });
     this.component.numberGreat.set({
-      text: hit[1]
+      text: hit[1]+'x'
     });
     this.component.numberGood.set({
-      text: hit[2]
+      text: hit[2]+'x'
     });
     this.component.numberBad.set({
-      text: hit[3]
+      text: hit[3]+'x'
     });
     this.component.numberMiss.set({
-      text: hit[4]
+      text: hit[4]+'x'
     });
     if(data >= 1000000){
       this.component.score.set({
@@ -74,7 +74,7 @@ export default class ResultSence extends GameObject {
     if(data >= 700000 && data < 1000000){
       this.component.score.set({
         textColor: 'white',
-        x: Game.window.width * 0.16,
+        x: Game.window.width * 0.15,
       });
       if(data >= 900000){
         this.component.rank.set({url: Resource.image+'rankS.png'})
@@ -93,7 +93,7 @@ export default class ResultSence extends GameObject {
     if(data < 700000){
       this.component.score.set({
         textColor: 'red',
-        x: Game.window.width * 0.16,
+        x: Game.window.width * 0.15,
       });
       this.component.rank.set({url: Resource.image+'rankD.png'})
       this.audio.play({name: 'fail', loop: false})
@@ -130,7 +130,7 @@ export default class ResultSence extends GameObject {
       numberCritGreat: new Button(this._parent).setParent(this.component.box).set({
         text: "debugtext",
         x: Game.window.width * 0.57,
-        y: Game.window.width * 0.095,
+        y: Game.window.width * 0.0875,
         textColor: 'white',
         textSize: 64
       }),
@@ -143,7 +143,7 @@ export default class ResultSence extends GameObject {
       numberGreat: new Button(this._parent).setParent(this.component.box).set({
         text: "debugtext",
         x: Game.window.width * 0.82,
-        y: Game.window.width * 0.095,
+        y: Game.window.width * 0.0875,
         textColor: 'white',
         textSize: 64
       }),
@@ -156,7 +156,7 @@ export default class ResultSence extends GameObject {
       numberGood: new Button(this._parent).setParent(this.component.box).set({
         text: "debugtext",
         x: Game.window.width * 0.57,
-        y: Game.window.width * 0.215,
+        y: Game.window.width * 0.2075,
         textColor: 'white',
         textSize: 64
       }),
@@ -169,7 +169,7 @@ export default class ResultSence extends GameObject {
       numberBad: new Button(this._parent).setParent(this.component.box).set({
         text: "debugtext",
         x: Game.window.width * 0.82,
-        y: Game.window.width * 0.215,
+        y: Game.window.width * 0.2075,
         textColor: 'white',
         textSize: 64
       }),
@@ -182,13 +182,13 @@ export default class ResultSence extends GameObject {
       numberMiss: new Button(this._parent).setParent(this.component.box).set({
         text: "debugtext",
         x: Game.window.width * 0.57,
-        y: Game.window.width * 0.335,
+        y: Game.window.width * 0.3275,
         textColor: 'white',
         textSize: 64
       }),
 
       result: new Button(this._parent).setParent(this.component.box).set({
-        text: "Result:",
+        text: "RANK:",
         x: Game.window.width * 0.09,
         y: Game.window.width * 0.06,
         textColor: 'white',

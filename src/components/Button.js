@@ -13,7 +13,7 @@ export default class Button extends GameObject {
 			text: '按鈕',
 			textColor: null,
 			textSize: 25,
-			textFont: null,
+			textFont: '微軟正黑體',
 			buttonHeight: 0,
 			buttonWidth: 0,
 			background: null

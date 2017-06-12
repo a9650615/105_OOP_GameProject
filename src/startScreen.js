@@ -1,11 +1,15 @@
 import Framework, {ES6Trans} from './framework_es6';
+import { Resource , Game } from './constant';
 import Button from './components/Button';
 import Rect from './components/Rectangle'
-import {Game} from './constant';
 
 class startScreen extends ES6Trans {
   initialize() {
-
+    this.audio = new Framework.Audio({
+      ready:{
+        mp3: Resource.sounds+'ready.wav'
+      }
+    })
   }
 
 	load() {
@@ -13,25 +17,22 @@ class startScreen extends ES6Trans {
 			background: new Rect(this).set({
 				x: 0,
 				y: 0,
-				background: '#222',
+				background: '#000000',
 				width: Game.window.width,
 				height: Game.window.height
 			}),
-			toturial: new Button(this).set({
-        text: "上下選擇歌曲, Enter 鍵進入, q e 進行遊戲, esc 暫停選單",
-        x: Game.window.width * 0.4,
-        y: Game.window.height * 0.9,
-        textColor: '#91dfff',
-				textFont: '微軟正黑體'
-      }),
 			start: new Button(this).set({
-        text: "開始遊戲",
-        x: Game.window.width * 0.45,
-        y: Game.window.height * 0.5,
-        textColor: '#91dfff',
+        text: "> Press Enter or click here !!<",
+        x: Game.window.width * 0.5,
+        y: Game.window.height * 0.85,
+        textSize: 40,
+        textColor: '#ffffff',
 				textFont: '微軟正黑體'
       }).setEvent('click', (e) => {
-        Framework.Game.goToLevel("selectMusic")
+        this.audio.play({name: 'ready', loop: false})
+        setTimeout(() => {
+          Framework.Game.goToLevel("selectMusic")
+        }, 500)
       })
 		}
 	}
@@ -40,7 +41,7 @@ class startScreen extends ES6Trans {
 		if (e.key === 'Enter') {
       this.audio.play({name: 'ready', loop: false})
       setTimeout(() => {
-        Framework.Game.goToLevel("GamePlayScene")
+        Framework.Game.goToLevel("selectMusic")
       }, 500)
     }
 	}

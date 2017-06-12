@@ -62,7 +62,22 @@ class menu extends ES6Trans {
         width: 1280,
         height: 720
       }),
-
+      toturial1: new Button(this).set({
+        text: "選單 : <↑↓>選擇歌曲 <Enter>進入",
+        x: Game.window.width * 0.65,
+        y: Game.window.height * 0.85,
+        textSize: 22,
+        textColor: 'white',
+				textFont: '微軟正黑體'
+      }),
+      toturial2: new Button(this).set({
+        text: "遊戲中 : <Q&E>敲打節拍 <Esc>暫停選單",
+        x: Game.window.width * 0.65,
+        y: Game.window.height * 0.9,
+        textSize: 22,
+        textColor: 'white',
+				textFont: '微軟正黑體'
+      }),
       selectStage: new Button(this).set({
         text: "選擇關卡",
         x: 30,
@@ -140,7 +155,7 @@ class menu extends ES6Trans {
         this.setState({load: true})  
         this.changeCover(this.state.selectIndex)
       })
-      this.audio.play({name: 'welcome', loop: false})
+      // this.audio.play({name: 'welcome', loop: false})
     }
     // if (Game.client === 'web') {  
     // } else {
