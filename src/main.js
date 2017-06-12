@@ -2,6 +2,7 @@ import Framework, {ES6Trans} from './framework_es6';
 import {Game} from './constant';
 import StaticData from './helper/StaticData'
 import DebugTest from './DebugTest';
+import startScreen from './startScreen';
 import mainMenu from './mainMenu';
 import beatsMapMaker from './beatsMapMaker';
 import GamePlayScene from './GamePlayScene';
@@ -25,6 +26,7 @@ window.addEventListener("resize", uiResize);
 
 // 場景管理部分
 Framework.Game.addNewLevel({
+  startScreen: new startScreen(),
   selectMusic: new mainMenu(),
   GamePlayScene: new GamePlayScene(),
 });
