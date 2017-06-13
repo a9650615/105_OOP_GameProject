@@ -38,6 +38,9 @@ class menu extends ES6Trans {
       },
       ready: {
         wav: Resource.sounds+'ready.wav'
+      },
+      select: {
+        wav: Resource.sounds+'choose.wav'
       }
     });
     
@@ -215,6 +218,7 @@ class menu extends ES6Trans {
     switch(e.key) {
       case 'Up':
         if ((selectIndex - 1) >= 0) {
+          this.audio.play({name: 'select', loop: false})
           this.songMenuGo(selectIndex - 1)
           this.changeCover(selectIndex - 1)
           this.setState({
@@ -224,6 +228,7 @@ class menu extends ES6Trans {
         break
       case 'Down':
         if ((selectIndex + 1) < length) {
+          this.audio.play({name: 'select', loop: false})
           this.songMenuGo(selectIndex + 1)
           this.changeCover(selectIndex + 1)
           this.setState({

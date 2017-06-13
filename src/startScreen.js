@@ -24,7 +24,7 @@ class startScreen extends ES6Trans {
 				height: Game.window.height
 			}),
       backgroundImg: new Img(this).set({
-        url: Resource.image+'/start_background.png',
+        url: Resource.image+'/start_background_n.png',
         x: 0,
         y: 0  ,
         width: 1280,

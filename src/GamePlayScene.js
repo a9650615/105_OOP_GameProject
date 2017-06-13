@@ -33,6 +33,9 @@ class GamePlayScene extends ES6Trans {
       },
       complete:{
         mp3: Resource.sounds+'complete.mp3'
+      },
+      hit:{
+        mp3: Resource.sounds+'hit.wav'
       }
     });
     this.audio.pauseAll();
@@ -253,6 +256,7 @@ class GamePlayScene extends ES6Trans {
     let keyCode = Game.keyCode;
     switch(e.keyCode) {
       case keyCode.leftHit:
+        // this.audio.play({name: 'hit', loop: false})
         this.characterUpdate(0)
         this.component.silderStage.keyHit(0, (returnKey) => {
           this.onBeat(returnKey)
@@ -263,6 +267,7 @@ class GamePlayScene extends ES6Trans {
         this.component.enemyStage.killEnemy(0)
         break;
       case keyCode.rightHit:
+        // this.audio.play({name: 'hit', loop: false})
         this.characterUpdate(1)
         this.component.silderStage.keyHit(1, (returnKey) => {
           this.onBeat(returnKey)
