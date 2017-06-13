@@ -1,6 +1,7 @@
 import Framework, {ES6Trans} from './framework_es6';
 import { Resource , Game } from './constant';
 import Button from './components/Button';
+import Img from './components/Img';
 import Rect from './components/Rectangle'
 import Ani from './helper/Ani'
 
@@ -22,6 +23,13 @@ class startScreen extends ES6Trans {
 				width: Game.window.width,
 				height: Game.window.height
 			}),
+      backgroundImg: new Img(this).set({
+        url: Resource.image+'/start_background.png',
+        x: 0,
+        y: 0  ,
+        width: 1280,
+        height: 720
+      }),
 			start: new Button(this).set({
         text: "> Press Enter or click here !!<",
         x: Game.window.width * 0.5,

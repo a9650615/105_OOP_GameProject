@@ -113,6 +113,7 @@ class GamePlayScene extends ES6Trans {
       failed: false,
       currentStep: 0,
       hpWidth: 5,
+      nowScore: 0,
       totalScore: 0,
       endStateRange: 5,
       endTimeOut: 0, // 距離結束 beat 過了多久
@@ -166,7 +167,7 @@ class GamePlayScene extends ES6Trans {
         x: 100,
         y: 30,
         textColor: 'white',
-        text: 'debbug text'
+        text: '0'
       }).hide(),
       scoreBackground: new Img(this).set({
         url: Resource.image+'score_s.png',
@@ -178,7 +179,7 @@ class GamePlayScene extends ES6Trans {
         y: 48,
         textColor: 'white',
         textSize: 40,
-        text: 'debbug text'
+        text: '0'
       }),
       beatsType: new Img(this).set({
         width: 50,
@@ -360,9 +361,13 @@ class GamePlayScene extends ES6Trans {
       this.component.debugText.set({
         text: 'step:'+step
       });
-      this.component.scoreText.set({
-        text: this.state.totalScore
-      });
+      if(this.state.nowScore != this.state.totalScore){
+        this.ani.fromTo({text: this.state.nowScore}, {text: this.state.totalScore}, 0.2, data => {
+         data.text = parseInt(data.text)
+         this.component.scoreText.set(data)
+        })
+        this.state.nowScore = this.state.totalScore 
+      }
       if(this.state.totalScore >= 1000000)
         this.component.scoreText.set({
           textColor: 'yellow',
