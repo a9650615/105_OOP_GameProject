@@ -17,25 +17,25 @@ export default class SongParser {
    */
   setUrl(file_path, filename = '', func = () => {}) {
     let t = this;
-    if (Game.client != 'web')
-      mm(fs.createReadStream(file_path), function (err, metadata) {
-        if (err) throw err;
-        t.info = metadata;
-        t.info.name = filename;
-        t.audio.src = file_path;
-        t.audio.onloadedmetadata = t.onGetDuration.bind(t);
-        // t.ctx = new AudioContext();
-        // var audioSrc = t.ctx.createMediaElementSource(t.audio);
-        // var analyser = ctx.createAnalyser();
-        // audioSrc.connect(analyser);
-        //t.audio.addEventListener('canplaythrough', func.bind(t), false);
-        t.audio.addEventListener('loadedmetadata', func.bind(t), false);
-      });
-    else {
+    // if (Game.client != 'web')
+    //   mm(fs.createReadStream(file_path), function (err, metadata) {
+    //     if (err) throw err;
+    //     t.info = metadata;
+    //     t.info.name = filename;
+    //     t.audio.src = file_path;
+    //     t.audio.onloadedmetadata = t.onGetDuration.bind(t);
+    //     // t.ctx = new AudioContext();
+    //     // var audioSrc = t.ctx.createMediaElementSource(t.audio);
+    //     // var analyser = ctx.createAnalyser();
+    //     // audioSrc.connect(analyser);
+    //     //t.audio.addEventListener('canplaythrough', func.bind(t), false);
+    //     t.audio.addEventListener('loadedmetadata', func.bind(t), false);
+    //   });
+    // else {
       t.audio.src = file_path;
       t.audio.onloadedmetadata = t.onGetDuration.bind(t);
       t.audio.addEventListener('loadedmetadata', func.bind(t), false);
-    }
+    // }
 
   }
   /**
