@@ -1,7 +1,9 @@
 // import fs from 'fs';
-let fs = window.require('fs')
 import Framework from '../framework_es6';
-import {Resource} from '../constant';
+import {Game, Resource} from '../constant';
+let fs = {}
+if (Game.client=='client' || Game.client === 'product') 
+  fs = window.require('fs')
 
 export default class BeatsMapParser {
   /**

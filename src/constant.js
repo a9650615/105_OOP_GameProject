@@ -28,5 +28,5 @@ export const Game = {
   }
 };
 console.log(process.env.RUN_ENVIRON);
-console.log(Resource)
+
 export default {};

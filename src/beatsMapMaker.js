@@ -1,5 +1,7 @@
 // import fs from 'fs';
-let fs = window.require('fs')
+let fs = {}
+if (Game.client=='client' || Game.client === 'product') 
+  fs = window.require('fs')
 import Framework, {ES6Trans} from './framework_es6';
 import {Resource, Game} from './constant';
 import BeatsMapParser from './modules/BeatsMapParser';

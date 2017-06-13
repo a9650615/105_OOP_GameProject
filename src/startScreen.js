@@ -2,6 +2,7 @@ import Framework, {ES6Trans} from './framework_es6';
 import { Resource , Game } from './constant';
 import Button from './components/Button';
 import Rect from './components/Rectangle'
+import Ani from './helper/Ani'
 
 class startScreen extends ES6Trans {
   initialize() {
@@ -35,7 +36,23 @@ class startScreen extends ES6Trans {
         }, 500)
       })
 		}
+
+    this.Ani = new Ani()
+    this.loopAni = this.loopAni.bind(this)
+    this.loopAni()
 	}
+
+  loopAni() {
+    this.Ani.fromTo({opacity: 0.3}, {opacity: 1}, 1, (data) => {
+      this.component.start.set(data)
+      this.forceUpdate()
+    }, 'loop').then(() => {
+      this.Ani.fromTo({opacity: 1}, {opacity: 0.3}, 0.7, (data) => {
+        this.component.start.set(data)
+        this.forceUpdate()
+      }, 'loop').then(this.loopAni)
+    })
+  }
 
 	onkeydown(e) {
 		if (e.key === 'Enter') {
@@ -47,7 +64,7 @@ class startScreen extends ES6Trans {
 	}
 
 	fresh() {
-
+    this.Ani.update()
 	}
 
   render() {
