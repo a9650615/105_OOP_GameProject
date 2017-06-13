@@ -117,7 +117,7 @@ class menu extends ES6Trans {
     }
     let t = this;
 
-    if(Game.client === 'client'){
+    if(Game.client === 'client' || Game.client === 'product'){
       this.component.goEditor = new Button(this).set({ 
           text: "編輯器", 
           x: 30, 
@@ -141,13 +141,14 @@ class menu extends ES6Trans {
         this.songMenu = StaticData.load('songMenu')
         this.component.selectCard.loadFromList(this.songMenu)
         this.component.selectCard.set({offset: StaticData.load('lastSelectIndex')||0})
-        this.setState({aniSelect: lastSelect, selectIndex: lastSelect})
+        this.setState({aniSelect: lastSelect, selectIndex: lastSelect||0, load: true})
         this.forceUpdate()
+        if (this.state.selectIndex)
         this.changeCover(this.state.selectIndex)
       }, 300) //不知道為何需要延遲
     }
     else {
-      new BeatsMapParser('./Songs/songList.json').then((data) => {
+      new BeatsMapParser(Resource.sontList).then((data) => {
         this.component.selectCard.loadFromList(data)
         this.songMenu = data
         StaticData.set('songMenu', data)

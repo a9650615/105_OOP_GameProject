@@ -1,4 +1,5 @@
-import fs from 'fs';
+// import fs from 'fs';
+let fs = window.require('fs')
 import Framework, {ES6Trans} from './framework_es6';
 import {Resource, Game} from './constant';
 import BeatsMapParser from './modules/BeatsMapParser';
@@ -350,6 +351,7 @@ class beatsMapMaker extends ES6Trans {
   saveBeatsMap() {
     let tmpData = Object.assign({}, this.mapSetting);
     let currentTime = this.song.getCurrentTime();
+    StaticData.set('needMenuReload', true)
     tmpData.beatsMap = {};
     this.beatsMap.forEach((val, i) => {
       tmpData['beatsMap'][i] = Object.assign({}, val);
@@ -362,7 +364,7 @@ class beatsMapMaker extends ES6Trans {
         (this.state.play) ? this.song.getPlayer().play(): this.song.getPlayer().pause();
       });
       
-      this.exit()
+      // this.exit()
     });
   }
 

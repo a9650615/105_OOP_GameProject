@@ -1,4 +1,5 @@
-import fs from 'fs';
+// import fs from 'fs';
+let fs = window.require('fs')
 import Framework from '../framework_es6';
 import {Resource} from '../constant';
 
@@ -71,7 +72,7 @@ export default class BeatsMapParser {
           "difficulty": difficult,
           "songFile": `${folder}/${songName}`,
           "beatsFile": `${folder}[${difficult}].json`,
-          "cover": cover?`${folder}/${cover}`:""
+          "cover": ""//cover?`${folder}/${cover}`:""
         }
 
         for(let i in data) {

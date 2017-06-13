@@ -28,6 +28,9 @@ class GamePlayScene extends ES6Trans {
       fail:{
         mp3: Resource.sounds+'failed.mp3'
       },
+      scoreFail: {
+        mp3: Resource.sounds+'scoreFail.mp3'
+      },
       complete:{
         mp3: Resource.sounds+'complete.mp3'
       }

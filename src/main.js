@@ -30,7 +30,7 @@ Framework.Game.addNewLevel({
   selectMusic: new mainMenu(),
   GamePlayScene: new GamePlayScene(),
 });
-if (Game.client=='client')
+if (Game.client=='client' || Game.client === 'product')
   Framework.Game.addNewLevel({
     beatsMapMaker: new beatsMapMaker(),
   })

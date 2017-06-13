@@ -96,7 +96,7 @@ export default class ResultSence extends GameObject {
         x: Game.window.width * 0.15,
       });
       this.component.rank.set({url: Resource.image+'rankD.png'})
-      this.audio.play({name: 'fail', loop: false})
+      this.audio.play({name: 'scoreFail', loop: false})
     }
   }
 
@@ -210,7 +210,13 @@ export default class ResultSence extends GameObject {
         y: Game.window.width * 0.45,
         textColor: 'white'
       }).setEvent('click', (e) => {
-        this.audio.pause('complete')
+        try{
+          this.audio.pause('complete')
+        }catch(e) {}
+        // this.audio.pause('complete')
+        try {
+          this.audio.pause('scoreFail')
+        } catch(e) {}
         Framework.Game.goToLevel("selectMusic")
       })
     })
