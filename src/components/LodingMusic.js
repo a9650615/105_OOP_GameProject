@@ -23,12 +23,12 @@ class LoadingMusic extends GameObject {
 				height: Game.window.height * 0.3
 			}),
 			songText: new Button(this._parent).setParent(this).set({
-        x: 100,
-        y: 30,
+				x: 100,
+				y: 30,
 				textSize: 40,
-        textColor: 'white',
-        text: 'Song Name'
-      }),
+				textColor: 'white',
+				text: 'Song Name'
+			}),
 		}
 
 		this._tmpCanvas.resize(Game.window.width, Game.window.height * 0.3)

@@ -7,7 +7,7 @@ import Rect from './components/Rectangle'
 import Sprite from './components/Sprite';
 import Stage from './components/Stage';
 import SilderStage from './components/SilderStage';
-import Botton from './components/Button';
+import Button from './components/Button';
 import devTools from './helper/devTool';
 import StaticData from './helper/StaticData';
 import Ani from './helper/Ani';
@@ -166,7 +166,7 @@ class GamePlayScene extends ES6Trans {
         x: (Game.window.width-120)/2,
         y: GameHeight * 0.2
       }),
-      debugText: new Botton(this).set({
+      debugText: new Button(this).set({
         x: 100,
         y: 30,
         textColor: 'white',
@@ -177,7 +177,7 @@ class GamePlayScene extends ES6Trans {
         x: 99,
         y: 49,
       }),
-      scoreText: new Botton(this).set({
+      scoreText: new Button(this).set({
         x: 110,
         y: 48,
         textColor: 'white',
