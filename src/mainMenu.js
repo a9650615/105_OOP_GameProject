@@ -33,9 +33,6 @@ class menu extends ES6Trans {
 
   load(){
     this.audio = new Framework.Audio({
-      welcome:{
-        mp3: Resource.sounds+'welcome.mp3'
-      },
       ready: {
         wav: Resource.sounds+'ready.wav'
       },
@@ -159,7 +156,6 @@ class menu extends ES6Trans {
         this.setState({load: true})  
         this.changeCover(this.state.selectIndex)
       })
-      // this.audio.play({name: 'welcome', loop: false})
     }
     // if (Game.client === 'web') {  
     // } else {
