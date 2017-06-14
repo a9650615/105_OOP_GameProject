@@ -19,7 +19,7 @@ export default class Stage extends GameObject{
       rightClick: 0
     };
 
-     let GameWidth = Game.window.width, GameHeight = Game.window.height;
+    let GameWidth = Game.window.width, GameHeight = Game.window.height;
     let offsetX = this.state.offsetX;
     let hpWidth = this.state.hpWidth;
     this._tmpCanvas.resize(GameWidth, GameHeight);
