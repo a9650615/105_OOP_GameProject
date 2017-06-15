@@ -241,7 +241,7 @@ class menu extends ES6Trans {
     }
     if(this.songCover[selectIndex] == "")
       this.component.cover.set({url: Resource.image+'/cover.jpg',}) 
-    else this.component.cover.set({url: './Songs/'+ this.songCover[selectIndex]});
+    else this.component.cover.set({url: Resource.songs+ this.songCover[selectIndex]});
   }
   
   onkeydown(e) {
