@@ -57,7 +57,8 @@ class GamePlayScene extends ES6Trans {
         this.component.loadingMusic.slideOut().then(() => {
           // if (!Game.debug)
             // this.playSong();
-          this.showSilder()
+          if(!this.state.menuOpen)
+            this.showSilder()
         })
       });
     });
