@@ -146,6 +146,15 @@ class beatsMapMaker extends ES6Trans {
         }
       ).hide();
 
+      this.component.offsetcounter = new Botton(this).set(
+        {
+          text: "offset test(W) : ",
+          x: 29,
+          y: this.state.firstTop+87,
+          textColor: 'black'
+        }
+      ).hide();
+
       this.component.stepSelector = new TextInput(this).setStyle({
         x: 260,
         y: this.state.firstTop+25,
@@ -343,10 +352,10 @@ class beatsMapMaker extends ES6Trans {
         textColor: 'black'
       }
     ).setEvent('click', (() => {
-      this.exit()
+      this.song.getPlayer().pause(); 
+      this.exit()    
       Framework.Game.goToLevel("selectMusic")
-    }).bind(this));
-      
+    }).bind(this));  
     this.setState({loaded: true})
   }
 
@@ -453,9 +462,12 @@ class beatsMapMaker extends ES6Trans {
       case 32: //space
          this.togglePlay();
         break;
+      case 87: //W
+          console.log(this.song.getCurrentTime()-this.state.currentStep*(60/this.mapSetting.bpm))
+          this.component.offsetcounter.set({text:"offset test(W) : "+((this.song.getCurrentTime()-this.state.currentStep*(60/this.mapSetting.bpm))-(this.song.getCurrentTime()-this.state.currentStep*(60/this.mapSetting.bpm))%0.001)})
+        break;
       case 81: //Q 左區塊單點
          this.setBeatMapBlock(0, 0, {start: this.state.currentStep * (60/this.mapSetting.bpm)});
-         console.log(this.song.getCurrentTime())
         break;
       case 69: //E 右區塊單點
          this.setBeatMapBlock(1, 0, {start: this.state.currentStep * (60/this.mapSetting.bpm)});
@@ -517,6 +529,7 @@ class beatsMapMaker extends ES6Trans {
         this.component.bpmSelector.show();
         this.component.bpmLabel.show();
         this.component.stepLabel.show();
+        this.component.offsetcounter.show();
         this.component.stepSelector.show();
         this.component.save.show();
         this.component.offsetLabel.show()

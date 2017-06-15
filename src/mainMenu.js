@@ -143,7 +143,7 @@ class menu extends ES6Trans {
         this.component.selectCard.set({offset: StaticData.load('lastSelectIndex')||0})
         this.setState({aniSelect: lastSelect, selectIndex: lastSelect||0, load: true})
         this.forceUpdate()
-        if (this.state.selectIndex)
+        // if (this.state.selectIndex)
         this.changeCover(this.state.selectIndex)
       }, 300) //不知道為何需要延遲
     }
